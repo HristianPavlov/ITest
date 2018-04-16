@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using ITest.Data;
 using ITest.Models;
 using ITest.Services;
+using ITest.Data.Models;
 
 namespace ITest
 {
@@ -26,11 +27,11 @@ namespace ITest
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
+            services.AddDbContext<ITestDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
+            services.AddIdentity<User, IdentityRole>()
+                .AddEntityFrameworkStores<ITestDbContext>()
                 .AddDefaultTokenProviders();
 
             // Add application services.

@@ -4,13 +4,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using ITest.Models;
+using ITest.Data.Models;
 
 namespace ITest.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    public class ITestDbContext : IdentityDbContext<User>
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        public ITestDbContext(DbContextOptions<ITestDbContext> options)
             : base(options)
         {
         }

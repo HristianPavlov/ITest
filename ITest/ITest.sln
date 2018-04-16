@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27428.2015
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ITest", "ITest\ITest.csproj", "{F7F7DD83-1BE4-49AF-B6B2-916E0A68B8C9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ITest", "ITest\ITest.csproj", "{F7F7DD83-1BE4-49AF-B6B2-916E0A68B8C9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{BE776E67-F3EE-4BF6-8DA4-D12D2EF9492B}"
 EndProject
@@ -13,17 +13,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{11038A36
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Business", "Business", "{6D434078-9D35-46AC-9BCD-A24D130909C9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ITest.Data", "ITest.Data\ITest.Data.csproj", "{CCA7039E-E003-44F6-A5B7-71AB27B23D95}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ITest.Data", "ITest.Data\ITest.Data.csproj", "{CCA7039E-E003-44F6-A5B7-71AB27B23D95}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ITest.Data.Models", "ITest.Data.Models\ITest.Data.Models.csproj", "{FD07A76A-F08E-4154-A208-5FCE0F24ED25}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ITest.Data.Models", "ITest.Data.Models\ITest.Data.Models.csproj", "{FD07A76A-F08E-4154-A208-5FCE0F24ED25}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ITest.DTO", "ITest.DTO\ITest.DTO.csproj", "{534BA1B3-BADC-40A0-A444-A32E14A67B48}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ITest.DTO", "ITest.DTO\ITest.DTO.csproj", "{534BA1B3-BADC-40A0-A444-A32E14A67B48}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ITest.Infrastructure", "ITest.Infrastructure\ITest.Infrastructure.csproj", "{18D13896-AA0A-4325-BA37-0616178E3516}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ITest.Infrastructure", "ITest.Infrastructure\ITest.Infrastructure.csproj", "{18D13896-AA0A-4325-BA37-0616178E3516}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ITest.Services.Data", "ITest.Services.Data\ITest.Services.Data.csproj", "{083121F4-446B-4E7F-9150-FBA113219D27}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ITest.Services.Data", "ITest.Services.Data\ITest.Services.Data.csproj", "{083121F4-446B-4E7F-9150-FBA113219D27}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ITest.Services.External", "ITest.Services.External\ITest.Services.External.csproj", "{2668964B-9306-4042-B529-F397F60C68F5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ITest.Services.External", "ITest.Services.External\ITest.Services.External.csproj", "{2668964B-9306-4042-B529-F397F60C68F5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
