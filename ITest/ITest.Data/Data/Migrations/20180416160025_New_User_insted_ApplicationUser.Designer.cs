@@ -11,9 +11,10 @@ using System;
 namespace ITest.Data.Migrations
 {
     [DbContext(typeof(ITestDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180416160025_New_User_insted_ApplicationUser")]
+    partial class New_User_insted_ApplicationUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
