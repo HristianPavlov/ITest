@@ -10,7 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ITest.Data;
 using ITest.Models;
-using ITest.Services;
+using ITest.Services.External;
 using ITest.Data.Models;
 
 namespace ITest

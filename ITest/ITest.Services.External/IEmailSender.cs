@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ITest.Services
+namespace ITest.Services.External
 {
     public interface IEmailSender
     {

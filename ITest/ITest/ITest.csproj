@@ -21,6 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\ITest.Data.Models\ITest.Data.Models.csproj" />
     <ProjectReference Include="..\ITest.Data\ITest.Data.csproj" />
+    <ProjectReference Include="..\ITest.Services.External\ITest.Services.External.csproj" />
   </ItemGroup>
 
 </Project>
