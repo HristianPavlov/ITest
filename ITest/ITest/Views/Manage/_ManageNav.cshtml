@@ -1,5 +1,6 @@
 ﻿@using ITest.Views.Manage
-@inject SignInManager<ApplicationUser> SignInManager
+@using ITest.Data.Models;
+@inject SignInManager<User> SignInManager
 @{
     var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
 }

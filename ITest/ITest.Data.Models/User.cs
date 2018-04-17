@@ -10,6 +10,8 @@ namespace ITest.Data.Models
 
     public class User : IdentityUser, IAuditable, IDeletable
     {
+
+
         public bool IsDeleted { get; set; }
 
         [DataType(DataType.DateTime)]
@@ -20,6 +22,12 @@ namespace ITest.Data.Models
 
         [DataType(DataType.DateTime)]
         public DateTime? ModifiedOn { get; set; }
+
+        public ICollection<UserTests> Tests { get; set; }
+
+        
+
+
 
     }
 
