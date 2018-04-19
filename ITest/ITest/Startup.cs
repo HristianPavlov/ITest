@@ -12,6 +12,12 @@ using ITest.Data;
 using ITest.Models;
 using ITest.Services.External;
 using ITest.Data.Models;
+using ITest.Services.Data.Contracts;
+using ITest.Services.Data;
+using ITest.Infrastructure.Providers;
+using AutoMapper;
+using ITest.Data.UnitOfWork;
+using ITest.Data.Repository;
 
 namespace ITest
 {
@@ -35,8 +41,13 @@ namespace ITest
                 .AddDefaultTokenProviders();
 
             // Add application services.
-            services.AddTransient<IEmailSender, EmailSender>();
 
+         
+            services.AddTransient<IQuestionService, QuestionService>();
+
+            services.AddAutoMapper();
+
+            services.AddScoped<IMappingProvider, MappingProvider>();
             services.AddMvc();
         }
 
