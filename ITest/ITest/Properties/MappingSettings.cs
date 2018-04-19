@@ -1,6 +1,4 @@
 ﻿using AutoMapper;
-using ITest.Data.Models;
-using ITest.DTO;
 using ITest.Models.AnswerViewModels;
 using ITest.Models.QuestionViewModel;
 using ITest.Data.Models;
