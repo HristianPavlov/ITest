@@ -15,7 +15,7 @@ namespace ITest.Data
             : base(options)
         {
         }
-
+        public DbSet<Category> Categories { get; set; }
 
         public override int SaveChanges()
         {

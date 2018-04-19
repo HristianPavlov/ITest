@@ -3,6 +3,9 @@ using ITest.Data.Models;
 using ITest.DTO;
 using ITest.Models.AnswerViewModels;
 using ITest.Models.QuestionViewModel;
+using ITest.Data.Models;
+using ITest.DTO;
+using ITest.Models.CategoryViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,8 +21,8 @@ namespace ITest.Properties
 
 
 
-            //this.CreateMap<QuestionDTO, CreateQuestionViewModel>()
-            //      .ForMember(x => x.Author, options => options.MapFrom(x => x.Author.Email));
+            this.CreateMap<CreateCategoryViewModel, CategoryDTO>();
+            this.CreateMap<CategoryDTO, Category>();
 
             //this.CreateMap<CommentDto, CommentViewModel>()
             //       .ForMember(x => x.Author, options => options.MapFrom(x => x.Author.Email));

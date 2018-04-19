@@ -1,0 +1,14 @@
+﻿@model ITest.Models.CategoryViewModels.CreateCategoryViewModel
+@{
+    ViewData["Title"] = "CreateCategory";
+}
+
+<form asp-controller="Create" asp-action="CreateCategory" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group">
+        <textarea asp-for="Name" class="form-control"></textarea>
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-default">Submit</button>
+</form>
+

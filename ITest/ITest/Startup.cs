@@ -18,6 +18,12 @@ using ITest.Infrastructure.Providers;
 using AutoMapper;
 using ITest.Data.UnitOfWork;
 using ITest.Data.Repository;
+using AutoMapper;
+using ITest.Infrastructure.Providers;
+using ITest.Services.Data;
+using ITest.Data.Repository;
+using ITest.Data.UnitOfWork;
+using ITest.Infrastructure.RoleInitializer;
 
 namespace ITest
 {
@@ -40,8 +46,21 @@ namespace ITest
                 .AddEntityFrameworkStores<ITestDbContext>()
                 .AddDefaultTokenProviders();
 
+
+            services.AddMvc();
+
+            services.AddTransient<ICategoriesService, CategoriesService>();
+
+            services.AddAutoMapper();
+
+            services.AddScoped<IMappingProvider, MappingProvider>();
+
             // Add application services.
 
+            services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
+            services.AddScoped<ISaver, EFSaver>();
+
+            // services.AddMvc();
          
             services.AddTransient<IQuestionService, QuestionService>();
 
@@ -52,7 +71,7 @@ namespace ITest
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, RoleManager<IdentityRole> roleManager)
         {
             if (env.IsDevelopment())
             {
@@ -65,6 +84,8 @@ namespace ITest
                 app.UseExceptionHandler("/Home/Error");
             }
 
+            app.UseAuthentication();
+            UserRoleInitializer.SeedRoles(roleManager);
             app.UseStaticFiles();
 
             app.UseAuthentication();
