@@ -34,10 +34,16 @@
                     <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
                     @if (User.Identity.IsAuthenticated)
-    {
-                <li>@Html.ActionLink("CreateQuestions", "Index", "Transactions")</li>
+                    {
+                        <li>@Html.ActionLink("CreateQuestions", "Index", "Transactions")</li>
 
-}
+                    }
+
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li><a asp-area="" asp-controller="Create" asp-action="CreateCategory">CreateCategory</a></li>
+                        <li><a asp-area="" asp-controller="Create" asp-action="CreateTest">CreateTest</a></li>
+                    }
                 </ul>
                 @await Html.PartialAsync("_LoginPartial")
             </div>
