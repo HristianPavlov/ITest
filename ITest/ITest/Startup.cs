@@ -14,6 +14,9 @@ using ITest.Services.External;
 using ITest.Data.Models;
 using AutoMapper;
 using ITest.Infrastructure.Providers;
+using ITest.Services.Data;
+using ITest.Data.Repository;
+using ITest.Data.UnitOfWork;
 
 namespace ITest
 {
@@ -38,14 +41,20 @@ namespace ITest
 
 
             services.AddMvc();
+
+            services.AddTransient<ICategoriesService, CategoriesService>();
+
             services.AddAutoMapper();
 
-            services.AddScoped<IMappingProviders, MappingProvider>();
+            services.AddScoped<IMappingProvider, MappingProvider>();
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
 
-           // services.AddMvc();
+            services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
+            services.AddScoped<ISaver, EFSaver>();
+
+            // services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

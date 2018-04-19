@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ITest.Infrastructure.Providers
 {
-   public interface IMappingProviders
+   public interface IMappingProvider
     {
 
         TDestination MapTo<TDestination>(object source);

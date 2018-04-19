@@ -34,10 +34,10 @@
                     <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
                     @if (User.Identity.IsAuthenticated)
-                    {
-                        <li>@Html.ActionLink("CreateQuestions", "Index", "Transactions")</li>
+    {
+                <li>@Html.ActionLink("CreateQuestions", "Index", "Transactions")</li>
 
-                    }
+}
                 </ul>
                 @await Html.PartialAsync("_LoginPartial")
             </div>

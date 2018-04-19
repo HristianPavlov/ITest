@@ -7,7 +7,7 @@ using System.Text;
 
 namespace ITest.Infrastructure.Providers
 {
-    public class MappingProvider : IMappingProviders
+    public class MappingProvider : IMappingProvider
     {
         private IMapper mapper;
 
