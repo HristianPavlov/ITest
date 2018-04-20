@@ -8,5 +8,6 @@ namespace ITest.Services.Data
     public interface ICategoriesService
     {
         void Add(CategoryDTO dto);
+        IEnumerable<CategoryDTO> GetAllCategories();
     }
 }

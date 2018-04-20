@@ -8,5 +8,7 @@ namespace ITest.DTO
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public ICollection<TestDTO> Tests { get; set; }
+
     }
 }

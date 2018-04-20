@@ -21,16 +21,16 @@ namespace ITest.Services.Data
             this.categories = categories;
             this.saver = saver;
         }
-
-       
-
         public void Add(CategoryDTO dto)
         {
             var model = this.mapper.MapTo<Category>(dto);
             this.categories.Add(model);
             this.saver.SaveChanges();
         }
-
-        
+        public IEnumerable<CategoryDTO> GetAllCategories()
+        {
+            var categories = this.categories.All;
+            return mapper.ProjectTo<CategoryDTO>(categories);
+        }
     }
 }

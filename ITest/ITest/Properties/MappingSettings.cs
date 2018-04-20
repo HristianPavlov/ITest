@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ITest.Models.TestViewModels;
 
 namespace ITest.Properties
 {
@@ -16,12 +17,17 @@ namespace ITest.Properties
     {
         public MappingSettings()
         {
-
-
-
             this.CreateMap<CreateCategoryViewModel, CategoryDTO>();
             this.CreateMap<CategoryDTO, Category>();
+            //to solve tests
+            this.CreateMap<Test, TestDTO>(MemberList.Source);
+            this.CreateMap<TestDTO, SolveTestViewModel>(MemberList.Source);
 
+            this.CreateMap<Question, QuestionDTO>(MemberList.Source);
+            this.CreateMap<QuestionDTO, ShowQuestionViewModel>(MemberList.Source);
+
+            this.CreateMap<Answer, AnswerDTO>(MemberList.Source);
+            this.CreateMap<AnswerDTO, ShowAnswerViewModel>(MemberList.Source);
             //this.CreateMap<CommentDto, CommentViewModel>()
             //       .ForMember(x => x.Author, options => options.MapFrom(x => x.Author.Email));
 
@@ -33,7 +39,9 @@ namespace ITest.Properties
             this.CreateMap<QuestionDTO, Question>(MemberList.Source);
             this.CreateMap<AnswerDTO, Answer>(MemberList.Source);
 
-            
+
+            this.CreateMap<Category, CategoryDTO>(MemberList.Source);
+            this.CreateMap<CategoryDTO, CategoryViewModel>(MemberList.Source);
         }
     }
 

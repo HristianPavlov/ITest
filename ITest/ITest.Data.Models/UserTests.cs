@@ -7,7 +7,6 @@ namespace ITest.Data.Models
    public class UserTests 
 
     {
-        
         public string UserId { get; set; }
 
         public User User { get; set; }
@@ -17,8 +16,5 @@ namespace ITest.Data.Models
         public Test Test { get; set; }
 
         public bool PassedTest { get; set; }
-
-
-
     }
 }

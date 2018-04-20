@@ -10,5 +10,7 @@ namespace ITest.Data.Models
     {
         [Required]
         public string Name { get; set; }
+
+        public ICollection<Test> Tests { get; set; }
     }
 }
