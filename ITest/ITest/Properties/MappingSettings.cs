@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using ITest.Models.AnswerViewModels;
+using ITest.Models.QuestionViewModel;
 using ITest.Data.Models;
 using ITest.DTO;
 using ITest.Models.CategoryViewModels;
@@ -23,9 +25,15 @@ namespace ITest.Properties
             //this.CreateMap<CommentDto, CommentViewModel>()
             //       .ForMember(x => x.Author, options => options.MapFrom(x => x.Author.Email));
 
-            //this.CreateMap<PostViewModel, PostDto>(MemberList.Source);
-            //this.CreateMap<PostDto, Post>(MemberList.Source);
-            //this.CreateMap<CommentDto, Comment>(MemberList.Source);
+
+            this.CreateMap<CreateQuestionViewModel,QuestionDTO>(MemberList.Source);
+            this.CreateMap<CreateAnswerViewModel, AnswerDTO>(MemberList.Source);
+
+
+            this.CreateMap<QuestionDTO, Question>(MemberList.Source);
+            this.CreateMap<AnswerDTO, Answer>(MemberList.Source);
+
+            
         }
     }
 

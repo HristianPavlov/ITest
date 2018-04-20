@@ -16,7 +16,7 @@ namespace ITest.Data.Models
         //}
 
 
-        [Required]
+        //[Required]
         public string Content { get; set; }
 
         

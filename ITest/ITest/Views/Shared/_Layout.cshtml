@@ -35,7 +35,8 @@
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <li>@Html.ActionLink("CreateQuestions", "Index", "Transactions")</li>
+                        <li><a asp-area="" asp-controller="CreateQuestion" asp-action="CreateQ">CreateQuestion</a></li>
+
 
                     }
 

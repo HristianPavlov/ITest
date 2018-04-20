@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ITest.Models.AnswerViewModels
 {
-    public class CreatingAnswerViewModel
+    public class CreateAnswerViewModel
     {
 
         
