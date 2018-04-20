@@ -26,7 +26,7 @@ namespace ITest.Controllers.Createontrollers
         {
             this.mapper = mapper;
             this.questions = questions;
-            
+
             this.userManager = userManager;
         }
 
@@ -34,13 +34,13 @@ namespace ITest.Controllers.Createontrollers
 
 
         [Authorize]
-                public IActionResult CreateQ()
+        public IActionResult CreateQ()
         {
 
 
             return View();
         }
-
+        //"Question/CreateQ"
 
         [HttpPost]
         [Authorize]
