@@ -19,6 +19,7 @@ using ITest.Data.Models;
 using ITest.Data.UnitOfWork;
 using AutoMapper;
 using ITest.Data.Repository;
+using ITest.Services.External;
 
 namespace ITest
 {
@@ -34,7 +35,7 @@ namespace ITest
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<Data.ITestDbContext>(options =>
+            services.AddDbContext<ITestDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddIdentity<User, IdentityRole>()
@@ -45,8 +46,8 @@ namespace ITest
         
 
             services.AddTransient<ICategoriesService, CategoriesService>();
-
-        
+            services.AddTransient<IEmailSender, EmailSender>();
+            
 
             // Add application services.
 
