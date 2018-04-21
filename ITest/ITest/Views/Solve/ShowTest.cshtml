@@ -1,19 +1,78 @@
 ﻿@using ITest.Models.TestViewModels
 @model SolveTestViewModel
 
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<link rel="stylesheet" href="~/css/showTest.css">
 @{
     ViewData["Title"] = "GenerateTest";
 }
 <h1>hello here we start testing</h1>
 
-@foreach (var question in Model.Questions)
-{
-    <h1>@question.Content >>QUESTION</h1>
-    foreach (var answer in question.Answers)
+@*@foreach (var question in Model.Questions)
     {
-        <h2>@answer.Content >>ANSWER</h2>
-    }
-}
+        <h1>@question.Content >>QUESTION</h1>
+        foreach (var answer in question.Answers)
+        {
+            <h2>@answer.Content >>ANSWER</h2>
+        }
+    }*@
+<div class="container">
+    <div class="col-md-4">
+        @{int questionNum = 1; }
+        @foreach (var question in Model.Questions)
+        {
+        <div class="bg-dark">Question @questionNum</div>  
+            <form>
+                <h2>@question.Content</h2>
+                @foreach (var answer in question.Answers)
+                {
+                    <div class="form-check">
+                        <label>
+                            <input type="radio" name="radio"> <span class="label-text">@answer.Content</span>
+                        </label>
+                    </div>
+                }
+            </form>
+            questionNum++;
+        }
+    </div>
+</div>
 
+
+
+
+
+
+
+<!------ Include the above in your HEAD tag ---------->
+@*<div class="container">
+        <div class="col-md-4">
+            <form>
+                <h2>2. Customs Radios</h2>
+                <div class="form-check">
+                    <label>
+                        <input type="radio" name="radio" checked> <span class="label-text">Option 01</span>
+                    </label>
+                </div>
+                <div class="form-check">
+                    <label>
+                        <input type="radio" name="radio"> <span class="label-text">Option 02</span>
+                    </label>
+                </div>
+                <div class="form-check">
+                    <label>
+                        <input type="radio" name="radio"> <span class="label-text">Option 03</span>
+                    </label>
+                </div>
+                <div class="form-check">
+                    <label>
+                        <input type="radio" name="radio" disabled> <span class="label-text">Option 04</span>
+                    </label>
+                </div>
+            </form>
+        </div>
+    </div>*@
 
 
