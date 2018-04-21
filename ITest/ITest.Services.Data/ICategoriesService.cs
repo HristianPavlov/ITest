@@ -9,5 +9,7 @@ namespace ITest.Services.Data
     {
         void Add(CategoryDTO dto);
         IEnumerable<CategoryDTO> GetAllCategories();
+        int GetIdByCategoryName(string name);
+       
     }
 }

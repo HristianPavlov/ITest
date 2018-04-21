@@ -14,11 +14,13 @@ namespace ITest.Controllers
     {
         private readonly IMappingProvider mapper;
         private readonly ICategoriesService categoriesService;
+        private readonly ITestRandomService testsService;
 
-        public SolveController(IMappingProvider mapper, ICategoriesService categoriesService)
+        public SolveController(IMappingProvider mapper, ICategoriesService categoriesService, ITestRandomService testsService)
         {
             this.mapper = mapper;
             this.categoriesService = categoriesService;
+            this.testsService = testsService;
         }
         public IActionResult SolveTests()
         {
@@ -29,12 +31,18 @@ namespace ITest.Controllers
             return View(model);
         }
 
-        public IActionResult GenerateTest(string category)
+        public IActionResult GenerateTest(string id)
         {
-            var model = new SolveTestViewModel();
+            return Json(Url.Action("ShowTest/" + id));
+        }
 
-            
-            return View(model);
+        public IActionResult ShowTest(string id)
+        {
+            var categoryId = categoriesService.GetIdByCategoryName(id);
+            var randomTest = testsService.GetRandomTestFromCategory(categoryId);
+            var testViewModel = mapper.MapTo<SolveTestViewModel>(randomTest);
+
+            return View(testViewModel);
         }
     }
 }

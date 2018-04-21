@@ -5,6 +5,7 @@ using ITest.DTO;
 using ITest.Infrastructure.Providers;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace ITest.Services.Data
@@ -26,6 +27,10 @@ namespace ITest.Services.Data
             var model = this.mapper.MapTo<Category>(dto);
             this.categories.Add(model);
             this.saver.SaveChanges();
+        }
+        public int GetIdByCategoryName(string name)
+        {
+            return categories.All.First(cat => cat.Name==name).Id;
         }
         public IEnumerable<CategoryDTO> GetAllCategories()
         {

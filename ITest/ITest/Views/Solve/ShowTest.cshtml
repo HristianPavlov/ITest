@@ -1,0 +1,19 @@
+﻿@using ITest.Models.TestViewModels
+@model SolveTestViewModel
+
+@{
+    ViewData["Title"] = "GenerateTest";
+}
+<h1>hello here we start testing</h1>
+
+@foreach (var question in Model.Questions)
+{
+    <h1>@question.Content >>QUESTION</h1>
+    foreach (var answer in question.Answers)
+    {
+        <h2>@answer.Content >>ANSWER</h2>
+    }
+}
+
+
+
