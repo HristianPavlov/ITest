@@ -1,12 +1,13 @@
 ﻿@using ITest.Models.TestViewModels
 @model SolveTestViewModel
 
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="~/js/clickableAnswers.js"></script>
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 <link rel="stylesheet" href="~/css/showTest.css">
 @{
-    ViewData["Title"] = "GenerateTest";
+    ViewData["Title"] = "Good luck";
 }
 <h1>hello here we start testing</h1>
 
@@ -23,16 +24,18 @@
         @{int questionNum = 1; }
         @foreach (var question in Model.Questions)
         {
-        <div class="bg-dark">Question @questionNum</div>  
+            <div class="well"><h2>Question @questionNum</h2></div>
             <form>
                 <h2>@question.Content</h2>
+                @{int answerNum = 1; }
                 @foreach (var answer in question.Answers)
                 {
                     <div class="form-check">
                         <label>
-                            <input type="radio" name="radio"> <span class="label-text">@answer.Content</span>
+                            <input type="radio" name="radio"> <span class="label-text @questionNum" id="@questionNum@answerNum">@answer.Content</span>
                         </label>
                     </div>
+                    answerNum++;
                 }
             </form>
             questionNum++;
@@ -40,39 +43,11 @@
     </div>
 </div>
 
-
-
-
-
-
-
-<!------ Include the above in your HEAD tag ---------->
-@*<div class="container">
-        <div class="col-md-4">
-            <form>
-                <h2>2. Customs Radios</h2>
-                <div class="form-check">
-                    <label>
-                        <input type="radio" name="radio" checked> <span class="label-text">Option 01</span>
-                    </label>
-                </div>
-                <div class="form-check">
-                    <label>
-                        <input type="radio" name="radio"> <span class="label-text">Option 02</span>
-                    </label>
-                </div>
-                <div class="form-check">
-                    <label>
-                        <input type="radio" name="radio"> <span class="label-text">Option 03</span>
-                    </label>
-                </div>
-                <div class="form-check">
-                    <label>
-                        <input type="radio" name="radio" disabled> <span class="label-text">Option 04</span>
-                    </label>
-                </div>
-            </form>
+@*<form asp-controller="Save" asp-action="SaveTest" method="post">
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div class="form-group">
+            <textarea asp-for="Name" class="form-control"></textarea>
+            <span asp-validation-for="Name" class="text-danger"></span>
         </div>
-    </div>*@
-
-
+        <button type="submit" class="btn btn-default">Submit</button>
+    </form>*@
