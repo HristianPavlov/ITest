@@ -10,24 +10,15 @@
     ViewData["Title"] = "Good luck";
 }
 <h1>hello here we start testing</h1>
-
-@*@foreach (var question in Model.Questions)
-    {
-        <h1>@question.Content >>QUESTION</h1>
-        foreach (var answer in question.Answers)
-        {
-            <h2>@answer.Content >>ANSWER</h2>
-        }
-    }*@
 <div class="container">
     <div class="col-md-4">
-        @{int questionNum = 1; }
-        @foreach (var question in Model.Questions)
-        {
-            <div class="well"><h2>Question @questionNum</h2></div>
-            <form>
+        <form asp-controller="Solve" asp-action="PublishAnswers" method="post">
+            <input style="display:none" asp-for="@Model.Id" value="@Model.Id"/>
+            @{int questionNum = 0; int answerNum = 1;}
+            @foreach (var question in Model.Questions)
+            {
+                <div class="well"><h2>Question @questionNum</h2></div>
                 <h2>@question.Content</h2>
-                @{int answerNum = 1; }
                 @foreach (var answer in question.Answers)
                 {
                     <div class="form-check">
@@ -37,17 +28,24 @@
                     </div>
                     answerNum++;
                 }
-            </form>
-            questionNum++;
-        }
+                answerNum = 1;
+                questionNum++;
+            }
+            @for (int i = 0; i < Model.StorageOfAnswers.Count; i++)
+            {
+                //<p>@i</p>
+                //<p>@Model.Storage[i]</p>
+
+                    <textarea type="text" asp-for="@Model.StorageOfAnswers[i]" style="display:none"class="Answer-@i" id="Answer-@i"></textarea>
+            }
+            <p>
+                <input type="submit" value="Submit" />
+            </p>
+        </form>
     </div>
 </div>
 
 @*<form asp-controller="Save" asp-action="SaveTest" method="post">
-        <div asp-validation-summary="All" class="text-danger"></div>
-        <div class="form-group">
             <textarea asp-for="Name" class="form-control"></textarea>
-            <span asp-validation-for="Name" class="text-danger"></span>
-        </div>
         <button type="submit" class="btn btn-default">Submit</button>
     </form>*@

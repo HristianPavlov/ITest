@@ -48,6 +48,7 @@ namespace ITest
             services.AddTransient<ICategoriesService, CategoriesService>();
             services.AddTransient<IQuestionService, QuestionService>();
             services.AddTransient<IEmailSender, EmailSender>();
+            services.AddTransient<UserService>();
 
             services.AddTransient<ITestRandomService, TestRandomService>();
 
@@ -87,7 +88,7 @@ namespace ITest
         }
 
         private void RegisterData(IServiceCollection services)
-        {
+        {   
             services.AddDbContext<ITestDbContext>(options =>
                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 

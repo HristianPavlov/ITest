@@ -5,6 +5,7 @@ namespace ITest.DTO
 {
     public class TestDTO
     {
+        public int Id { get; set; }
         public string AuthorId { get; set; }
 
         public UserDTO Author { get; set; }

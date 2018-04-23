@@ -8,6 +8,9 @@ namespace ITest.Services.Data
     public interface ITestRandomService
     {
         TestDTO GetRandomTestFromCategory(int categoryID);
-        
+        decimal GetResult(UserTestsDTO test);
+        void Publish(UserTestsDTO test);
+
+
     }
 }

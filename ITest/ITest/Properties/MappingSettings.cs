@@ -32,7 +32,7 @@ namespace ITest.Properties
             //       .ForMember(x => x.Author, options => options.MapFrom(x => x.Author.Email));
 
 
-            this.CreateMap<CreateQuestionViewModel,QuestionDTO>(MemberList.Source);
+            this.CreateMap<CreateQuestionViewModel, QuestionDTO>(MemberList.Source);
             this.CreateMap<CreateAnswerViewModel, AnswerDTO>(MemberList.Source);
 
 
@@ -42,6 +42,17 @@ namespace ITest.Properties
 
             this.CreateMap<Category, CategoryDTO>(MemberList.Source);
             this.CreateMap<CategoryDTO, CategoryViewModel>(MemberList.Source);
+            //hacks start here
+
+  //          Mapper.Initialize(cfg => cfg.CreateMap<MyEntity, MyEntityDto>()
+  //.ForMember(x => x.ListOfStrings, opt => opt.MapFrom(src => src.SerializedListOfStrings.Split(';'))));
+
+  //          Mapper.Initialize(cfg => cfg.CreateMap<MyEntityDto, MyEntity>()
+  //            .ForMember(x => x.SerializedListOfStrings, opt => opt.MapFrom(src => string.Join(";", src.ListOfStrings))));
+
+            this.CreateMap<SolveTestViewModel, UserTestsDTO>(MemberList.Source);
+            this.CreateMap<UserTestsDTO, UserTests>(MemberList.Source).
+                ForMember(x => x.SerializedAnswers, opt => opt.MapFrom(src => string.Join(";",src.StorageOfAnswers)));
         }
     }
 
