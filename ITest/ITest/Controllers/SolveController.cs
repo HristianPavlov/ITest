@@ -68,9 +68,15 @@ namespace ITest.Controllers
                 //fix this in the view
                 completedTest.TestId = completedTest.Id;
                 completedTest.UserId = userId;
+
+                //if (DateTime.Now > theDateTime the model has)
+                //{
+                //    User cheated somehow!;
+                //}
+
                 testsService.Publish(completedTest);
             }
-            return View(answers);
+            return this.RedirectToAction("Index", "Home");
         }
     }
 }

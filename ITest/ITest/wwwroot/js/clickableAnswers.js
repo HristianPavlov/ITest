@@ -2,7 +2,6 @@
     const activeClass = 'active';
     let currentAnswer;
     let currentClass;
-    console.log('kur')
     $('.label-text').on('click', function () {
 
         currentAnswer = document.getElementById(this.id);
