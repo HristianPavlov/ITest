@@ -32,6 +32,8 @@ namespace ITest.Data.Models
 
         public Category Category { get; set; }
 
+        public int TimeInMinutes { get; set; }
+
 
 
     }

@@ -20,8 +20,12 @@ namespace ITest.Controllers
         private readonly ICategoriesService categoriesService;
         private readonly ITestRandomService testsService;
         private readonly UserService userService;
+        //add interface to userService
 
-        public SolveController(IMappingProvider mapper, ICategoriesService categoriesService, ITestRandomService testsService, UserService userService)
+        public SolveController(IMappingProvider mapper,
+            ICategoriesService categoriesService,
+            ITestRandomService testsService,
+            UserService userService)
         {
             this.mapper = mapper;
             this.categoriesService = categoriesService;
@@ -43,19 +47,55 @@ namespace ITest.Controllers
         }
 
         public IActionResult ShowTest(string id)
+        //beneath is the category name not id !!
         {
-            var categoryId = categoriesService.GetIdByCategoryName(id);
-            var randomTest = testsService.GetRandomTestFromCategory(categoryId);
-            var testViewModel = mapper.MapTo<SolveTestViewModel>(randomTest);
-            //testViewModel.Storage = new AnswerStorageViewModel();
-            testViewModel.StorageOfAnswers = new List<string>();
-            for (int i = 0; i < testViewModel.Questions.Count; i++)
+            var category = id;
+            var userId = userService.GetLoggedUserId(this.User);
+
+            if (testsService.UserStartedTest(userId, category))
             {
-                testViewModel.StorageOfAnswers.Add("No Answer");
+                var testId = testsService.GetTestIdFromUserIdAndCategory(userId, category);
+                var test = testsService.GetTestById(testId);
+
+                var testView = mapper.MapTo<SolveTestViewModel>(test);
+                var testAllowedTime = double.Parse(test.TimeInMinutes.ToString());
+                var startedTime = testsService.StartedTestCreationTime(userId, category);
+                var endTime = startedTime.Value.AddMinutes(testAllowedTime);
+                var reaminingTime = Math.Round((endTime - DateTime.Now).TotalSeconds);
+
+                testView.Category = category;
+                testView.RemainingTime = int.Parse(reaminingTime.ToString());
+                testView.StorageOfAnswers = new List<string>();
+                for (int i = 0; i < testView.Questions.Count; i++)
+                {
+                    testView.StorageOfAnswers.Add("No Answer");
+                }
+                return View(testView);
             }
-
-
-            return View(testViewModel);
+            else
+            {
+                var categoryId = categoriesService.GetIdByCategoryName(category);
+                var randomTest = testsService.GetRandomTestFromCategory(categoryId);
+                var testViewModel = mapper.MapTo<SolveTestViewModel>(randomTest);
+                // add the test in base on creation
+                var saveThisTestCreation = new UserTestsDTO
+                {
+                    UserId = userId,
+                    Category = category,
+                    TestId = randomTest.Id
+                };
+                testsService.SaveTest(saveThisTestCreation);
+                //added the up
+                testViewModel.StorageOfAnswers = new List<string>();
+                for (int i = 0; i < testViewModel.Questions.Count; i++)
+                {
+                    testViewModel.StorageOfAnswers.Add("No Answer");
+                }
+                testViewModel.Category = category;
+                testViewModel.RemainingTime =
+                    Convert.ToInt32(((DateTime.Now.AddMinutes(randomTest.TimeInMinutes) - DateTime.Now).TotalSeconds).ToString());
+                return View(testViewModel);
+            }
         }
 
         [HttpPost]
@@ -63,11 +103,14 @@ namespace ITest.Controllers
         {
             if (ModelState.IsValid)
             {
+                //debug this TestId
                 var completedTest = mapper.MapTo<UserTestsDTO>(answers);
                 var userId = this.userService.GetLoggedUserId(this.User);
                 //fix this in the view
                 completedTest.TestId = completedTest.Id;
                 completedTest.UserId = userId;
+
+                //completedTest.Category = 
 
                 //if (DateTime.Now > theDateTime the model has)
                 //{

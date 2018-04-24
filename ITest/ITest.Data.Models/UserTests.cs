@@ -23,6 +23,8 @@ namespace ITest.Data.Models
 
         public bool IsDeleted { get; set; }
 
+        public string Category { get; set; }
+
         [DataType(DataType.DateTime)]
         public DateTime? DeletedOn { get; set; }
 

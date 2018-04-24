@@ -1,25 +1,21 @@
 ﻿@using ITest.Models.TestViewModels
 @model SolveTestViewModel
-@{
-    //fix it here to inject throught model
-    var currentTime = DateTime.Now;
-    var endTime = new DateTime(2018, 4, 24, 21, 0, 0);
-    var timeYouHaveInSeconds = (Convert.ToInt32((endTime - currentTime).TotalSeconds));
-}
-
 
 <link rel="stylesheet" href="~/css/showTest.css">
 <link rel="stylesheet" href="~/compiled/flipclock.css">
+
 @{
     ViewData["Title"] = "Good luck";
 }
+
 <h1>hello here we start testing</h1>
-<div @*style="display:none"*@ id="secondsYouHave">@timeYouHaveInSeconds</div>
+<div style="display:none" id="secondsYouHave">@Model.RemainingTime</div>
 <div class="clock"></div>
 <div class="container">
     <div class="col-md-4">
         <form asp-controller="Solve" asp-action="PublishAnswers" method="post">
             <input style="display:none" asp-for="@Model.Id" value="@Model.Id" />
+            <input style="display:none" asp-for="@Model.Category" value="@Model.Category" />
             @{int questionNum = 0; int answerNum = 1;}
             @foreach (var question in Model.Questions)
             {

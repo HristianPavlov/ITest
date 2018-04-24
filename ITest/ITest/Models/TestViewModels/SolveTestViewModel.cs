@@ -11,10 +11,18 @@ namespace ITest.Models.TestViewModels
     {
         public ICollection<ShowQuestionViewModel> Questions { get; set; }
 
-        //public AnswerStorageViewModel Storage { get; set; }
+        public string UserId { get; set; }
 
         public int Id { get; set; }
 
         public List<string> StorageOfAnswers { get; set; }
+
+        public DateTime? CreatedOn { get; set; }
+
+        public int RemainingTime { get; set; }
+
+        public string Category { get; set; }
+
+        public int TimeInMinutes { get; set; }
     }
 }

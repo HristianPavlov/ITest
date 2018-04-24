@@ -1,6 +1,8 @@
 ﻿using ITest.Data.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace ITest.Services.Data
 {
@@ -16,6 +18,11 @@ namespace ITest.Services.Data
         public string GetLoggedUserId(ClaimsPrincipal claims)
         {
             return this.userManager.GetUserId(claims);
+        }
+
+        public Task<User> GetCurrentUser(ClaimsPrincipal claims)
+        {
+            return this.userManager.GetUserAsync(claims);
         }
     }
 }

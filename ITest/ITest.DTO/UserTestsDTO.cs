@@ -15,9 +15,11 @@ namespace ITest.DTO
 
         public Test Test { get; set; }
 
-        public decimal Result { get; set; }
+        public decimal Score { get; set; }
 
         public List<string> StorageOfAnswers { get; set; }
+
+        public string Category { get; set; }
 
         //Think about this id
         public int Id { get; set; }
