@@ -28,6 +28,12 @@ namespace ITest.Data.Models
 
         public ICollection<UserTests> Users { get; set; }
 
+        public int CategoryId { get; set; }
+
+        public Category Category { get; set; }
+
+        public int TimeInMinutes { get; set; }
+
 
 
     }

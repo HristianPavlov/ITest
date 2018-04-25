@@ -8265,16 +8265,14 @@ jQuery.extend( {
 	lastModified: {},
 	etag: {},
 
-	ajaxSettings: {
-		url: location.href,
-		type: "GET",
-		isLocal: rlocalProtocol.test( location.protocol ),
-		global: true,
-		processData: true,
-		async: true,
-		contentType: "
-
-/x-www-form-urlencoded; charset=UTF-8",
+    ajaxSettings: {
+        url: location.href,
+        type: "GET",
+        isLocal: rlocalProtocol.test(location.protocol),
+        global: true,
+        processData: true,
+        async: true,
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
 		/*
 		timeout: 0,
 		data: null,

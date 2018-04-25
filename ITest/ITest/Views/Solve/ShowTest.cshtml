@@ -1,0 +1,57 @@
+﻿@using ITest.Models.TestViewModels
+@model SolveTestViewModel
+
+<link rel="stylesheet" href="~/css/showTest.css">
+<link rel="stylesheet" href="~/compiled/flipclock.css">
+
+@{
+    ViewData["Title"] = "Good luck";
+}
+
+<h1>hello here we start testing</h1>
+<div style="display:none" id="secondsYouHave">@Model.RemainingTime</div>
+<div class="clock"></div>
+<div class="container">
+    <div class="col-md-4">
+        <form asp-controller="Solve" asp-action="PublishAnswers" method="post">
+
+            <input style="display:none" asp-for="@Model.Id" value="@Model.Id" />
+            <input style="display:none" asp-for="@Model.Category" value="@Model.Category" />
+
+            @{int questionNum = 0; int answerNum = 1;}
+            @foreach (var question in Model.Questions)
+            {
+                <div class="well"><h2>Question @questionNum</h2></div>
+                <h2>@question.Content</h2>
+                @foreach (var answer in question.Answers)
+                {
+                    <div class="form-check">
+                        <label>
+                            <input type="radio" name="radio-@questionNum"> <span class="label-text @questionNum" id="@questionNum@answerNum">@answer.Content</span>
+                        </label>
+                    </div>
+                    answerNum++;
+                }
+                answerNum = 1;
+                questionNum++;
+            }
+            @for (int i = 0; i < Model.StorageOfAnswers.Count; i++)
+            {
+                //<p>@i</p>
+                //<p>@Model.Storage[i]</p>
+
+                <textarea type="text" asp-for="@Model.StorageOfAnswers[i]" style="display:none" class="Answer-@i" id="Answer-@i"></textarea>
+            }
+            <p>
+                <input type="submit" value="Submit" id="submitButton" />
+            </p>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/clickableAnswers.js"></script>
+    <script src="~/compiled/flipclock.js"></script>
+    <script src="~/js/countDownSecond.js"></script>
+
+}
