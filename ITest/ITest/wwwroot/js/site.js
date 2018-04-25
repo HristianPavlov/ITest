@@ -9,7 +9,24 @@
         <input id="Questions[{{q_id}}].Content" placeholder="Title" class="form-control" />
             
         </div>
+﻿$(document).ready(function () {
+    const activeClass = 'active';
+    const firstItem = document.getElementById('categoryButton-0');
 
+    if (firstItem) {
+        firstItem.classList.add(activeClass);
+        $('#startButton').text(firstItem.textContent);
+
+        let activeCategory = firstItem;
+
+        $('.categoryButton').on('click', function () {
+            activeCategory.classList.remove(activeClass);
+            activeCategory = document.getElementById(this.id);
+            activeCategory.classList.add(activeClass);
+            $('#startButton').text(this.textContent);
+        });
+    }
+});
         <div class="answer-container">
         <div class="form-group col-lg-offset-1">
             <input type="text"     id="Questions[{{q_id}}].Answers[0].Content" placeholder="Answer1" class="form-control" />

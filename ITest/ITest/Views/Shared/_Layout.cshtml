@@ -4,7 +4,6 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - ITest</title>
-
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/site.css" />
@@ -41,11 +40,9 @@
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
                     @if (User.Identity.IsAuthenticated)
                     {
+                        <li id="SolveArea"><a asp-area="" asp-controller="Solve" asp-action="SolveTests">SolveTests</a></li>
                         <li><a asp-area="" asp-controller="CreateQuestion" asp-action="CreateQ">CreateQuestion</a></li>
-
-
                     }
-
                     @if (User.IsInRole("Admin"))
                     {
                         <li><a asp-area="" asp-controller="Create" asp-action="CreateCategory">CreateCategory</a></li>
@@ -63,6 +60,7 @@
             <p>&copy; 2018 - ITest</p>
         </footer>
     </div>
+
 
     <environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>

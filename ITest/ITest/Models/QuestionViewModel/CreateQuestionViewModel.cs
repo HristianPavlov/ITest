@@ -9,7 +9,6 @@ namespace ITest.Models.QuestionViewModel
 {
     public class CreateQuestionViewModel
     {
-        
         [MinLength(5)]
         [MaxLength(500)]
         [DataType(DataType.Text)]

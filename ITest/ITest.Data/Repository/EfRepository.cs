@@ -8,8 +8,7 @@ using System.Text;
 
 namespace ITest.Data.Repository
 {
-  public  class EfRepository<T> : IRepository<T>
-        where T : class, IDeletable
+  public  class EfRepository<T> : IRepository<T> where T : class, IDeletable
     {
         private readonly ITestDbContext context;
 

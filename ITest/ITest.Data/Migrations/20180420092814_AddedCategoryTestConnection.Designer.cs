@@ -12,9 +12,10 @@ using System;
 namespace ITest.Data.Migrations
 {
     [DbContext(typeof(ITestDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180420092814_AddedCategoryTestConnection")]
+    partial class AddedCategoryTestConnection
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -112,8 +113,6 @@ namespace ITest.Data.Migrations
 
                     b.Property<int>("Status");
 
-                    b.Property<int>("TimeInMinutes");
-
                     b.HasKey("Id");
 
                     b.HasIndex("AuthorId");
@@ -188,19 +187,7 @@ namespace ITest.Data.Migrations
 
                     b.Property<int>("TestId");
 
-                    b.Property<string>("Category");
-
-                    b.Property<DateTime?>("CreatedOn");
-
-                    b.Property<DateTime?>("DeletedOn");
-
-                    b.Property<bool>("IsDeleted");
-
-                    b.Property<DateTime?>("ModifiedOn");
-
-                    b.Property<decimal>("Score");
-
-                    b.Property<string>("SerializedAnswers");
+                    b.Property<bool>("PassedTest");
 
                     b.HasKey("UserId", "TestId");
 

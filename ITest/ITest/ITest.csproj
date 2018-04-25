@@ -358,4 +358,8 @@
     <ProjectReference Include="..\ITest.Services.External\ITest.Services.External.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\TestsGenerator\" />
+  </ItemGroup>
+
 </Project>

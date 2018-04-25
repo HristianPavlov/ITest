@@ -1,0 +1,13 @@
+﻿@using ITest.Models.TestViewModels
+@model SolveTestViewModel
+@{
+    ViewData["Title"] = "PublishAnswers";
+}
+
+<h2>PublishAnswers</h2>
+<p>@Model.Id</p>
+@foreach (var item in Model.StorageOfAnswers)
+{
+    <p>@item</p>
+}
+
