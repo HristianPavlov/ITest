@@ -19,7 +19,7 @@ $(document).ready(function () {
     clock = $('.clock').FlipClock(time,
         {
            
-            clockFace: 'MinuteCounter',
+            clockFace: 'HourlyCounter',
             countdown: true,
             callbacks: {
                 stop: function () {

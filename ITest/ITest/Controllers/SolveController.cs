@@ -74,11 +74,11 @@ namespace ITest.Controllers
                 testView.Category = category;
                 testView.RemainingTime = int.Parse(reaminingTime.ToString());
 
-                if (reaminingTime<0)
+                if (reaminingTime < 0)
                 {
                     return this.RedirectToAction("CategoryDone", "Solve");
                 }
-                
+
                 testView.StorageOfAnswers = new List<string>();
                 for (int i = 0; i < testView.Questions.Count; i++)
                 {
@@ -120,11 +120,17 @@ namespace ITest.Controllers
         {
             if (ModelState.IsValid)
             {
-                //crap start here
+                //make it here to not be publishable if remaining time is incorrect
+
                 var userId = userService.GetLoggedUserId(this.User);
-                //var startedTime = testsService.StartedTestCreationTime(userId, answers.Category);
+                var startedTime = testsService.StartedTestCreationTime(userId, answers.Category);
+                //check if time is valid
 
                 var completedTest = mapper.MapTo<UserTestsDTO>(answers);
+                //if (true)
+                //{
+                //    return this.RedirectToAction("AddedLate", "Solve");
+                //}
                 //fix this in the view
                 completedTest.TestId = completedTest.Id;
                 completedTest.UserId = userId;
