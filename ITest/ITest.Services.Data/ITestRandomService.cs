@@ -10,6 +10,7 @@ namespace ITest.Services.Data
         TestDTO GetRandomTestFromCategory(int categoryID);
         TestDTO GetTestById(int id);
         int GetTestIdFromUserIdAndCategory(string userId, string category);
+        int GetTestCountDownByTestId(int id);
         decimal GetResult(UserTestsDTO test);
         void Publish(UserTestsDTO test);
         void SaveTest(UserTestsDTO test);

@@ -40,6 +40,13 @@ namespace ITest.Services.Data
         {
             return userTests.All.First(x => x.UserId == userId && x.Category == category).CreatedOn;
         }
+        public int GetTestCountDownByTestId(int id)
+        {
+            var testsFromThisCategory = tests.All.Where(test => test.Id == id);
+            var currentTest = testsFromThisCategory.First();
+            var countDownMins = currentTest.TimeInMinutes;
+            return countDownMins;
+        }
 
         public TestDTO GetRandomTestFromCategory(int categoryID)
         {

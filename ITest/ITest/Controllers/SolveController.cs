@@ -124,14 +124,13 @@ namespace ITest.Controllers
 
                 var userId = userService.GetLoggedUserId(this.User);
                 var startedTime = testsService.StartedTestCreationTime(userId, answers.Category);
-                //check if time is valid
-
+                var countDown = testsService.GetTestCountDownByTestId(answers.Id);
+                var timeRemain = (startedTime.Value.AddMinutes(countDown).AddSeconds(30) - DateTime.Now).TotalSeconds;
+                if (timeRemain < 0)
+                {
+                    return this.RedirectToAction("AddedLate", "Solve");
+                }
                 var completedTest = mapper.MapTo<UserTestsDTO>(answers);
-                //if (true)
-                //{
-                //    return this.RedirectToAction("AddedLate", "Solve");
-                //}
-                //fix this in the view
                 completedTest.TestId = completedTest.Id;
                 completedTest.UserId = userId;
 
