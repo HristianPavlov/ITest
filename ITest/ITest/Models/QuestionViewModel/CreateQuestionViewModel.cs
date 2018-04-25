@@ -13,5 +13,12 @@ namespace ITest.Models.QuestionViewModel
         [MaxLength(500)]
         [DataType(DataType.Text)]
         public string Content { get; set; }
+
+        public bool isRemoved { get; set;}
+
+
+        public List<CreateAnswerViewModel> Answers { get; set; }
+        //public ICollection<CreateAnswerViewModel> Answers { get; set; }
+
     }
 }

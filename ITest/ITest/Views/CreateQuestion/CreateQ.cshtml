@@ -1,10 +1,60 @@
-﻿@model ITest.Models.QuestionViewModel.CreateQuestionViewModel
+﻿<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote-lite.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote-lite.js"></script>
 
-@{
-    ViewData["Title"] = "CreateQuestion";
-}
 
-<h2>CreateQuestion</h2>
+@model CreateTestViewModel
+
+    @{
+        ViewData["Title"] = "CreateQuestion";
+    }
+
+    <h1 class="col-lg-offset-2">Create</h1>
+
+    <div class="row">
+        <div class="col-lg-4 col-lg-offset-2">
+            <form asp-controller="CreateQuestion" asp-action="Create" method="post" class="form-inline" id="question-form">
+                <div class="form-group">
+                    <input asp-for="Content" class="form-control" />
+
+                    <button type="button" class="add-question">Add Question</button>
+                </div>
+                <br />
+
+                <div id="questions-container">
+                    
+                    <div class="panel panel-default question">
+                        <h3>Question</h3>
+                        <div class="form-group">
+                            <input asp-for="Questions[0].Content" placeholder="Title" class="form-control" />
+                        </div>
+
+                        <div class="answer-container">
+                            <div class="form-group col-lg-offset-1" >
+                                <input asp-for="Questions[0].Answers[0].Content" placeholder="Answer 1" class="form-control"  />
+                                <input asp-for="Questions[0].Answers[0].Correct" class="form-control" />
+                            </div>
+                            <button type="button" class="add-answer">Add Answer</button>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-default">Submit</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+
+
+
+
+
+
+@*<h2>CreateQuestion</h2>
 
 <h4>CreateQuestionViewModel</h4>
 <hr />
@@ -23,12 +73,27 @@
             </div>
         </form>
     </div>
-</div>
+</div>*@
+
+
+@*<form method="post">
+    <textarea id="summernote" name="editordata"></textarea>
+    
+    <br />
+    <input type="submit" name="submit" value="Submit" />
+</form>*@
+
+
+
+<script>
+    $('#summernote').summernote({
+        placeholder: 'Hello bootstrap 4',
+        tabsize: 2,
+        height: 100
+    });
+</script>
 
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
 
-
-@*<form asp-area="" asp-controller="Account" asp-action="Logout" method="post" id="logoutForm" class="navbar-right">
-    <ul class="nav navbar-nav navbar-right">*@
