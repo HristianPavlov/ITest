@@ -40,6 +40,10 @@ namespace ITest.Controllers
             model.AllCategories = this.mapper.ProjectTo<CategoryViewModel>(categories).ToList();
             return View(model);
         }
+        public IActionResult CategoryDone()
+        {
+            return View();
+        }
 
         public IActionResult GenerateTest(string id)
         {
@@ -60,11 +64,21 @@ namespace ITest.Controllers
                 var testView = mapper.MapTo<SolveTestViewModel>(test);
                 var testAllowedTime = double.Parse(test.TimeInMinutes.ToString());
                 var startedTime = testsService.StartedTestCreationTime(userId, category);
+                if (startedTime == null)
+                {
+                    return this.RedirectToAction("CategoryDone", "Solve");
+                }
                 var endTime = startedTime.Value.AddMinutes(testAllowedTime);
                 var reaminingTime = Math.Round((endTime - DateTime.Now).TotalSeconds);
 
                 testView.Category = category;
                 testView.RemainingTime = int.Parse(reaminingTime.ToString());
+
+                if (reaminingTime<0)
+                {
+                    return this.RedirectToAction("CategoryDone", "Solve");
+                }
+                
                 testView.StorageOfAnswers = new List<string>();
                 for (int i = 0; i < testView.Questions.Count; i++)
                 {
@@ -86,12 +100,15 @@ namespace ITest.Controllers
                 };
                 testsService.SaveTest(saveThisTestCreation);
                 //added the up
+
                 testViewModel.StorageOfAnswers = new List<string>();
                 for (int i = 0; i < testViewModel.Questions.Count; i++)
                 {
                     testViewModel.StorageOfAnswers.Add("No Answer");
                 }
+
                 testViewModel.Category = category;
+                testViewModel.CreatedOn = DateTime.Now;
                 testViewModel.RemainingTime =
                     Convert.ToInt32(((DateTime.Now.AddMinutes(randomTest.TimeInMinutes) - DateTime.Now).TotalSeconds).ToString());
                 return View(testViewModel);
@@ -103,19 +120,14 @@ namespace ITest.Controllers
         {
             if (ModelState.IsValid)
             {
-                //debug this TestId
+                //crap start here
+                var userId = userService.GetLoggedUserId(this.User);
+                //var startedTime = testsService.StartedTestCreationTime(userId, answers.Category);
+
                 var completedTest = mapper.MapTo<UserTestsDTO>(answers);
-                var userId = this.userService.GetLoggedUserId(this.User);
                 //fix this in the view
                 completedTest.TestId = completedTest.Id;
                 completedTest.UserId = userId;
-
-                //completedTest.Category = 
-
-                //if (DateTime.Now > theDateTime the model has)
-                //{
-                //    User cheated somehow!;
-                //}
 
                 testsService.Publish(completedTest);
             }

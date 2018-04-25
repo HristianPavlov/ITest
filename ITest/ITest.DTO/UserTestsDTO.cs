@@ -21,6 +21,8 @@ namespace ITest.DTO
 
         public string Category { get; set; }
 
+        public DateTime? CreatedOn { get; set; }
+
         //Think about this id
         public int Id { get; set; }
     }
