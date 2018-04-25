@@ -1,14 +1,4 @@
-﻿var questionTemplate =
-    `<div class="panel panel-default question" name="Questions{{q_id}}">
-    
-        <div>
-            <h3>Question{{q_id}}</h3>
-            <button type="button" class="delete-button">Delete</button>
-        </div>
-        <div class="form-group">
-        <input id="Questions[{{q_id}}].Content" placeholder="Title" class="form-control" />
-            
-        </div>
+﻿
 ﻿$(document).ready(function () {
     const activeClass = 'active';
     const firstItem = document.getElementById('categoryButton-0');
@@ -27,6 +17,19 @@
         });
     }
 });
+
+var questionTemplate =
+    `<div class="panel panel-default question" name="Questions{{q_id}}">
+    
+        <div>
+            <h3>Question{{q_id}}</h3>
+            <button type="button" class="delete-button">Delete</button>
+        </div>
+        <div class="form-group">
+        <input id="Questions[{{q_id}}].Content" placeholder="Title" class="form-control" />
+            
+        </div>
+
         <div class="answer-container">
         <div class="form-group col-lg-offset-1">
             <input type="text"     id="Questions[{{q_id}}].Answers[0].Content" placeholder="Answer1" class="form-control" />
