@@ -74,7 +74,7 @@ namespace ITest.Controllers
                 var testAllowedTime = double.Parse(test.TimeInMinutes.ToString());
                 var startedTime = testsService.StartedTestCreationTime(userId, category);
                 //fix this to have is test submitted
-                if (testsService.TestIsSubmitted(userId,category))
+                if (testsService.TestIsSubmitted(userId, category))
                 {
                     return this.RedirectToAction("CategoryDone", "Solve");
                 }
@@ -136,6 +136,7 @@ namespace ITest.Controllers
                 var countDown = testsService.GetTestCountDownByTestId(answers.Id);
                 //giving the system 1 minute buffer for the test to submit later than the predicted time
                 var timeRemain = (startedTime.Value.AddMinutes(countDown).AddMinutes(1) - DateTime.Now).TotalSeconds;
+                var executionTime = (timeRemain - 60)/60;
                 if (timeRemain < 0)
                 {
                     return this.RedirectToAction("SubmittingLate", "Solve");
@@ -144,6 +145,7 @@ namespace ITest.Controllers
 
                 completedTest.TestId = completedTest.Id;
                 completedTest.UserId = userId;
+                completedTest.ExecutionTime = executionTime;
 
                 testsService.Publish(completedTest);
             }

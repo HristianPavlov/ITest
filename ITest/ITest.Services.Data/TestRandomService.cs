@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 
@@ -73,6 +74,13 @@ namespace ITest.Services.Data
             var testsFromThisCategory = userTests.All.First(x => x.UserId == userId && x.Category == category);
             return testsFromThisCategory.TestId;
         }
+        public IEnumerable<UserTestsDTO> GetAllUserTests()
+        {
+            var allUserTests = userTests.All.
+                                        Include(t => t.Test).
+                                        Include(u => u.User);
+            return mapper.ProjectTo<UserTestsDTO>(allUserTests);
+        }
         public TestDTO GetTestById(int id)
         {
             var testsFromThisCategory = tests.All.Where(test => test.Id == id).
@@ -100,6 +108,7 @@ namespace ITest.Services.Data
 
             //Update doesnt work "cannot track many instances of same type"
             var updatingtest = userTests.All.FirstOrDefault(x => x.TestId == test.TestId && x.UserId == test.UserId);
+            updatingtest.ExecutionTime = testModel.ExecutionTime;
             updatingtest.Score = score;
             updatingtest.SerializedAnswers = testModel.SerializedAnswers;
             updatingtest.Submitted = true;

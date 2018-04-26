@@ -8,9 +8,13 @@
 
   <ItemGroup>
     <Compile Remove="Views\Shared\summernote-master\**" />
+    <Compile Remove="Views\TestsGenerator\**" />
     <Content Remove="Views\Shared\summernote-master\**" />
+    <Content Remove="Views\TestsGenerator\**" />
     <EmbeddedResource Remove="Views\Shared\summernote-master\**" />
+    <EmbeddedResource Remove="Views\TestsGenerator\**" />
     <None Remove="Views\Shared\summernote-master\**" />
+    <None Remove="Views\TestsGenerator\**" />
   </ItemGroup>
 
 
@@ -36,10 +40,6 @@
     <ProjectReference Include="..\ITest.Infrastructure\ITest.Infrastructure.csproj" />
     <ProjectReference Include="..\ITest.Services.Data\ITest.Services.Data.csproj" />
     <ProjectReference Include="..\ITest.Services.External\ITest.Services.External.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Views\TestsGenerator\" />
   </ItemGroup>
 
 </Project>

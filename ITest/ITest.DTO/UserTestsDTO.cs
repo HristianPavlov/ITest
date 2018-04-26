@@ -25,6 +25,8 @@ namespace ITest.DTO
 
         public bool Submitted { get; set; }
 
+        public double ExecutionTime { get; set; }
+
         //Think about this id
         public int Id { get; set; }
     }

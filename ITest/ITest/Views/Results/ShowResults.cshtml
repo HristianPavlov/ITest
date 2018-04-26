@@ -1,0 +1,42 @@
+﻿<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.css">
+@using ITest.Models.ResultsViewModels
+@model ResultBagViewModel
+
+@{
+    ViewData["Title"] = "ShowResults";
+}
+
+<h2>ShowResults</h2>
+<table id="table_id" class="display">
+    <thead>
+        <tr>
+            <th>Test Name</th>
+            <th>User Email</th>
+            <th>Category</th>
+            <th>Requested Time</th>
+            <th>Execution Time</th>
+            <th>Result</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model.resultBag)
+        {
+            <tr>
+                <td>@item.Test.CategoryId</td>
+                <td>@item.User.Email</td>
+                <td>@item.Category</td>
+                <td>@item.Test.TimeInMinutes mins</td>
+                <td>@item.ExecutionTime mins</td>
+                <td>@item.Score</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts{
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script>
+    <script src="~/js/showResults.js"></script>
+}
+
+

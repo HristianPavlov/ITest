@@ -18,6 +18,8 @@ namespace ITest.Data.Models
 
 
         //[ForeignKey("User")]
+        //public string Name { get; set; }
+
         public string AuthorId { get; set; }
 
         public User Author { get; set; }

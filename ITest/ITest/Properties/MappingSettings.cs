@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ITest.Models.TestViewModels;
+using ITest.Models.ResultsViewModels;
 
 namespace ITest.Properties
 {
@@ -42,6 +43,7 @@ namespace ITest.Properties
 
             this.CreateMap<Category, CategoryDTO>(MemberList.Source);
             this.CreateMap<CategoryDTO, CategoryViewModel>(MemberList.Source);
+
             this.CreateMap<SolveTestViewModel, UserTestsDTO>(MemberList.Source);
             this.CreateMap<UserTestsDTO, UserTests>(MemberList.Source).
                 ForMember(x => x.SerializedAnswers, opt => opt.MapFrom(src => string.Join(";", src.StorageOfAnswers)));
@@ -54,6 +56,9 @@ namespace ITest.Properties
                         src => src.SerializedAnswers.Split(new char[] { ';' }).ToList()
                         )
                 );
+
+            this.CreateMap<UserTestsDTO, ResultsViewModel>(MemberList.Source);
+
         }
     }
 }
