@@ -22,18 +22,18 @@ var questionTemplate =
     `<div class="panel panel-default question" name="Questions{{q_id}}">
     
         <div>
-            <h3>Question{{q_id}}</h3>
+            <h3>Question{{qh_id}}</h3>
             <button type="button" class="delete-button">Delete</button>
         </div>
         <div class="form-group">
-        <input id="Questions[{{q_id}}].Content" placeholder="Title" class="form-control" />
+        <input id="Questions_{{q_id}}__.Content" name="Questions[{{q_id}}].Content" placeholder="Title" class="form-control" />
             
         </div>
 
         <div class="answer-container">
         <div class="form-group col-lg-offset-1">
-            <input type="text"     id="Questions[{{q_id}}].Answers[0].Content" placeholder="Answer1" class="form-control" />
-            <input type="checkbox" id="Questions[{{q_id}}].Answers[0].Correct" class="form-control" />
+            <input type="text"     id="Questions_{{q_id}}__.Answers_0__.Content"  name="Questions[{{q_id}}].Answers[0].Content" placeholder="Answer1" class="form-control" />
+            <input type="checkbox" id="Questions_{{q_id}}__.Answers_0__.Correct"  name="Questions[{{q_id}}].Answers[0].Correct" class="form-control" />
         </div>
         <button type="button" class="add-answer">Add Answer</button>
 
@@ -45,8 +45,8 @@ var answerTemplate =
 
     `<div class="answer-container">
         <div class="form-group col-lg-offset-1">
-            <input type="text"     id="Questions[{{q_id}}].Answers[{{a_id}}].Content" placeholder="Answer{{ap_id}}" class="form-control" />
-            <input type="checkbox" id="Questions[{{q_id}}].Answers[{{a_id}}].Correct" class="form-control" />
+            <input type="text"    id="Questions_{{q_id}}__.Answers_{{a_id}}__.Content" name="Questions[{{q_id}}].Answers[{{a_id}}].Content" placeholder="Answer{{ap_id}}" class="form-control" />
+            <input type="checkbox" id="Questions_{{q_id}}__.Answers_{{a_id}}__.Correct"  name="Questions[{{q_id}}].Answers[{{a_id}}].Correct" class="form-control" />
         </div>
 
         </div>`;
@@ -55,7 +55,8 @@ $(function () {
     var total = 0;
 
     $('.add-question').click(function () {
-        $("#questions-container").append(questionTemplate.replace(/\{\{\q_id\}\}/g, ++total));
+        
+        $("#questions-container").append(questionTemplate.replace(/\{\{\q_id\}\}/g, ++total).replace(/\{\{qh_id\}\}/,total+1));
     });
 
     $('#questions-container').on('click', '.add-answer', function () {
@@ -65,11 +66,13 @@ $(function () {
 
         var arr = containerrr.find(`div input`);
 
-        var x = String(arr[0].id).match(/Questions\[(\d+)\]/);
+        var x = String(arr[0].id).match(/Questions\_(\d+)\__/);
         if (x !== null) {
            // console.log(x[1]);
         } else {
             x = String(arr[0].id).match(/Questions\_(\d+)\__/);
+            x = String(arr[1].id).match(/Questions\_(\d+)\__/);
+
             //console.log(x[1]);
         }
 
@@ -112,11 +115,11 @@ $(function () {
 
         $(document).find(`input`).each(function () {
 
-            var x = String(this.id).match(/Questions\[(\d+)\]/);
+            var x = String(this.id).match(/Questions\_(\d+)\__/);
             if (x !== null) {
                 var xNumber = parseInt(x[1]);
                 if (xNumber > number) {
-                    var ss = this.id.replace(/Questions\[(\d+)\]/g, `Questions[` + (xNumber - 1) + `]`);
+                    var ss = this.id.replace(/Questions\_(\d+)\__/g, `Questions_` + (xNumber - 1) + `__`);
                     this.id = ss;
                     this.closest('.panel.panel-default.question').setAttribute("name", "Questions" + (xNumber - 1));
 
@@ -125,7 +128,7 @@ $(function () {
                     var y = heading.find(`div h3`);
                         //find(`div h3`).text();
                    // console.log(y[0]);
-                    y.text("Questions" + (xNumber - 1));
+                    y.text("Questions" + (xNumber));
                     
 
 

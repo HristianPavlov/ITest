@@ -76,7 +76,8 @@ namespace ITest.Services.Data
         public TestDTO GetTestById(int id)
         {
             var testsFromThisCategory = tests.All.Where(test => test.Id == id).
-                                                        Include(t => t.Questions).ThenInclude(x => x.Answers);
+                                                        Include(t => t.Questions).
+                                                        ThenInclude(x => x.Answers);
             var currentTest = testsFromThisCategory.First();
             var foundTestDto = mapper.MapTo<TestDTO>(currentTest);
             return foundTestDto;
