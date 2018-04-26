@@ -59,6 +59,7 @@ namespace ITest.Data.Repository
         public void Update(T entity)
         {
             EntityEntry entry = this.context.Entry(entity);
+
             if (entry.State == EntityState.Detached)
             {
                 this.context.Set<T>().Attach(entity);

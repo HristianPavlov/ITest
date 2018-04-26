@@ -7,6 +7,7 @@ namespace ITest.Services.Data
 {
     public interface ITestRandomService
     {
+        bool TestIsSubmitted(string userId, string category);
         TestDTO GetRandomTestFromCategory(int categoryID);
         TestDTO GetTestById(int id);
         int GetTestIdFromUserIdAndCategory(string userId, string category);

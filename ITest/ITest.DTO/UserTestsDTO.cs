@@ -23,6 +23,8 @@ namespace ITest.DTO
 
         public DateTime? CreatedOn { get; set; }
 
+        public bool Submitted { get; set; }
+
         //Think about this id
         public int Id { get; set; }
     }

@@ -8,6 +8,7 @@ using ITest.Models.AnswerViewModels;
 using ITest.Models.CategoryViewModels;
 using ITest.Models.TestViewModels;
 using ITest.Services.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -44,12 +45,20 @@ namespace ITest.Controllers
         {
             return View();
         }
+        public IActionResult TimeUpNotSubmitted()
+        {
+            return View();
+        }
+        public IActionResult SubmittingLate()
+        {
+            return View();
+        }
 
         public IActionResult GenerateTest(string id)
         {
             return Json(Url.Action("ShowTest/" + id));
         }
-
+        [Authorize]
         public IActionResult ShowTest(string id)
         //beneath is the category name not id !!
         {
@@ -64,7 +73,8 @@ namespace ITest.Controllers
                 var testView = mapper.MapTo<SolveTestViewModel>(test);
                 var testAllowedTime = double.Parse(test.TimeInMinutes.ToString());
                 var startedTime = testsService.StartedTestCreationTime(userId, category);
-                if (startedTime == null)
+                //fix this to have is test submitted
+                if (testsService.TestIsSubmitted(userId,category))
                 {
                     return this.RedirectToAction("CategoryDone", "Solve");
                 }
@@ -76,7 +86,7 @@ namespace ITest.Controllers
 
                 if (reaminingTime < 0)
                 {
-                    return this.RedirectToAction("CategoryDone", "Solve");
+                    return this.RedirectToAction("TimeUpNotSubmitted", "Solve");
                 }
 
                 testView.StorageOfAnswers = new List<string>();
@@ -110,7 +120,7 @@ namespace ITest.Controllers
                 testViewModel.Category = category;
                 testViewModel.CreatedOn = DateTime.Now;
                 testViewModel.RemainingTime =
-                    Convert.ToInt32(((DateTime.Now.AddMinutes(randomTest.TimeInMinutes) - DateTime.Now).TotalSeconds).ToString());
+                    Convert.ToInt32(((DateTime.Now.AddMinutes(randomTest.TimeInMinutes) - DateTime.Now).TotalSeconds)/*.ToString()*/);
                 return View(testViewModel);
             }
         }
@@ -121,16 +131,17 @@ namespace ITest.Controllers
             if (ModelState.IsValid)
             {
                 //make it here to not be publishable if remaining time is incorrect
-
                 var userId = userService.GetLoggedUserId(this.User);
                 var startedTime = testsService.StartedTestCreationTime(userId, answers.Category);
                 var countDown = testsService.GetTestCountDownByTestId(answers.Id);
-                var timeRemain = (startedTime.Value.AddMinutes(countDown).AddSeconds(30) - DateTime.Now).TotalSeconds;
+                //giving the system 1 minute buffer for the test to submit later than the predicted time
+                var timeRemain = (startedTime.Value.AddMinutes(countDown).AddMinutes(1) - DateTime.Now).TotalSeconds;
                 if (timeRemain < 0)
                 {
-                    return this.RedirectToAction("AddedLate", "Solve");
+                    return this.RedirectToAction("SubmittingLate", "Solve");
                 }
                 var completedTest = mapper.MapTo<UserTestsDTO>(answers);
+
                 completedTest.TestId = completedTest.Id;
                 completedTest.UserId = userId;
 

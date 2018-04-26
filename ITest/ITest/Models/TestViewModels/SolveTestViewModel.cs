@@ -24,5 +24,8 @@ namespace ITest.Models.TestViewModels
         public string Category { get; set; }
 
         public int TimeInMinutes { get; set; }
+
+        public bool Submitted { get; set; }
+
     }
 }

@@ -30,7 +30,7 @@ namespace ITest.Services.Data
         }
         public bool UserStartedTest(string userId, string category)
         {
-            if (userTests.All.Any(x => x.UserId==userId && x.Category==category))
+            if (userTests.All.Any(x => x.UserId == userId && x.Category == category))
             {
                 return true;
             }
@@ -39,6 +39,10 @@ namespace ITest.Services.Data
         public DateTime? StartedTestCreationTime(string userId, string category)
         {
             return userTests.All.First(x => x.UserId == userId && x.Category == category).CreatedOn;
+        }
+        public bool TestIsSubmitted(string userId, string category)
+        {
+            return userTests.All.First(x => x.UserId == userId && x.Category == category).Submitted;
         }
         public int GetTestCountDownByTestId(int id)
         {
@@ -50,10 +54,17 @@ namespace ITest.Services.Data
 
         public TestDTO GetRandomTestFromCategory(int categoryID)
         {
-            //must fix it to give random test (the testid must be some random number < tests.count)
+            var pepp = userTests.All;
+            var random = new Random();
+            //search if it's possible to get random from collection*ElementAt not working correctly*
             var testsFromThisCategory = tests.All.Where(test => test.CategoryId == categoryID).
-                                                        Include(t => t.Questions).ThenInclude(x => x.Answers);
-            var randomTest = testsFromThisCategory.First();
+                                                        Include(t => t.Questions).
+                                                        ThenInclude(x => x.Answers).ToList();
+            if (testsFromThisCategory.Count() < 1)
+            {
+                throw new ArgumentNullException("Category currently empty");
+            }
+            var randomTest = testsFromThisCategory[random.Next(testsFromThisCategory.Count())];
             var randomTestDto = mapper.MapTo<TestDTO>(randomTest);
             return randomTestDto;
         }
@@ -70,14 +81,6 @@ namespace ITest.Services.Data
             var foundTestDto = mapper.MapTo<TestDTO>(currentTest);
             return foundTestDto;
         }
-        public void Publish(UserTestsDTO test)
-        {
-            var testModel = mapper.MapTo<UserTests>(test);
-            var score = GetResult(test);
-            testModel.Score = score;
-            userTests.Update(testModel);
-            saver.SaveChanges();
-        }
         public void SaveTest(UserTestsDTO test)
         {
             var testModel = mapper.MapTo<UserTests>(test);
@@ -85,7 +88,22 @@ namespace ITest.Services.Data
             userTests.Add(testModel);
             saver.SaveChanges();
         }
+        public void Publish(UserTestsDTO test)
+        {
+            var testModel = mapper.MapTo<UserTests>(test);
+            var score = GetResult(test);
+            //
+            //testModel.Score = score;
+            //userTests.Update(testModel);
+            //saver.SaveChanges();
 
+            //Update doesnt work "cannot track many instances of same type"
+            var updatingtest = userTests.All.FirstOrDefault(x => x.TestId == test.TestId && x.UserId == test.UserId);
+            updatingtest.Score = score;
+            updatingtest.SerializedAnswers = testModel.SerializedAnswers;
+            updatingtest.Submitted = true;
+            saver.SaveChanges();
+        }
         public decimal GetResult(UserTestsDTO solvedTest)
         {
             var realTests = tests.All.Where(t => t.Id == solvedTest.TestId).
@@ -105,7 +123,5 @@ namespace ITest.Services.Data
             decimal score = (correctAnswers / realTest.Questions.Count()) * 100;
             return score;
         }
-
-        
     }
 }

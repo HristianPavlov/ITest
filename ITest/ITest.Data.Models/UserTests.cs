@@ -25,6 +25,8 @@ namespace ITest.Data.Models
 
         public string Category { get; set; }
 
+        public bool Submitted { get; set; }
+
         [DataType(DataType.DateTime)]
         public DateTime? DeletedOn { get; set; }
 
