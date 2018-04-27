@@ -29,14 +29,14 @@ namespace ITest.Controllers.Createontrollers
             this.userManager = userManager;
         }
 
-        public IActionResult CreateQ()
+        public IActionResult CreateNewTest()
         {
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult CreateQ(CreateTestViewModel question)
+        public IActionResult CreateNewTest(CreateTestViewModel question)
         {
 
             var model = this.mapper.MapTo<TestDTO>(question);

@@ -33,14 +33,6 @@ namespace ITest.Controllers
             this.testsService = testsService;
             this.userService = userService ?? throw new ArgumentNullException(nameof(userService));
         }
-        public IActionResult SolveTests()
-        {
-            var model = new CategoriesViewModel();
-
-            var categories = this.categoriesService.GetAllCategories();
-            model.AllCategories = this.mapper.ProjectTo<CategoryViewModel>(categories).ToList();
-            return View(model);
-        }
         public IActionResult CategoryDone()
         {
             return View();
@@ -53,12 +45,12 @@ namespace ITest.Controllers
         {
             return View();
         }
+        
+        //public IActionResult GenerateTest(string id)
+        //{
+        //    return Json(Url.Action("ShowTest/" + id));
+        //}
 
-        public IActionResult GenerateTest(string id)
-        {
-            return Json(Url.Action("ShowTest/" + id));
-        }
-        [Authorize]
         public IActionResult ShowTest(string id)
         //beneath is the category name not id !!
         {

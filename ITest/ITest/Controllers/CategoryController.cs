@@ -14,36 +14,42 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ITest.Controllers
 {
-    public class CreateController : Controller
+    public class CategoryController : Controller
     {
-        private readonly ICategoriesService categories;
+        private readonly ICategoriesService categoriesService;
         private readonly IMappingProvider mapper;
 
-        public CreateController(ICategoriesService categories, IMappingProvider mapper)
+        public CategoryController(ICategoriesService categoriesService, IMappingProvider mapper)
         {
-            this.categories = categories;
+            this.categoriesService = categoriesService;
             this.mapper = mapper;
         }
-        public IActionResult CreateCategoryForm()
+        public IActionResult CreateCategory()
         {
             return View();
         }
+        [HttpPost]
         public IActionResult CreateCategory(CreateCategoryViewModel cattegoryToAdd)
         {
             if (this.ModelState.IsValid)
             {
                 var dto = this.mapper.MapTo<CategoryDTO>(cattegoryToAdd);
 
-                this.categories.Add(dto);
+                this.categoriesService.Add(dto);
 
                 TempData["Success-Message"] = "You published a new post!";
                 return this.RedirectToAction("Index", "Home");
             }
-            return View("CreateCategoryForm");
+            return this.RedirectToAction("Index", "Home");
         }
-        public IActionResult CreateTest()
+
+        public IActionResult ShowCategories()
         {
-            return View();
+            var model = new CategoriesViewModel();
+
+            var categories = this.categoriesService.GetAllCategories();
+            model.AllCategories = this.mapper.ProjectTo<CategoryViewModel>(categories).ToList();
+            return View(model);
         }
     }
 }

@@ -1,0 +1,74 @@
+﻿@using ITest.Models.CategoryViewModels
+@model CategoriesViewModel
+
+@*<nav class="navbar navbar-inverse" style="margin-top:5%">
+    <div class="container-fluid">
+        <ul class="nav navbar-nav">
+            @{var a = 0;}
+            @foreach (var item in Model.AllCategories)
+            {
+                <li class="categoryButton" id="categoryButton-@a" style="border:solid ">
+                    <a href="#" data-toggle="tab" data-category="@item.Name">
+                        @item.Name
+                    </a>
+                </li>
+                a++;
+            }
+        </ul>
+    </div>
+</nav>
+<div class="hiddenClass" style="text-align:center">
+    <p style="display:inline-block">Start</p>
+    <form asp-controller="Solve" asp-action="ShowTest" id="start-Button" method="get">
+        <input type="submit" id="startButton" value="nm,"/>
+    </form>
+    <p style="display:inline-block" id="startButton"></p>
+    <p style="display:inline-block">Test</p>
+</div>*@
+
+<div class="container index">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="panel with-nav-tabs panel-default">
+                <div class="panel-heading">
+                    <ul class="category-select nav nav-tabs">
+                        @{ var x = 0; }
+                        @foreach (var c in Model.AllCategories)
+                        {
+                            //var className = c.Name == "JAVA" ? "active" : "";
+
+                            <li class="">
+                                <a href="#tab@(x++)default"
+                                   id="#category-tab"
+                                   data-toggle="tab"
+                                   data-category="@c.Name">
+                                    @c.Name
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+                <div class="panel-body">
+                    <div class="tab-content">
+                        @{ x = 0; }
+                        @foreach (var c in Model.AllCategories)
+                        {
+                            <div class="tab-pane fade in" id="tab@(x++)default">
+                                <div class="well well-sm clearfix">
+                                    <span class="pull-left"></span>
+                                    <form asp-controller="Solve" asp-action="ShowTest" id="start-Button" method="get">
+                                        <button id="startButton" name="id" class="create-test btn btn-default" type="submit" value="@c.Name">Submit</button>
+                                    </form>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/js/user-test.js"></script>
+}

@@ -38,18 +38,19 @@
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
+                    
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <li id="SolveArea"><a asp-area="" asp-controller="Solve" asp-action="SolveTests">SolveTests</a></li>
-                        <li><a asp-area="" asp-controller="CreateTests" asp-action="CreateQ">CreateQuestion</a></li>
+                        <li id="SolveArea"><a asp-area="" asp-controller="Category" asp-action="ShowCategories">SolveTests</a></li>
+                        <li><a asp-area="" asp-controller="CreateTests" asp-action="CreateNewTest">CreateTests</a></li>
                     }
                     @if (User.IsInRole("Admin"))
                     {
-                        <li><a asp-area="" asp-controller="Create" asp-action="CreateCategory">CreateCategory</a></li>
-                        <li><a asp-area="" asp-controller="Create" asp-action="CreateTest">CreateTest</a></li>
+                        <li><a asp-area="" asp-controller="Category" asp-action="CreateCategory">CreateCategory</a></li>
                         <li><a asp-area="" asp-controller="Results" asp-action="ShowResults">Results</a></li>
                     }
                 </ul>
+                @*write such partials for logged in and admin checks*@
                 @await Html.PartialAsync("_LoginPartial")
             </div>
         </div>

@@ -29,11 +29,11 @@ var questionTemplate =
         <input id="Questions_{{q_id}}__.Content" name="Questions[{{q_id}}].Content" placeholder="Title" class="form-control" />
             
         </div>
-
         <div class="answer-container">
         <div class="form-group col-lg-offset-1">
             <input type="text"     id="Questions_{{q_id}}__.Answers_0__.Content"  name="Questions[{{q_id}}].Answers[0].Content" placeholder="Answer1" class="form-control" />
-            <input type="checkbox" id="Questions_{{q_id}}__.Answers_0__.Correct"  name="Questions[{{q_id}}].Answers[0].Correct" class="form-control" />
+            <input type="radio" id="Questions_{{q_id}}__.Answers_0__.Correct"  name="Questions[{{q_id}}].Answers[0].Correct" class="form-control" value="true" />
+            
         </div>
         <button type="button" class="add-answer">Add Answer</button>
 
@@ -43,10 +43,11 @@ var questionTemplate =
 
 var answerTemplate =
 
-    `<div class="answer-container">
+    `<div style="width: 70%; height: 50px;" class="answer-container">
         <div class="form-group col-lg-offset-1">
             <input type="text"    id="Questions_{{q_id}}__.Answers_{{a_id}}__.Content" name="Questions[{{q_id}}].Answers[{{a_id}}].Content" placeholder="Answer{{ap_id}}" class="form-control" />
-            <input type="checkbox" id="Questions_{{q_id}}__.Answers_{{a_id}}__.Correct"  name="Questions[{{q_id}}].Answers[{{a_id}}].Correct" class="form-control" />
+            <input type="radio" id="Questions_{{q_id}}__.Answers_{{a_id}}__.Correct"  name="Questions[{{q_id}}].Answers[{{a_id}}].Correct" class="form-control" value="true"/>
+            
         </div>
 
         </div>`;
