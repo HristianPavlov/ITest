@@ -75,14 +75,9 @@ $(function () {
 
             //console.log(x[1]);
         }
-
         var index = parseInt(x[1]);
         //console.log(arr[0].id);
-        
-       
-
         //var indexNumber = parseInt(index);
-
         var listOfPageElements = containerr.querySelectorAll(".answer-container");
         var count = listOfPageElements.length;
         var countPlaceHolder = count;
@@ -94,25 +89,11 @@ $(function () {
         );
 
     });
-    
-  
     $('#questions-container').on('click', '.delete-button', function () {
-
         var x = $(this).closest(`.panel.panel-default.question`).attr(`name`).replace(`Questions`,``);
-               
         var number = parseInt(x);
-        
         console.log(number);    
-                 
-               
         $(this).closest('.panel.panel-default.question').remove();
-
-
-        
-
-        //var listOfPageElements = document.querySelectorAll(".panel.panel-default.question div h3");
-
-
         $(document).find(`input`).each(function () {
 
             var x = String(this.id).match(/Questions\_(\d+)\__/);
@@ -129,32 +110,17 @@ $(function () {
                         //find(`div h3`).text();
                    // console.log(y[0]);
                     y.text("Questions" + (xNumber));
-                    
-
-
                 }
             }
-
-
-
-            //console.log(this.id);
-            
-            
         });
-
         --total;
-
-     
-
-
-
-
     });
 
-    $('#question-form').on('submit', function (event) {
-        event.preventDefault();
+    //$('#question-form').on('submit', function (event) {
+    //    event.preventDefault();
 
-        var data = $(this).serializeArray();
-        console.log(data);
-    });
+    //    var data = $(this).serializeArray();
+    //    console.log(data);
+    //});
+
 });

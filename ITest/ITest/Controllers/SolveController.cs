@@ -145,7 +145,7 @@ namespace ITest.Controllers
 
                 completedTest.TestId = completedTest.Id;
                 completedTest.UserId = userId;
-                completedTest.ExecutionTime = executionTime;
+                completedTest.ExecutionTime = Math.Round(executionTime,2);
 
                 testsService.Publish(completedTest);
             }

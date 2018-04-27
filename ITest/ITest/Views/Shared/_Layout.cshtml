@@ -41,7 +41,7 @@
                     @if (User.Identity.IsAuthenticated)
                     {
                         <li id="SolveArea"><a asp-area="" asp-controller="Solve" asp-action="SolveTests">SolveTests</a></li>
-                        <li><a asp-area="" asp-controller="CreateQuestion" asp-action="CreateQ">CreateQuestion</a></li>
+                        <li><a asp-area="" asp-controller="CreateTests" asp-action="CreateQ">CreateQuestion</a></li>
                     }
                     @if (User.IsInRole("Admin"))
                     {

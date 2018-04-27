@@ -51,6 +51,7 @@ namespace ITest
             services.AddTransient<UserService>();
 
             services.AddTransient<ITestRandomService, TestRandomService>();
+            services.AddTransient<ICreateTestService, CreateTestService>();
 
         }
 

@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ITest.Models.TestViewModels;
 using ITest.Models.ResultsViewModels;
+using ITest.Models;
 
 namespace ITest.Properties
 {
@@ -18,10 +19,15 @@ namespace ITest.Properties
     {
         public MappingSettings()
         {
+            //to create tests
+            this.CreateMap<CreateTestViewModel, TestDTO>(MemberList.Source);
+          
+
             this.CreateMap<CreateCategoryViewModel, CategoryDTO>();
             this.CreateMap<CategoryDTO, Category>();
             //to solve tests
             this.CreateMap<Test, TestDTO>(MemberList.Source);
+            this.CreateMap<TestDTO, Test>(MemberList.Source);
             this.CreateMap<TestDTO, SolveTestViewModel>(MemberList.Source);
 
             this.CreateMap<Question, QuestionDTO>(MemberList.Source);
@@ -58,6 +64,8 @@ namespace ITest.Properties
                 );
 
             this.CreateMap<UserTestsDTO, ResultsViewModel>(MemberList.Source);
+
+       
 
         }
     }
