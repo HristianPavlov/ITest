@@ -18,20 +18,22 @@ namespace ITest.Controllers
     public class SolveController : Controller
     {
         private readonly IMappingProvider mapper;
+        private readonly IUserTestsService userTestsService;
         private readonly ICategoriesService categoriesService;
-        private readonly ITestRandomService testsService;
+        private readonly ITestService testsService;
         private readonly UserService userService;
-        //add interface to userService
 
         public SolveController(IMappingProvider mapper,
+            IUserTestsService userTestsService,
             ICategoriesService categoriesService,
-            ITestRandomService testsService,
+            ITestService testsService,
             UserService userService)
         {
             this.mapper = mapper;
+            this.userTestsService = userTestsService;
             this.categoriesService = categoriesService;
             this.testsService = testsService;
-            this.userService = userService ?? throw new ArgumentNullException(nameof(userService));
+            this.userService = userService;
         }
         public IActionResult CategoryDone()
         {
@@ -45,28 +47,22 @@ namespace ITest.Controllers
         {
             return View();
         }
-        
-        //public IActionResult GenerateTest(string id)
-        //{
-        //    return Json(Url.Action("ShowTest/" + id));
-        //}
-
         public IActionResult ShowTest(string id)
         //beneath is the category name not id !!
         {
             var category = id;
             var userId = userService.GetLoggedUserId(this.User);
 
-            if (testsService.UserStartedTest(userId, category))
+            if (userTestsService.UserStartedTest(userId, category))
             {
-                var testId = testsService.GetTestIdFromUserIdAndCategory(userId, category);
+                var testId = userTestsService.GetTestIdFromUserIdAndCategory(userId, category);
                 var test = testsService.GetTestById(testId);
 
                 var testView = mapper.MapTo<SolveTestViewModel>(test);
                 var testAllowedTime = double.Parse(test.TimeInMinutes.ToString());
-                var startedTime = testsService.StartedTestCreationTime(userId, category);
+                var startedTime = userTestsService.StartedTestCreationTime(userId, category);
                 //fix this to have is test submitted
-                if (testsService.TestIsSubmitted(userId, category))
+                if (userTestsService.TestIsSubmitted(userId, category))
                 {
                     return this.RedirectToAction("CategoryDone", "Solve");
                 }
@@ -100,7 +96,7 @@ namespace ITest.Controllers
                     Category = category,
                     TestId = randomTest.Id
                 };
-                testsService.SaveTest(saveThisTestCreation);
+                userTestsService.SaveTest(saveThisTestCreation);
                 //added the up
 
                 testViewModel.StorageOfAnswers = new List<string>();
@@ -124,7 +120,7 @@ namespace ITest.Controllers
             {
                 //make it here to not be publishable if remaining time is incorrect
                 var userId = userService.GetLoggedUserId(this.User);
-                var startedTime = testsService.StartedTestCreationTime(userId, answers.Category);
+                var startedTime = userTestsService.StartedTestCreationTime(userId, answers.Category);
                 var countDown = testsService.GetTestCountDownByTestId(answers.Id);
                 //giving the system 1 minute buffer for the test to submit later than the predicted time
                 var timeRemain = (startedTime.Value.AddMinutes(countDown).AddMinutes(1) - DateTime.Now).TotalSeconds;
@@ -139,7 +135,7 @@ namespace ITest.Controllers
                 completedTest.UserId = userId;
                 completedTest.ExecutionTime = Math.Round(executionTime,2);
 
-                testsService.Publish(completedTest);
+                userTestsService.Publish(completedTest);
             }
             return this.RedirectToAction("Index", "Home");
         }

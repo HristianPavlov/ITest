@@ -48,11 +48,11 @@ namespace ITest
             services.AddTransient<ICategoriesService, CategoriesService>();
             services.AddTransient<IQuestionService, QuestionService>();
             services.AddTransient<IEmailSender, EmailSender>();
-            services.AddTransient<UserService>();
+            services.AddTransient<IUserTestsService, UserTestsService>();
 
-            services.AddTransient<ITestRandomService, TestRandomService>();
+            services.AddTransient<ITestService, TestService>();
             services.AddTransient<ICreateTestService, CreateTestService>();
-
+            services.AddTransient<UserService>();
         }
 
         private void RegisterInfrastructure(IServiceCollection services)

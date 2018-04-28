@@ -13,38 +13,21 @@ using System.Security.Claims;
 
 namespace ITest.Services.Data
 {
-    public class TestRandomService : ITestRandomService
+    public class TestService : ITestService
     {
         private readonly IMappingProvider mapper;
         private readonly IRepository<Test> tests;
-        private readonly IRepository<UserTests> userTests;
-        private readonly UserManager<User> userManager;
         private readonly ISaver saver;
 
-        public TestRandomService(IMappingProvider mapper, IRepository<Test> tests, IRepository<UserTests> userTests, UserManager<User> userManager, ISaver saver)
+        public TestService(IMappingProvider mapper,
+                                 IRepository<Test> tests,
+                                 ISaver saver)
         {
             this.mapper = mapper;
             this.tests = tests;
-            this.userTests = userTests;
-            this.userManager = userManager;
             this.saver = saver;
         }
-        public bool UserStartedTest(string userId, string category)
-        {
-            if (userTests.All.Any(x => x.UserId == userId && x.Category == category))
-            {
-                return true;
-            }
-            return false;
-        }
-        public DateTime? StartedTestCreationTime(string userId, string category)
-        {
-            return userTests.All.First(x => x.UserId == userId && x.Category == category).CreatedOn;
-        }
-        public bool TestIsSubmitted(string userId, string category)
-        {
-            return userTests.All.First(x => x.UserId == userId && x.Category == category).Submitted;
-        }
+        
         public int GetTestCountDownByTestId(int id)
         {
             var testsFromThisCategory = tests.All.Where(test => test.Id == id);
@@ -55,7 +38,6 @@ namespace ITest.Services.Data
 
         public TestDTO GetRandomTestFromCategory(int categoryID)
         {
-            var pepp = userTests.All;
             var random = new Random();
             //search if it's possible to get random from collection*ElementAt not working correctly*
             var testsFromThisCategory = tests.All.Where(test => test.CategoryId == categoryID).
@@ -69,18 +51,6 @@ namespace ITest.Services.Data
             var randomTestDto = mapper.MapTo<TestDTO>(randomTest);
             return randomTestDto;
         }
-        public int GetTestIdFromUserIdAndCategory(string userId, string category)
-        {
-            var testsFromThisCategory = userTests.All.First(x => x.UserId == userId && x.Category == category);
-            return testsFromThisCategory.TestId;
-        }
-        public IEnumerable<UserTestsDTO> GetAllUserTests()
-        {
-            var allUserTests = userTests.All.
-                                        Include(t => t.Test).
-                                        Include(u => u.User);
-            return mapper.ProjectTo<UserTestsDTO>(allUserTests);
-        }
         public TestDTO GetTestById(int id)
         {
             var testsFromThisCategory = tests.All.Where(test => test.Id == id).
@@ -89,30 +59,6 @@ namespace ITest.Services.Data
             var currentTest = testsFromThisCategory.First();
             var foundTestDto = mapper.MapTo<TestDTO>(currentTest);
             return foundTestDto;
-        }
-        public void SaveTest(UserTestsDTO test)
-        {
-            var testModel = mapper.MapTo<UserTests>(test);
-            testModel.CreatedOn = DateTime.Now;
-            userTests.Add(testModel);
-            saver.SaveChanges();
-        }
-        public void Publish(UserTestsDTO test)
-        {
-            var testModel = mapper.MapTo<UserTests>(test);
-            var score = GetResult(test);
-            //
-            //testModel.Score = score;
-            //userTests.Update(testModel);
-            //saver.SaveChanges();
-
-            //Update doesnt work "cannot track many instances of same type"
-            var updatingtest = userTests.All.FirstOrDefault(x => x.TestId == test.TestId && x.UserId == test.UserId);
-            updatingtest.ExecutionTime = testModel.ExecutionTime;
-            updatingtest.Score = score;
-            updatingtest.SerializedAnswers = testModel.SerializedAnswers;
-            updatingtest.Submitted = true;
-            saver.SaveChanges();
         }
         public decimal GetResult(UserTestsDTO solvedTest)
         {
