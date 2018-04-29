@@ -40,5 +40,19 @@ namespace ITest.Controllers
             this.userTestsService.RecalculateAllTestsScore();
             return this.RedirectToAction("Index", "Home");
         }
+
+        [Authorize(Roles = "Admin")]
+        //[HttpPost]
+        public IActionResult DetailedSolution(string userEmail, int testId)
+        {
+            var modelDto = this.userTestsService.GetUserTest(userEmail, testId);
+            if (!modelDto.StorageOfAnswers.Any())
+            {
+                return this.RedirectToAction("ShowResults", "Results");
+            }
+            var viewModel = this.mapper.MapTo<DetailedTestViewModel>(modelDto);
+            return View(viewModel);
+        }
+
     }
 }

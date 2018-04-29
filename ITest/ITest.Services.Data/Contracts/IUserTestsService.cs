@@ -18,5 +18,6 @@ namespace ITest.Services.Data
         void ValidateAndAdd(SolveTestDTO solveTestDto, string userId);
         void RecalculateAllTestsScore();
         void RecalculateTestScoreByTestId(int id);
+        UserTestsDTO GetUserTest(string email, int testId);
     }
 }

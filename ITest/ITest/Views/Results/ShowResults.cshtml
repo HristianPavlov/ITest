@@ -17,6 +17,7 @@
             <th>Requested Time</th>
             <th>Execution Time</th>
             <th>Result</th>
+            <th></th>
         </tr>
     </thead>
 
@@ -30,6 +31,11 @@
                 <td>@item.Test.TimeInMinutes mins</td>
                 <td>@((int)item.ExecutionTime) mins @Math.Round(item.ExecutionTime % 1 * 60) sec</td>
                 <td>@item.Score</td>
+                <td>
+                    <a href="/Results/DetailedSolution?userEmail=@item.UserEmail&testId=@item.Test.Id">Details</a>
+                    @*binds correctly*@
+                </td>
+
             </tr>
         }
     </tbody>

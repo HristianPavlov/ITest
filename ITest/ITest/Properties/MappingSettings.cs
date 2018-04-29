@@ -28,6 +28,8 @@ namespace ITest.Properties
             //to solve tests
             this.CreateMap<Test, TestDTO>(MemberList.Source);
             this.CreateMap<TestDTO, Test>(MemberList.Source);
+            this.CreateMap<TestDTO, ShowTestViewModel>();
+            
             this.CreateMap<TestDTO, SolveTestDTO>(MemberList.Source);
             this.CreateMap<SolveTestDTO, SolveTestViewModel>(MemberList.Source).ReverseMap();
             this.CreateMap<Question, QuestionDTO>(MemberList.Source);
@@ -57,6 +59,10 @@ namespace ITest.Properties
             this.CreateMap<UserTestsDTO, ResultsViewModel>(MemberList.Source);
 
             this.CreateMap<UserTestsDTO, CategoryViewModel>(MemberList.Source);
+
+            this.CreateMap<UserTestsDTO, DetailedTestViewModel>(MemberList.Destination);
+
+            
         }
     }
 }

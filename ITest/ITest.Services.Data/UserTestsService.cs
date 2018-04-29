@@ -38,7 +38,7 @@ namespace ITest.Services.Data
         }
         public bool UserStartedTest(string userId, string category)
         {
-            if (userTests.All.Any(x => x.UserId == userId && x.Category == category))
+            if (this.userTests.All.Any(x => x.UserId == userId && x.Category == category))
             {
                 return true;
             }
@@ -197,6 +197,17 @@ namespace ITest.Services.Data
             this.Publish(completedTest);
         }
 
+        public UserTestsDTO GetUserTest(string email, int testId)
+        {
+            var userTest = this.userTests.All.Where(ut => ut.User.Email == email && ut.TestId == testId).
+                                              Include(ut => ut.Test).
+                                              ThenInclude(t =>t.Questions).
+                                              ThenInclude(q => q.Answers).
+                                              First();
+            var userTestDto =  mapper.MapTo<UserTestsDTO>(userTest);
+            return userTestDto;
+
+        }
         public void RecalculateAllTestsScore()
         {
             var testsToRecalc = this.userTests.All.Where(x => x.Submitted);
