@@ -1,5 +1,26 @@
-﻿var questionTemplate =
-    `<div class="panel panel-default question" name="Questions{{q_id}}">
+﻿
+﻿$(document).ready(function () {
+    const activeClass = 'active';
+    const firstItem = document.getElementById('categoryButton-0');
+
+    if (firstItem) {
+        firstItem.classList.add(activeClass);
+        $('#startButton').text(firstItem.textContent);
+
+        let activeCategory = firstItem;
+
+        $('.categoryButton').on('click', function () {
+            activeCategory.classList.remove(activeClass);
+            activeCategory = document.getElementById(this.id);
+            activeCategory.classList.add(activeClass);
+            $('#startButton').text(this.textContent);
+        });
+    }
+});
+
+var questionTemplate =
+    `
+<div class="panel panel-default question" name="Questions{{q_id}}">
     
         <div>
             <h3>Question{{qh_id}}</h3>
@@ -9,29 +30,33 @@
         <input id="Questions_{{q_id}}__.Content" name="Questions[{{q_id}}].Content" placeholder="Title" class="form-control" />
             
         </div>
+
         <div class="answer-container">
+        <button type="button" class="add-answer">Add Answer</button>
         <div class="form-group col-lg-offset-1">
-            <input type="text"     id="Questions_{{q_id}}__.Answers_0__.Content"  name="Questions[{{q_id}}].Answers[0].Content" placeholder="Answer1" class="form-control" />
-            <input type="radio" id="Questions_{{q_id}}__.Answers_0__.Correct"  name="Questions[{{q_id}}].Answers[0].Correct" class="form-control" value="true" />
+            <input type="text"     id="Questions_{{q_id}}__.Answers_0__.Content"  name="AnswerN" placeholder="Answer1" class="form-control" />
+            <input type="radio" id="Questions_{{q_id}}__.Answers_0__.Correct"  name="AnswerN_{{q_id}}" class="form-control" value="true" /> 
+
             
         </div>
-        <button type="button" class="add-answer">Add Answer</button>
+       
 
         </div>
-        
-    </div>`;
+ 
+    </div>
+  `;
 
 var answerTemplate =
-
-    `<div style="width: 70%; height: 50px;" class="answer-container">
+   `
+    <div style="width: 70%; height: 50px;" class="answer-container">
         <div class="form-group col-lg-offset-1">
-            <input type="text"    id="Questions_{{q_id}}__.Answers_{{a_id}}__.Content" name="Questions[{{q_id}}].Answers[{{a_id}}].Content" placeholder="Answer{{ap_id}}" class="form-control" />
-            <input type="radio" id="Questions_{{q_id}}__.Answers_{{a_id}}__.Correct"  name="Questions[{{q_id}}].Answers[{{a_id}}].Correct" class="form-control" value="true"/>
+            <input type="text"    id="Questions_{{q_id}}__.Answers_{{a_id}}__.Content" name="AnswerN" placeholder="Answer{{ap_id}}" class="form-control" />
+            <input type="radio" id="Questions_{{q_id}}__.Answers_{{a_id}}__.Correct"  name="AnswerN_{{q_id}}" class="form-control" value="true"/>
             
         </div>
 
-        </div>`;
-
+        </div>;
+   `
 $(function () {
     var total = 0;
 
@@ -70,6 +95,7 @@ $(function () {
         );
 
     });
+
     $('#questions-container').on('click', '.delete-button', function () {
         var x = $(this).closest(`.panel.panel-default.question`).attr(`name`).replace(`Questions`,``);
         var number = parseInt(x);
