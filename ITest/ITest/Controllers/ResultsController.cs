@@ -33,5 +33,12 @@ namespace ITest.Controllers
 
             return View(model);
         }
+
+        [Authorize(Roles = "Admin")]
+        public IActionResult RecalculateTests()
+        {
+            this.userTestsService.RecalculateAllTestsScore();
+            return this.RedirectToAction("Index", "Home");
+        }
     }
 }

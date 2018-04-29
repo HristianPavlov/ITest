@@ -97,7 +97,6 @@ namespace ITest.Services.Data
 
 
         }
-
         public void SaveTest(UserTestsDTO test)
         {
             var testModel = mapper.MapTo<UserTests>(test);
@@ -196,6 +195,29 @@ namespace ITest.Services.Data
             completedTest.UserId = userId;
             completedTest.ExecutionTime = countDown - Math.Round(executionTimeMinutes, 2);
             this.Publish(completedTest);
+        }
+
+        public void RecalculateAllTestsScore()
+        {
+            var testsToRecalc = this.userTests.All.Where(x => x.Submitted);
+            foreach (var item in testsToRecalc)
+            {
+                var itemDto = this.mapper.MapTo<UserTestsDTO>(item);
+                decimal newScore = this.testService.GetResult(itemDto);
+                item.Score = newScore;
+            }
+            saver.SaveChanges();
+        }
+        public void RecalculateTestScoreByTestId(int id)
+        {
+            var testsToRecalc = this.userTests.All.Where(t => t.TestId == id && t.Submitted);
+            foreach (var item in testsToRecalc)
+            {
+                var itemDto = this.mapper.MapTo<UserTestsDTO>(item);
+                decimal newScore = this.testService.GetResult(itemDto);
+                item.Score = newScore;
+            }
+            saver.SaveChanges();
         }
     }
 }

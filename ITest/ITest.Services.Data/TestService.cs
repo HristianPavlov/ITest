@@ -68,7 +68,8 @@ namespace ITest.Services.Data
         public decimal GetResult(UserTestsDTO solvedTest)
         {
             var realTests = tests.All.Where(t => t.Id == solvedTest.TestId).
-                                                Include(t => t.Questions).ThenInclude(x => x.Answers);
+                                                Include(t => t.Questions).
+                                                ThenInclude(x => x.Answers);
             var realTest = realTests.First();
             decimal correctAnswers = 0;
             var indexOfAnswer = 0;

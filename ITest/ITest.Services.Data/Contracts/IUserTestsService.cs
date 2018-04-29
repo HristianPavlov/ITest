@@ -16,5 +16,7 @@ namespace ITest.Services.Data
         void Publish(UserTestsDTO test);
         SolveTestDTO GetCorrectSolveTest(string userId, string category);
         void ValidateAndAdd(SolveTestDTO solveTestDto, string userId);
+        void RecalculateAllTestsScore();
+        void RecalculateTestScoreByTestId(int id);
     }
 }
