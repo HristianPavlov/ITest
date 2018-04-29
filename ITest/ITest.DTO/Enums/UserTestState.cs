@@ -6,10 +6,10 @@ namespace ITest.DTO.Enums
 {
     public enum UserTestState
     {
-        Start = 1,
-        Submitted = 2,
-        NotSubmittedOnTime = 3,
-        CurrentlySolving = 4,
+        CurrentlySolving = 1,
+        Start = 2,
+        Submitted = 3,
+        NotSubmittedOnTime = 4,
         CategoryEmpty = 5
     }
 }

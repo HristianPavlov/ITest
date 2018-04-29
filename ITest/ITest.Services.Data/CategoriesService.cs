@@ -38,7 +38,7 @@ namespace ITest.Services.Data
         {
             var categories = this.categories.All.Include(x => x.Tests);
 
-            var categoriesDto = mapper.ProjectTo<CategoryDTO>(categories).ToList();//bugs when materialize
+            var categoriesDto = mapper.ProjectTo<CategoryDTO>(categories).ToList();
 
             foreach (var item in categoriesDto)
             {

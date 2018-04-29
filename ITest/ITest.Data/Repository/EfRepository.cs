@@ -1,5 +1,5 @@
 ﻿using ITest.Data.Models.Abstracts;
-using ITest.Infrastructure.Providers;
+using ITest.Data.Providers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
@@ -12,9 +12,9 @@ namespace ITest.Data.Repository
   public  class EfRepository<T> : IRepository<T> where T : class, IDeletable
     {
         private readonly ITestDbContext context;
-        private readonly IDateTimeProvider dateTime;
+        private readonly IRepoTimeProvider dateTime;
 
-        public EfRepository(ITestDbContext context, IDateTimeProvider dateTime)
+        public EfRepository(ITestDbContext context, IRepoTimeProvider dateTime)
         {
             this.context = context;
             this.dateTime = dateTime;
