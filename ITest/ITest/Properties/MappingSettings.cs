@@ -21,39 +21,30 @@ namespace ITest.Properties
         {
             //to create tests
             this.CreateMap<CreateTestViewModel, TestDTO>(MemberList.Source);
-          
-
             this.CreateMap<CreateCategoryViewModel, CategoryDTO>();
             this.CreateMap<CategoryDTO, Category>();
             //to solve tests
             this.CreateMap<Test, TestDTO>(MemberList.Source);
             this.CreateMap<TestDTO, Test>(MemberList.Source);
-            this.CreateMap<TestDTO, SolveTestViewModel>(MemberList.Source);
-
+            this.CreateMap<TestDTO, SolveTestDTO>(MemberList.Source);
+            this.CreateMap<SolveTestDTO, SolveTestViewModel>(MemberList.Source).ReverseMap();
             this.CreateMap<Question, QuestionDTO>(MemberList.Source);
             this.CreateMap<QuestionDTO, ShowQuestionViewModel>(MemberList.Source);
-
             this.CreateMap<Answer, AnswerDTO>(MemberList.Source);
             this.CreateMap<AnswerDTO, ShowAnswerViewModel>(MemberList.Source);
-            //this.CreateMap<CommentDto, CommentViewModel>()
-            //       .ForMember(x => x.Author, options => options.MapFrom(x => x.Author.Email));
-
-
             this.CreateMap<CreateQuestionViewModel, QuestionDTO>(MemberList.Source);
             this.CreateMap<CreateAnswerViewModel, AnswerDTO>(MemberList.Source);
-
-
             this.CreateMap<QuestionDTO, Question>(MemberList.Source);
             this.CreateMap<AnswerDTO, Answer>(MemberList.Source);
-
-
             this.CreateMap<Category, CategoryDTO>(MemberList.Source);
-            this.CreateMap<CategoryDTO, CategoryViewModel>(MemberList.Source);
 
+            this.CreateMap<CategoryDTO, CategoryViewModel>(MemberList.Source).
+                ForMember(x=> x.Category,opt=>opt.MapFrom(src => src.Name));//here
             this.CreateMap<SolveTestViewModel, UserTestsDTO>(MemberList.Source);
+
+            this.CreateMap<SolveTestDTO, UserTestsDTO>(MemberList.Source);
             this.CreateMap<UserTestsDTO, UserTests>(MemberList.Source).
                 ForMember(x => x.SerializedAnswers, opt => opt.MapFrom(src => string.Join(";", src.StorageOfAnswers)));
-
             this.CreateMap<UserTests, UserTestsDTO>(MemberList.Source).
                 ForMember
                 (
@@ -62,11 +53,9 @@ namespace ITest.Properties
                         src => src.SerializedAnswers.Split(new char[] { ';' }).ToList()
                         )
                 );
-
             this.CreateMap<UserTestsDTO, ResultsViewModel>(MemberList.Source);
 
-       
-
+            this.CreateMap<UserTestsDTO, CategoryViewModel>(MemberList.Source);
         }
     }
 }

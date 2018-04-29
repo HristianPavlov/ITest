@@ -48,11 +48,13 @@ namespace ITest
             services.AddTransient<ICategoriesService, CategoriesService>();
             services.AddTransient<IQuestionService, QuestionService>();
             services.AddTransient<IEmailSender, EmailSender>();
-            services.AddTransient<UserService>();
+            services.AddTransient<IUserTestsService, UserTestsService>();
+            services.AddTransient<IDateTimeProvider, DateTimeProvider>();
 
-            services.AddTransient<ITestRandomService, TestRandomService>();
+
+            services.AddTransient<ITestService, TestService>();
             services.AddTransient<ICreateTestService, CreateTestService>();
-
+            services.AddTransient<IUserService, UserService>();
         }
 
         private void RegisterInfrastructure(IServiceCollection services)
@@ -89,7 +91,7 @@ namespace ITest
         }
 
         private void RegisterData(IServiceCollection services)
-        {   
+        {
             services.AddDbContext<ITestDbContext>(options =>
                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 

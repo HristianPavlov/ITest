@@ -1,4 +1,5 @@
 ﻿using ITest.Data.Models.Abstracts;
+using ITest.Infrastructure.Providers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
@@ -11,10 +12,12 @@ namespace ITest.Data.Repository
   public  class EfRepository<T> : IRepository<T> where T : class, IDeletable
     {
         private readonly ITestDbContext context;
+        private readonly IDateTimeProvider dateTime;
 
-        public EfRepository(ITestDbContext context)
+        public EfRepository(ITestDbContext context, IDateTimeProvider dateTime)
         {
             this.context = context;
+            this.dateTime = dateTime;
         }
 
         public IQueryable<T> All
@@ -50,7 +53,7 @@ namespace ITest.Data.Repository
         public void Delete(T entity)
         {
             entity.IsDeleted = true;
-            entity.DeletedOn = DateTime.Now;
+            entity.DeletedOn = dateTime.GetDateTimeNow();
 
             var entry = this.context.Entry(entity);
             entry.State = EntityState.Modified;

@@ -20,14 +20,14 @@
     </thead>
 
     <tbody>
-        @foreach (var item in Model.resultBag)
+        @foreach (var item in Model.ResultBag)
         {
             <tr>
                 <td>@item.Test.CategoryId</td>
-                <td>@item.User.Email</td>
+                <td>@item.UserEmail</td>
                 <td>@item.Category</td>
                 <td>@item.Test.TimeInMinutes mins</td>
-                <td>@item.ExecutionTime mins</td>
+                <td>@((int)item.ExecutionTime) mins @Math.Round(item.ExecutionTime % 1 * 60) sec</td>
                 <td>@item.Score</td>
             </tr>
         }

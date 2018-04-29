@@ -1,4 +1,5 @@
 ﻿using ITest.Data.Models;
+using ITest.DTO.Enums;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,11 +10,9 @@ namespace ITest.DTO
     {
         public string UserId { get; set; }
 
-        public User User { get; set; }
-
         public int TestId { get; set; }
 
-        public Test Test { get; set; }
+        public TestDTO Test { get; set; }
 
         public decimal Score { get; set; }
 
@@ -29,5 +28,8 @@ namespace ITest.DTO
 
         //Think about this id
         public int Id { get; set; }
+
+        public UserTestState CategoryState { get; set; }
+
     }
 }

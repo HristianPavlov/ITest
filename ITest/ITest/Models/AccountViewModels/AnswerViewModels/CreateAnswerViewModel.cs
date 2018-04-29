@@ -9,8 +9,6 @@ namespace ITest.Models.AnswerViewModels
 {
     public class CreateAnswerViewModel
     {
-
-        
         // [Required]
         [MinLength(5)]
         [MaxLength(500)]
@@ -19,10 +17,5 @@ namespace ITest.Models.AnswerViewModels
 
         [Required]
         public bool Correct { get; set; }
-
-        // public int QuestionId { get; set; }
-
-        //public QuestionDTO Question { get; set; }
-
     }
 }

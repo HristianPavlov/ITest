@@ -13,20 +13,22 @@ namespace ITest.Controllers
     public class ResultsController : Controller
     {
         private readonly IMappingProvider mapper;
-        private readonly ITestRandomService testsService;
+        private readonly IUserTestsService userTestsService;
 
         public ResultsController(IMappingProvider mapper,
-            ITestRandomService testsService)
+                                 IUserTestsService userTestsService)
         {
             this.mapper = mapper;
-            this.testsService = testsService;
+            this.userTestsService = userTestsService;
         }
 
         [Authorize(Roles = "Admin")]
         public IActionResult ShowResults()
         {
             var model = new ResultBagViewModel();
-            model.resultBag = mapper.ProjectTo<ResultsViewModel>(testsService.GetAllUserTests());
+
+            model.ResultBag = mapper.ProjectTo<ResultsViewModel>(userTestsService.GetAllUserTests());
+
 
             return View(model);
         }

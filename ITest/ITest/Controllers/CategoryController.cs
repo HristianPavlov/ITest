@@ -16,11 +16,15 @@ namespace ITest.Controllers
 {
     public class CategoryController : Controller
     {
+        private readonly IUserTestsService userTestsService;
+        private readonly IUserService userService;
         private readonly ICategoriesService categoriesService;
         private readonly IMappingProvider mapper;
 
-        public CategoryController(ICategoriesService categoriesService, IMappingProvider mapper)
+        public CategoryController(IUserTestsService userTestsService, IUserService userService, ICategoriesService categoriesService, IMappingProvider mapper)
         {
+            this.userTestsService = userTestsService;
+            this.userService = userService;
             this.categoriesService = categoriesService;
             this.mapper = mapper;
         }
@@ -28,6 +32,7 @@ namespace ITest.Controllers
         {
             return View();
         }
+
         [HttpPost]
         public IActionResult CreateCategory(CreateCategoryViewModel cattegoryToAdd)
         {
@@ -46,9 +51,23 @@ namespace ITest.Controllers
         public IActionResult ShowCategories()
         {
             var model = new CategoriesViewModel();
-
             var categories = this.categoriesService.GetAllCategories();
-            model.AllCategories = this.mapper.ProjectTo<CategoryViewModel>(categories).ToList();
+            var categoriesViewModel = this.mapper.ProjectTo<CategoryViewModel>(categories.AsQueryable()).ToHashSet();
+
+            var allStartedUserTests = userTestsService.GetCurrentUserTests(userService.GetLoggedUserId(User));
+            var allStartedCategoriesView = mapper.ProjectTo<CategoryViewModel>(allStartedUserTests.AsQueryable()).ToHashSet();
+
+
+            foreach (var item in categoriesViewModel)
+            {
+                if (!allStartedCategoriesView.Any(x => x.Category == item.Category))
+                {
+                    allStartedCategoriesView.Add(item);
+                }
+            }
+
+
+            model.AllCategories = allStartedCategoriesView;
             return View(model);
         }
     }

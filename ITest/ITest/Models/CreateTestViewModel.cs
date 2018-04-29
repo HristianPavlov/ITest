@@ -9,11 +9,8 @@ namespace ITest.Models
 {
     public class CreateTestViewModel
     {
-
         public int Id { get; set; }
               
-        public TestStatusDTO Status { get; set; }
-
         public string Content;
 
         public List<CreateQuestionViewModel> Questions { get; set; }

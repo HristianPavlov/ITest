@@ -9,8 +9,6 @@ namespace ITest.DTO
 
         public string AuthorId { get; set; }
 
-        public UserDTO Author { get; set; }
-
         public TestStatus Status { get; set; }
 
         public ICollection<QuestionDTO> Questions { get; set; }
