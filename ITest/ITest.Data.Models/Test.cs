@@ -36,6 +36,8 @@ namespace ITest.Data.Models
 
         public int TimeInMinutes { get; set; }
 
+        ///public bool Published { get; set; }
+
 
 
     }

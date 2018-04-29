@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Security.Claims;
 
 namespace ITest.Controllers.Createontrollers
 {
@@ -31,7 +32,11 @@ namespace ITest.Controllers.Createontrollers
 
         public IActionResult CreateNewTest()
         {
-            return View();
+            var model = new CreateTestViewModel()
+            {
+              
+            };
+            return View("CreateNewTest",model);
         }
 
         [HttpPost]
@@ -40,10 +45,11 @@ namespace ITest.Controllers.Createontrollers
         {
 
             var model = this.mapper.MapTo<TestDTO>(question);
+            model.AuthorId = this.User.FindFirstValue(ClaimTypes.NameIdentifier); 
             this.createTestService.Create(model);
 
             TempData["Success-Message"] = "You published a new post!";
-            return this.RedirectToAction("Index", "Home");
+            return this.View(); /*this.RedirectToAction("Index", "Home");*/
         }
     }
 }

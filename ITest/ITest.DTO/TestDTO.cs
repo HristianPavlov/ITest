@@ -15,6 +15,8 @@ namespace ITest.DTO
 
         public ICollection<UserTestsDTO> Users { get; set; }
 
+        //public bool Published { get; set; }
+
         public int CategoryId { get; set; }
 
         public CategoryDTO Category { get; set; }
