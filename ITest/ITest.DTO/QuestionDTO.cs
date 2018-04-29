@@ -4,7 +4,6 @@ namespace ITest.DTO
 {
     public class QuestionDTO
     {
-
         public int Id { get; set; }
 
         public string Content { get; set; }
@@ -14,8 +13,5 @@ namespace ITest.DTO
         public TestDTO Test { get; set; }
 
         public ICollection<AnswerDTO> Answers { get; set; }
-
-
-
     }
 }

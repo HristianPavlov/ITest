@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ITest.Data.Models\ITest.Data.Models.csproj" />
+    <ProjectReference Include="..\ITest.Infrastructure\ITest.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>

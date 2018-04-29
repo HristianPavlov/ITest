@@ -11,7 +11,10 @@ namespace ITest.Services.Data
         bool TestIsSubmitted(string userId, string category);
         int GetTestIdFromUserIdAndCategory(string userId, string category);
         IEnumerable<UserTestsDTO> GetAllUserTests();
+        IEnumerable<UserTestsDTO> GetCurrentUserTests(string userId);
         void SaveTest(UserTestsDTO test);
         void Publish(UserTestsDTO test);
+        SolveTestDTO GetCorrectSolveTest(string userId, string category);
+        void ValidateAndAdd(SolveTestDTO solveTestDto, string userId);
     }
 }

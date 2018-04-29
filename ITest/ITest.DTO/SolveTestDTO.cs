@@ -1,15 +1,12 @@
-﻿using ITest.Models.AnswerViewModels;
-using ITest.Models.QuestionViewModel;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Text;
 
-namespace ITest.Models.TestViewModels
+namespace ITest.DTO
 {
-    public class SolveTestViewModel
+    public class SolveTestDTO
     {
-        public ICollection<ShowQuestionViewModel> Questions { get; set; }
+        public ICollection<QuestionDTO> Questions { get; set; }
 
         public string UserId { get; set; }
 

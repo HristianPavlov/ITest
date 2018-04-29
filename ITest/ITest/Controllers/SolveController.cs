@@ -21,13 +21,13 @@ namespace ITest.Controllers
         private readonly IUserTestsService userTestsService;
         private readonly ICategoriesService categoriesService;
         private readonly ITestService testsService;
-        private readonly UserService userService;
+        private readonly IUserService userService;
 
         public SolveController(IMappingProvider mapper,
             IUserTestsService userTestsService,
             ICategoriesService categoriesService,
             ITestService testsService,
-            UserService userService)
+            IUserService userService)
         {
             this.mapper = mapper;
             this.userTestsService = userTestsService;
@@ -52,90 +52,18 @@ namespace ITest.Controllers
         {
             var category = id;
             var userId = userService.GetLoggedUserId(this.User);
-
-            if (userTestsService.UserStartedTest(userId, category))
-            {
-                var testId = userTestsService.GetTestIdFromUserIdAndCategory(userId, category);
-                var test = testsService.GetTestById(testId);
-
-                var testView = mapper.MapTo<SolveTestViewModel>(test);
-                var testAllowedTime = double.Parse(test.TimeInMinutes.ToString());
-                var startedTime = userTestsService.StartedTestCreationTime(userId, category);
-                //fix this to have is test submitted
-                if (userTestsService.TestIsSubmitted(userId, category))
-                {
-                    return this.RedirectToAction("CategoryDone", "Solve");
-                }
-                var endTime = startedTime.Value.AddMinutes(testAllowedTime);
-                var reaminingTime = Math.Round((endTime - DateTime.Now).TotalSeconds);
-
-                testView.Category = category;
-                testView.RemainingTime = int.Parse(reaminingTime.ToString());
-
-                if (reaminingTime < 0)
-                {
-                    return this.RedirectToAction("TimeUpNotSubmitted", "Solve");
-                }
-
-                testView.StorageOfAnswers = new List<string>();
-                for (int i = 0; i < testView.Questions.Count; i++)
-                {
-                    testView.StorageOfAnswers.Add("No Answer");
-                }
-                return View(testView);
-            }
-            else
-            {
-                var categoryId = categoriesService.GetIdByCategoryName(category);
-                var randomTest = testsService.GetRandomTestFromCategory(categoryId);
-                var testViewModel = mapper.MapTo<SolveTestViewModel>(randomTest);
-                // add the test in base on creation
-                var saveThisTestCreation = new UserTestsDTO
-                {
-                    UserId = userId,
-                    Category = category,
-                    TestId = randomTest.Id
-                };
-                userTestsService.SaveTest(saveThisTestCreation);
-                //added the up
-
-                testViewModel.StorageOfAnswers = new List<string>();
-                for (int i = 0; i < testViewModel.Questions.Count; i++)
-                {
-                    testViewModel.StorageOfAnswers.Add("No Answer");
-                }
-
-                testViewModel.Category = category;
-                testViewModel.CreatedOn = DateTime.Now;
-                testViewModel.RemainingTime =
-                    Convert.ToInt32(((DateTime.Now.AddMinutes(randomTest.TimeInMinutes) - DateTime.Now).TotalSeconds)/*.ToString()*/);
-                return View(testViewModel);
-            }
+            var correctUserTestDto = userTestsService.GetCorrectSolveTest(userId, category);
+            var correctUserTest = mapper.MapTo<SolveTestViewModel>(correctUserTestDto);
+            return View(correctUserTest);
         }
-
         [HttpPost]
         public IActionResult PublishAnswers(SolveTestViewModel answers)
         {
             if (ModelState.IsValid)
             {
-                //make it here to not be publishable if remaining time is incorrect
                 var userId = userService.GetLoggedUserId(this.User);
-                var startedTime = userTestsService.StartedTestCreationTime(userId, answers.Category);
-                var countDown = testsService.GetTestCountDownByTestId(answers.Id);
-                //giving the system 1 minute buffer for the test to submit later than the predicted time
-                var timeRemain = (startedTime.Value.AddMinutes(countDown).AddMinutes(1) - DateTime.Now).TotalSeconds;
-                var executionTime = (timeRemain - 60)/60;
-                if (timeRemain < 0)
-                {
-                    return this.RedirectToAction("SubmittingLate", "Solve");
-                }
-                var completedTest = mapper.MapTo<UserTestsDTO>(answers);
-
-                completedTest.TestId = completedTest.Id;
-                completedTest.UserId = userId;
-                completedTest.ExecutionTime = Math.Round(executionTime,2);
-
-                userTestsService.Publish(completedTest);
+                var solveTestDto = mapper.MapTo<SolveTestDTO>(answers);
+                userTestsService.ValidateAndAdd(solveTestDto, userId);
             }
             return this.RedirectToAction("Index", "Home");
         }

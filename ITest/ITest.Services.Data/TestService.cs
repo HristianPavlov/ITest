@@ -38,16 +38,18 @@ namespace ITest.Services.Data
 
         public TestDTO GetRandomTestFromCategory(int categoryID)
         {
-            var random = new Random();
+            //var random = new Random();
             //search if it's possible to get random from collection*ElementAt not working correctly*
             var testsFromThisCategory = tests.All.Where(test => test.CategoryId == categoryID).
                                                         Include(t => t.Questions).
-                                                        ThenInclude(x => x.Answers).ToList();
+                                                        ThenInclude(x => x.Answers);
+                                                        //.ToList();
             if (testsFromThisCategory.Count() < 1)
             {
                 throw new ArgumentNullException("Category currently empty");
             }
-            var randomTest = testsFromThisCategory[random.Next(testsFromThisCategory.Count())];
+            //var randomTest = testsFromThisCategory[random.Next(testsFromThisCategory.Count())];
+            var randomTest = testsFromThisCategory.FirstOrDefault();
             var randomTestDto = mapper.MapTo<TestDTO>(randomTest);
             return randomTestDto;
         }

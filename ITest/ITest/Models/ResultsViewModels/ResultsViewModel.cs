@@ -1,4 +1,5 @@
 ﻿using ITest.Data.Models;
+using ITest.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,9 +9,9 @@ namespace ITest.Models.ResultsViewModels
 {
     public class ResultsViewModel
     {
-        public User User { get; set; }
+        public string UserEmail { get; set; }
 
-        public Test Test { get; set; }
+        public TestDTO Test { get; set; }
 
         public decimal Score { get; set; }
 

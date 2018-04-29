@@ -16,7 +16,7 @@ namespace ITest.Controllers
         private readonly IUserTestsService userTestsService;
 
         public ResultsController(IMappingProvider mapper,
-            IUserTestsService userTestsService)
+                                 IUserTestsService userTestsService)
         {
             this.mapper = mapper;
             this.userTestsService = userTestsService;
@@ -26,7 +26,9 @@ namespace ITest.Controllers
         public IActionResult ShowResults()
         {
             var model = new ResultBagViewModel();
-            model.resultBag = mapper.ProjectTo<ResultsViewModel>(userTestsService.GetAllUserTests());
+
+            model.ResultBag = mapper.ProjectTo<ResultsViewModel>(userTestsService.GetAllUserTests());
+
 
             return View(model);
         }

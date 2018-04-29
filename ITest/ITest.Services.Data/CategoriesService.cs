@@ -2,6 +2,7 @@
 using ITest.Data.Repository;
 using ITest.Data.UnitOfWork;
 using ITest.DTO;
+using ITest.DTO.Enums;
 using ITest.Infrastructure.Providers;
 using System;
 using System.Collections.Generic;
@@ -35,7 +36,20 @@ namespace ITest.Services.Data
         public IEnumerable<CategoryDTO> GetAllCategories()
         {
             var categories = this.categories.All;
-            return mapper.ProjectTo<CategoryDTO>(categories);
+            var categoriesDto = mapper.ProjectTo<CategoryDTO>(categories).ToList();
+            foreach (var item in categoriesDto)
+            {
+                if (item.Tests.Count > 0)
+                {
+                    item.CategoryState = UserTestState.Start;
+                }
+                else
+                {
+                    item.CategoryState = UserTestState.CategoryEmpty;
+
+                }
+            }
+            return categoriesDto;
         }
     }
 }

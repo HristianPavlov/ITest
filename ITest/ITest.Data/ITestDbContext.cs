@@ -34,23 +34,16 @@ namespace ITest.Data
                 .WithMany(t => t.Tests)
                 .HasForeignKey(u => u.UserId);
 
-
             builder.Entity<UserTests>()
               .HasOne(t => t.Test)
               .WithMany(u => u.Users)
               .HasForeignKey(t => t.TestId);
-
-
-
-
-
 
             base.OnModelCreating(builder);
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
         }
-
         private void ApplyAuditInfoRules()
         {
             var newlyCreatedEntities = this.ChangeTracker.Entries()

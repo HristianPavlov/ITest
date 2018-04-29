@@ -7,6 +7,6 @@ namespace ITest.Models.ResultsViewModels
 {
     public class ResultBagViewModel
     {
-        public IEnumerable<ResultsViewModel> resultBag { get; set; }
+        public IEnumerable<ResultsViewModel> ResultBag { get; set; }
     }
 }

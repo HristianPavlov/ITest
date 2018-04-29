@@ -14,8 +14,8 @@
                                 <a href="#tab@(x++)default"
                                    id="#category-tab"
                                    data-toggle="tab"
-                                   data-category="@c.Name">
-                                    @c.Name
+                                   data-category="@c.Category">
+                                    @c.Category
                                 </a>
                             </li>
                         }
@@ -30,7 +30,7 @@
                                 <div class="well well-sm clearfix">
                                     <span class="pull-left"></span>
                                     <form asp-controller="Solve" asp-action="ShowTest" id="start-Button" method="get">
-                                        <button id="startButton" name="id" class="create-test btn btn-default" type="submit" value="@c.Name">Submit</button>
+                                        <button id="startButton" name="id" class="create-test btn btn-default" type="submit" value="@c.Category">Submit @c.CategoryState</button>
                                     </form>
                                 </div>
                             </div>
