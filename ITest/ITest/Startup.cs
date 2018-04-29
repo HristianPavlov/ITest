@@ -127,7 +127,7 @@ namespace ITest
 
             app.UseAuthentication();
             //The seeding of roles
-            UserRoleInitializer.SeedRoles(roleManager);
+           // UserRoleInitializer.SeedRoles(roleManager);
 
             app.UseStaticFiles();
 

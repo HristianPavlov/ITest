@@ -6,7 +6,7 @@
 @model CreateTestViewModel
 
 @{
-    ViewData["Title"] = "CreateQuestion";
+    ViewData["Title"] = "CreateNewTEst";
 }
 
 <div id="createTest-content">
@@ -14,7 +14,7 @@
     <div class="row">
         <div class="col-lg-12 col-lg-offset-1">
 
-            <form asp-controller="CreateTests" asp-action="CreateQ" method="post" class="form-inline" id="question-form">
+            <form asp-controller="CreateTests" asp-action="CreateNewTest" method="post" class="form-inline" id="question-form">
 
                 <div class="form-group">
                     <input asp-for="Content" placeholder="Test name" id="input-test" class="form-control" />
@@ -23,38 +23,42 @@
 
                     <label>
                         Status
-                        <select  asp-for="Status" id="pickup_place" name="pickup_place">
-                            <option value="1">Published</option>
-                            <option value="2">Draft</option>
-                        </select>
+
+                        @Html.DropDownList("Status", new List<SelectListItem>
+                    {
+                        new SelectListItem{ Text="Published", Value = "1" },
+                        new SelectListItem{ Text="Draft", Value = "2" },
+
+                     })
                     </label>
-
-
+        
 
                 </div>
                 <br />
 
                 <div id="questions-container">
-                   
-                        <div class="panel panel-default question" name="Questions1">
-                            <h3>Question1</h3>
-                            <div class="form-group">
-                                <input asp-for="Questions[0].Content" placeholder="Question content" class="form-control" />
-                            </div>
+
+                    <div class="panel panel-default question" name="Questions1">
+                        <h3>Question1</h3>
+                        <div class="form-group">
+                            <input asp-for="Questions[0].Content" placeholder="Question content" class="form-control" />
+                        </div>
 
 
-                            <div class="answer-container">
-                                <button type="button" class="add-answer">+ Answer</button>
-                                <div style="width: 150%; height: 50px;" class="form-group col-lg-offset-1">
-                                    <input asp-for="Questions[0].Answers[0].Content" placeholder="Answer 1" class="form-control" />
-                                    <input asp-for="Questions[0].Answers[0].Correct" name="AnswerN_0" class="form-control" type="radio" value="true" />
-
-                                </div>
+                        <div class="answer-container">
+                            <button type="button" class="add-answer">+ Answer</button>
+                            <div style="width: 150%; height: 50px;" class="form-group col-lg-offset-1">
+                                <input type="text" id="Questions_0__.Answers_0__.Content" name="Questions[0].Answers[0].Content" placeholder="Answer1" class="form-control" />
+                                <input type="radio" id="Questions_0__.Answers_0__.Correct" name="radio_0" class="form-control" value="true" />
+                                @*<input asp-for="Questions[0].Answers[0].Content" placeholder="Answer 1" class="form-control" />
+                                    <input asp-for="Questions[0].Answers[0].Correct" class="form-control" type="radio" value="true" />*@
 
                             </div>
 
                         </div>
-                    
+
+                    </div>
+
 
 
                 </div>
@@ -62,11 +66,15 @@
                     <button type="button" class="add-question btn btn-default">+ Question</button>
                 </div>
                 <br />
+                @*<div>
+                        <button type="button" class="writeStuffdown">writeStuffdown</button>
+                    </div>*@
                 <div id="submitBtnArea" class="form-group">
                     <button id="submitNewTestBtn" type="submit" value="submit" class="btn btn-default">Submit</button>
                 </div>
             </form>
-            
+
+
 
 
         </div>
