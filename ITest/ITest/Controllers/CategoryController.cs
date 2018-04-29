@@ -67,7 +67,8 @@ namespace ITest.Controllers
             }
 
 
-            model.AllCategories = allStartedCategoriesView;
+            model.AllCategories = allStartedCategoriesView;//old
+            //model.AllCategories = categoriesViewModel;
             return View(model);
         }
     }

@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ITest.Data.Models\ITest.Data.Models.csproj" />
+    <ProjectReference Include="..\ITest.DTO\ITest.DTO.csproj" />
   </ItemGroup>
 
   <ItemGroup>

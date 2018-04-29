@@ -27,7 +27,7 @@ namespace ITest.Controllers
         {
             var model = new ResultBagViewModel();
 
-            model.ResultBag = mapper.ProjectTo<ResultsViewModel>(userTestsService.GetAllUserTests());
+            model.ResultBag = mapper.ProjectTo<ResultsViewModel>(userTestsService.GetAllUserTests().AsQueryable());
 
 
             return View(model);
