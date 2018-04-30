@@ -3,6 +3,7 @@ using ITest.Data.Models.Enums;
 using ITest.Data.Repository;
 using ITest.Data.UnitOfWork;
 using ITest.DTO;
+using ITest.Infrastructure.CustomExceptions;
 using ITest.Infrastructure.Providers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -42,17 +43,15 @@ namespace ITest.Services.Data
 
         public TestDTO GetRandomTestFromCategory(int categoryID)
         {
-            //var random = new Random();
-            var testsFromThisCategory = tests.All.Where(test => test.CategoryId == categoryID && test.Status == TestStatus.Published).//test status should be published
+            // test status should be published and test shouldnt be deleted
+             var testsFromThisCategory = tests.All.Where(test => test.CategoryId == categoryID && test.Status == TestStatus.Published && !test.IsDeleted).
                                                         Include(t => t.Questions).
                                                         ThenInclude(x => x.Answers)
                                                         .ToList();
             if (testsFromThisCategory.Count() < 1)
             {
-                throw new ArgumentNullException("Category currently empty");
+                throw new CategoryEmptyException();
             }
-            //var randomTest = testsFromThisCategory[random.Next(testsFromThisCategory.Count())];
-            //var randomTest = testsFromThisCategory.FirstOrDefault();
             var randomTest = testsFromThisCategory[this.random.GiveMeRandomNumber(testsFromThisCategory.Count())];
             var randomTestDto = mapper.MapTo<TestDTO>(randomTest);
             return randomTestDto;

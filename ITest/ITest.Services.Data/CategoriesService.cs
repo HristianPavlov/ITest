@@ -43,7 +43,7 @@ namespace ITest.Services.Data
 
             foreach (var item in categoriesDto)
             {
-                if (item.Tests.Count > 0 && item.Tests.Any(t => t.Status == TestStatus.Published))
+                if (item.Tests.Count > 0 && item.Tests.Any(t => t.Status == TestStatus.Published && !t.IsDeleted))
                 {
                     item.CategoryState = UserTestState.Start;
                 }

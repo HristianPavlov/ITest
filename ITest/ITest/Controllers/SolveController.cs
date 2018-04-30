@@ -48,6 +48,10 @@ namespace ITest.Controllers
         {
             return View();
         }
+        public IActionResult CategoryEmpty()
+        {
+            return View();
+        }
         public IActionResult ShowTest(string id)
         //beneath is the category name not id !!
         {
@@ -66,6 +70,11 @@ namespace ITest.Controllers
             catch (TimeUpNeverSubmittedException)
             {
                 return this.RedirectToAction("TimeUpNotSubmitted", "Solve");
+            }
+            catch (CategoryEmptyException)
+            {
+                return this.RedirectToAction("CategoryEmpty", "Solve");
+
             }
 
         }
