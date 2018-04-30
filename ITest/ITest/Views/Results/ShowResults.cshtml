@@ -1,4 +1,5 @@
 ﻿<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.css">
+<link href="https://fonts.googleapis.com/css?family=Fjalla+One" rel="stylesheet">
 @using ITest.Models.ResultsViewModels
 @model ResultBagViewModel
 
@@ -16,6 +17,7 @@
             <th>Requested Time</th>
             <th>Execution Time</th>
             <th>Result</th>
+            <th></th>
         </tr>
     </thead>
 
@@ -29,6 +31,11 @@
                 <td>@item.Test.TimeInMinutes mins</td>
                 <td>@((int)item.ExecutionTime) mins @Math.Round(item.ExecutionTime % 1 * 60) sec</td>
                 <td>@item.Score</td>
+                <td>
+                    <a href="/Results/DetailedSolution?userEmail=@item.UserEmail&testId=@item.Test.Id">Details</a>
+                    @*binds correctly*@
+                </td>
+
             </tr>
         }
     </tbody>
@@ -37,7 +44,7 @@
 @section Scripts{
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script>
     <script src="~/js/showResults.js"></script>
-    
+
 }
 
 

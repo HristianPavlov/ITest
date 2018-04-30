@@ -1,0 +1,36 @@
+﻿.Start {
+
+}
+.Submitted {
+    background-color: lawngreen;
+    color: black;
+    border-style: outset;
+    border-color: black;
+    border-width: 1px;
+    font-family: 'Kanit', sans-serif;
+}
+.NotSubmittedOnTime {
+    background-color: darkred;
+    color: black;
+    border-style: outset;
+    border-color: black;
+    border-width: 1px;
+    font-family: 'Kanit', sans-serif;
+}
+.CurrentlySolving {
+    background-color: yellow;
+          color: black;
+    border-style: outset;
+    border-color: black;
+    border-width: 1px;
+    font-family: 'Kanit', sans-serif;
+}
+.CategoryEmpty {
+    background-color: dodgerblue;
+    color: black;
+    border-style: outset;
+    border-color: black;
+    border-width: 1px;
+    font-family: 'Kanit', sans-serif;
+}
+

@@ -17,14 +17,17 @@ namespace ITest.Services.Data
     {
         private readonly IMappingProvider mapper;
         private readonly IRepository<Test> tests;
+        private readonly IRandomProvider random;
         private readonly ISaver saver;
 
         public TestService(IMappingProvider mapper,
                                  IRepository<Test> tests,
+                                 IRandomProvider random,
                                  ISaver saver)
         {
             this.mapper = mapper;
             this.tests = tests;
+            this.random = random;
             this.saver = saver;
         }
         
@@ -39,17 +42,17 @@ namespace ITest.Services.Data
         public TestDTO GetRandomTestFromCategory(int categoryID)
         {
             //var random = new Random();
-            //search if it's possible to get random from collection*ElementAt not working correctly*
             var testsFromThisCategory = tests.All.Where(test => test.CategoryId == categoryID).
                                                         Include(t => t.Questions).
-                                                        ThenInclude(x => x.Answers);
-                                                        //.ToList();
+                                                        ThenInclude(x => x.Answers)
+                                                        .ToList();
             if (testsFromThisCategory.Count() < 1)
             {
                 throw new ArgumentNullException("Category currently empty");
             }
             //var randomTest = testsFromThisCategory[random.Next(testsFromThisCategory.Count())];
-            var randomTest = testsFromThisCategory.FirstOrDefault();
+            //var randomTest = testsFromThisCategory.FirstOrDefault();
+            var randomTest = testsFromThisCategory[this.random.GiveMeRandomNumber(testsFromThisCategory.Count())];
             var randomTestDto = mapper.MapTo<TestDTO>(randomTest);
             return randomTestDto;
         }
@@ -65,7 +68,8 @@ namespace ITest.Services.Data
         public decimal GetResult(UserTestsDTO solvedTest)
         {
             var realTests = tests.All.Where(t => t.Id == solvedTest.TestId).
-                                                Include(t => t.Questions).ThenInclude(x => x.Answers);
+                                                Include(t => t.Questions).
+                                                ThenInclude(x => x.Answers);
             var realTest = realTests.First();
             decimal correctAnswers = 0;
             var indexOfAnswer = 0;

@@ -67,7 +67,7 @@ namespace ITest.Controllers
             }
 
 
-            model.AllCategories = allStartedCategoriesView;
+            model.AllCategories = allStartedCategoriesView.OrderBy(x => (int)(x.CategoryState));
             return View(model);
         }
     }

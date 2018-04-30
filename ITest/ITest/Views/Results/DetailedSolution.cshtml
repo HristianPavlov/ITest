@@ -1,0 +1,17 @@
+﻿@using ITest.Models.ResultsViewModels
+@model DetailedTestViewModel
+@{
+    ViewData["Title"] = "DetailedSolution";
+}
+<h1>Hello here are the details</h1>
+@{var counter = 0;}
+@foreach (var q in Model.Test.Questions)
+{
+    <p>Question : @q.Content</p>
+    foreach (var a in q.Answers)
+    {
+        <p>@a.Content</p>
+    }
+    <p>User Answered : @Model.StorageOfAnswers[counter]</p>
+    counter++;
+}   

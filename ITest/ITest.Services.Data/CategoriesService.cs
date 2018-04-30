@@ -4,6 +4,7 @@ using ITest.Data.UnitOfWork;
 using ITest.DTO;
 using ITest.DTO.Enums;
 using ITest.Infrastructure.Providers;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ using System.Text;
 
 namespace ITest.Services.Data
 {
-    public class CategoriesService:ICategoriesService
+    public class CategoriesService : ICategoriesService
     {
         private readonly IMappingProvider mapper;
         private readonly IRepository<Category> categories;
@@ -31,12 +32,14 @@ namespace ITest.Services.Data
         }
         public int GetIdByCategoryName(string name)
         {
-            return categories.All.First(cat => cat.Name==name).Id;
+            return categories.All.First(cat => cat.Name == name).Id;
         }
         public IEnumerable<CategoryDTO> GetAllCategories()
         {
-            var categories = this.categories.All;
+            var categories = this.categories.All.Include(x => x.Tests);
+
             var categoriesDto = mapper.ProjectTo<CategoryDTO>(categories).ToList();
+
             foreach (var item in categoriesDto)
             {
                 if (item.Tests.Count > 0)

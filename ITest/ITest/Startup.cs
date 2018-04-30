@@ -20,6 +20,7 @@ using ITest.Data.UnitOfWork;
 using AutoMapper;
 using ITest.Data.Repository;
 using ITest.Services.External;
+using ITest.Data.Providers;
 
 namespace ITest
 {
@@ -47,14 +48,11 @@ namespace ITest
         {
             services.AddTransient<ICategoriesService, CategoriesService>();
             services.AddTransient<IQuestionService, QuestionService>();
-            services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<IUserTestsService, UserTestsService>();
-            services.AddTransient<IDateTimeProvider, DateTimeProvider>();
-
-
             services.AddTransient<ITestService, TestService>();
             services.AddTransient<ICreateTestService, CreateTestService>();
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IEmailSender, EmailSender>();
         }
 
         private void RegisterInfrastructure(IServiceCollection services)
@@ -63,6 +61,9 @@ namespace ITest
             services.AddAutoMapper();
 
             services.AddScoped<IMappingProvider, MappingProvider>();
+            services.AddTransient<IDateTimeProvider, DateTimeProvider>();
+            services.AddTransient<IRandomProvider, RandomProvider>();
+            services.AddTransient<IRepoTimeProvider, RepoTimeProvider>();
         }
         private void RegisterAuthentication(IServiceCollection services)
         {
