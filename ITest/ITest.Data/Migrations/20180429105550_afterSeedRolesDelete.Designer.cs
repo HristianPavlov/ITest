@@ -12,8 +12,8 @@ using System;
 namespace ITest.Data.Migrations
 {
     [DbContext(typeof(ITestDbContext))]
-    [Migration("20180419123321_addedCats")]
-    partial class addedCats
+    [Migration("20180429105550_afterSeedRolesDelete")]
+    partial class afterSeedRolesDelete
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -75,8 +75,7 @@ namespace ITest.Data.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Content")
-                        .IsRequired();
+                    b.Property<string>("Content");
 
                     b.Property<DateTime?>("CreatedOn");
 
@@ -102,6 +101,8 @@ namespace ITest.Data.Migrations
 
                     b.Property<string>("AuthorId");
 
+                    b.Property<int>("CategoryId");
+
                     b.Property<DateTime?>("CreatedOn");
 
                     b.Property<DateTime?>("DeletedOn");
@@ -112,9 +113,13 @@ namespace ITest.Data.Migrations
 
                     b.Property<int>("Status");
 
+                    b.Property<int>("TimeInMinutes");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AuthorId");
+
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("Test");
                 });
@@ -184,7 +189,23 @@ namespace ITest.Data.Migrations
 
                     b.Property<int>("TestId");
 
-                    b.Property<bool>("PassedTest");
+                    b.Property<string>("Category");
+
+                    b.Property<DateTime?>("CreatedOn");
+
+                    b.Property<DateTime?>("DeletedOn");
+
+                    b.Property<double>("ExecutionTime");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<DateTime?>("ModifiedOn");
+
+                    b.Property<decimal>("Score");
+
+                    b.Property<string>("SerializedAnswers");
+
+                    b.Property<bool>("Submitted");
 
                     b.HasKey("UserId", "TestId");
 
@@ -322,6 +343,11 @@ namespace ITest.Data.Migrations
                     b.HasOne("ITest.Data.Models.User", "Author")
                         .WithMany()
                         .HasForeignKey("AuthorId");
+
+                    b.HasOne("ITest.Data.Models.Category", "Category")
+                        .WithMany("Tests")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("ITest.Data.Models.UserTests", b =>

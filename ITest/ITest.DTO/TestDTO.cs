@@ -7,6 +7,8 @@ namespace ITest.DTO
     {
         public int Id { get; set; }
 
+        public string Name { get; set; }
+
         public string AuthorId { get; set; }
 
         public TestStatus Status { get; set; }
@@ -14,6 +16,8 @@ namespace ITest.DTO
         public ICollection<QuestionDTO> Questions { get; set; }
 
         public ICollection<UserTestsDTO> Users { get; set; }
+
+        //public bool Published { get; set; }
 
         public int CategoryId { get; set; }
 

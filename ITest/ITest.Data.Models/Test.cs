@@ -18,7 +18,7 @@ namespace ITest.Data.Models
 
 
         //[ForeignKey("User")]
-        //public string Name { get; set; }
+        public string Name { get; set; }
 
         public string AuthorId { get; set; }
 
@@ -35,6 +35,8 @@ namespace ITest.Data.Models
         public Category Category { get; set; }
 
         public int TimeInMinutes { get; set; }
+
+        ///public bool Published { get; set; }
 
 
 

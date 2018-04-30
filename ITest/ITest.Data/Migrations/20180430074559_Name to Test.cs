@@ -4,22 +4,21 @@ using System.Collections.Generic;
 
 namespace ITest.Data.Migrations
 {
-    public partial class addingtimeittookforthetest : Migration
+    public partial class NametoTest : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<double>(
-                name: "ExecutionTime",
-                table: "UserTests",
-                nullable: false,
-                defaultValue: 0.0);
+            migrationBuilder.AddColumn<string>(
+                name: "Name",
+                table: "Test",
+                nullable: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "ExecutionTime",
-                table: "UserTests");
+                name: "Name",
+                table: "Test");
         }
     }
 }

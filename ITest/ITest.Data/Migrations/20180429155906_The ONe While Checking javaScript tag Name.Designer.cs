@@ -12,8 +12,8 @@ using System;
 namespace ITest.Data.Migrations
 {
     [DbContext(typeof(ITestDbContext))]
-    [Migration("20180423142713_Fixing UserTests table")]
-    partial class FixingUserTeststable
+    [Migration("20180429155906_The ONe While Checking javaScript tag Name")]
+    partial class TheONeWhileCheckingjavaScripttagName
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -113,6 +113,8 @@ namespace ITest.Data.Migrations
 
                     b.Property<int>("Status");
 
+                    b.Property<int>("TimeInMinutes");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AuthorId");
@@ -187,9 +189,13 @@ namespace ITest.Data.Migrations
 
                     b.Property<int>("TestId");
 
+                    b.Property<string>("Category");
+
                     b.Property<DateTime?>("CreatedOn");
 
                     b.Property<DateTime?>("DeletedOn");
+
+                    b.Property<double>("ExecutionTime");
 
                     b.Property<bool>("IsDeleted");
 
@@ -198,6 +204,8 @@ namespace ITest.Data.Migrations
                     b.Property<decimal>("Score");
 
                     b.Property<string>("SerializedAnswers");
+
+                    b.Property<bool>("Submitted");
 
                     b.HasKey("UserId", "TestId");
 
