@@ -38,7 +38,7 @@ namespace ITest.Services.Data
         }
         public bool UserStartedTest(string userId, string category)
         {
-            if (userTests.All.Any(x => x.UserId == userId && x.Category == category))
+            if (this.userTests.All.Any(x => x.UserId == userId && x.Category == category))
             {
                 return true;
             }
@@ -97,7 +97,6 @@ namespace ITest.Services.Data
 
 
         }
-
         public void SaveTest(UserTestsDTO test)
         {
             var testModel = mapper.MapTo<UserTests>(test);
@@ -196,6 +195,40 @@ namespace ITest.Services.Data
             completedTest.UserId = userId;
             completedTest.ExecutionTime = countDown - Math.Round(executionTimeMinutes, 2);
             this.Publish(completedTest);
+        }
+
+        public UserTestsDTO GetUserTest(string email, int testId)
+        {
+            var userTest = this.userTests.All.Where(ut => ut.User.Email == email && ut.TestId == testId).
+                                              Include(ut => ut.Test).
+                                              ThenInclude(t =>t.Questions).
+                                              ThenInclude(q => q.Answers).
+                                              First();
+            var userTestDto =  mapper.MapTo<UserTestsDTO>(userTest);
+            return userTestDto;
+
+        }
+        public void RecalculateAllTestsScore()
+        {
+            var testsToRecalc = this.userTests.All.Where(x => x.Submitted);
+            foreach (var item in testsToRecalc)
+            {
+                var itemDto = this.mapper.MapTo<UserTestsDTO>(item);
+                decimal newScore = this.testService.GetResult(itemDto);
+                item.Score = newScore;
+            }
+            saver.SaveChanges();
+        }
+        public void RecalculateTestScoreByTestId(int id)
+        {
+            var testsToRecalc = this.userTests.All.Where(t => t.TestId == id && t.Submitted);
+            foreach (var item in testsToRecalc)
+            {
+                var itemDto = this.mapper.MapTo<UserTestsDTO>(item);
+                decimal newScore = this.testService.GetResult(itemDto);
+                item.Score = newScore;
+            }
+            saver.SaveChanges();
         }
     }
 }

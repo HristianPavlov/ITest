@@ -10,6 +10,8 @@ namespace ITest.DTO
     {
         public string UserId { get; set; }
 
+        public string UserEmail { get; set; }
+
         public int TestId { get; set; }
 
         public TestDTO Test { get; set; }
