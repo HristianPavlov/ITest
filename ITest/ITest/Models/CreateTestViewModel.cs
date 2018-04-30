@@ -15,7 +15,7 @@ namespace ITest.Models
 
         public int Status { get; set; }
 
-        public string Content;
+        public string Name { get; set; }
 
         public List<CreateQuestionViewModel> Questions { get; set; }
 
