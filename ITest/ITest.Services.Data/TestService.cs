@@ -31,7 +31,7 @@ namespace ITest.Services.Data
             this.random = random;
             this.saver = saver;
         }
-        
+
         public int GetTestCountDownByTestId(int id)
         {
             var testsFromThisCategory = tests.All.Where(test => test.Id == id);
@@ -43,7 +43,7 @@ namespace ITest.Services.Data
         public TestDTO GetRandomTestFromCategory(int categoryID)
         {
             //var random = new Random();
-            var testsFromThisCategory = tests.All.Where(test => test.CategoryId == categoryID && test.Status==TestStatus.Published).//test status should be published
+            var testsFromThisCategory = tests.All.Where(test => test.CategoryId == categoryID && test.Status == TestStatus.Published).//test status should be published
                                                         Include(t => t.Questions).
                                                         ThenInclude(x => x.Answers)
                                                         .ToList();
@@ -83,7 +83,7 @@ namespace ITest.Services.Data
                 }
                 indexOfAnswer++;
             }
-            decimal score = (correctAnswers / realTest.Questions.Count()) * 100;
+            decimal score = Math.Round(((correctAnswers / realTest.Questions.Count()) * 100), 2);
             return score;
         }
     }

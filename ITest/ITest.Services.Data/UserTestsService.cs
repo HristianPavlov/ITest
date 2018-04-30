@@ -3,6 +3,7 @@ using ITest.Data.Repository;
 using ITest.Data.UnitOfWork;
 using ITest.DTO;
 using ITest.DTO.Enums;
+using ITest.Infrastructure.CustomExceptions;
 using ITest.Infrastructure.Providers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -132,7 +133,7 @@ namespace ITest.Services.Data
                 var startedTime = this.StartedTestCreationTime(userId, category);
                 if (this.TestIsSubmitted(userId, category))
                 {
-                    throw new Exception();
+                    throw new CategoryDoneException();
                     //RedirectToAction("CategoryDone", "Solve")
                 }
                 var endTime = startedTime.Value.AddMinutes(testAllowedTime);
@@ -141,7 +142,7 @@ namespace ITest.Services.Data
                 testView.RemainingTime = int.Parse(reaminingTime.ToString());
                 if (reaminingTime < 0)
                 {
-                    throw new Exception();
+                    throw new TimeUpNeverSubmittedException();
                     //RedirectToAction("TimeUpNotSubmitted", "Solve")
                 }
                 testView.StorageOfAnswers = new List<string>();
@@ -187,7 +188,7 @@ namespace ITest.Services.Data
             var executionTimeMinutes = executionTimeSeconds / 60;
             if (timeRemain < 0)
             {
-                throw new Exception();
+                throw new SubmittingLateException();
                 //RedirectToAction("SubmittingLate", "Solve")
             }
             var completedTest = mapper.MapTo<UserTestsDTO>(solveTestDto);

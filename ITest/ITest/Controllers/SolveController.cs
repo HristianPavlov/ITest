@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ITest.DTO;
+using ITest.Infrastructure.CustomExceptions;
 using ITest.Infrastructure.Providers;
 using ITest.Models.AnswerViewModels;
 using ITest.Models.CategoryViewModels;
@@ -50,20 +51,39 @@ namespace ITest.Controllers
         public IActionResult ShowTest(string id)
         //beneath is the category name not id !!
         {
-            var category = id;
-            var userId = userService.GetLoggedUserId(this.User);
-            var correctUserTestDto = userTestsService.GetCorrectSolveTest(userId, category);
-            var correctUserTest = mapper.MapTo<SolveTestViewModel>(correctUserTestDto);
-            return View(correctUserTest);
+            try
+            {
+                var category = id;
+                var userId = userService.GetLoggedUserId(this.User);
+                var correctUserTestDto = userTestsService.GetCorrectSolveTest(userId, category);
+                var correctUserTest = mapper.MapTo<SolveTestViewModel>(correctUserTestDto);
+                return View(correctUserTest);
+            }
+            catch (CategoryDoneException)
+            {
+                return this.RedirectToAction("CategoryDone", "Solve");
+            }
+            catch (TimeUpNeverSubmittedException)
+            {
+                return this.RedirectToAction("TimeUpNotSubmitted", "Solve");
+            }
+
         }
         [HttpPost]
         public IActionResult PublishAnswers(SolveTestViewModel answers)
         {
             if (ModelState.IsValid)
             {
-                var userId = userService.GetLoggedUserId(this.User);
-                var solveTestDto = mapper.MapTo<SolveTestDTO>(answers);
-                userTestsService.ValidateAndAdd(solveTestDto, userId);
+                try
+                {
+                    var userId = userService.GetLoggedUserId(this.User);
+                    var solveTestDto = mapper.MapTo<SolveTestDTO>(answers);
+                    userTestsService.ValidateAndAdd(solveTestDto, userId);
+                }
+                catch (SubmittingLateException)
+                {
+                    RedirectToAction("SubmittingLate", "Solve");
+                }
             }
             return this.RedirectToAction("Index", "Home");
         }
