@@ -1,4 +1,5 @@
 ﻿using ITest.Data.Models;
+using ITest.Data.Models.Enums;
 using ITest.Data.Repository;
 using ITest.Data.UnitOfWork;
 using ITest.DTO;
@@ -42,7 +43,7 @@ namespace ITest.Services.Data
         public TestDTO GetRandomTestFromCategory(int categoryID)
         {
             //var random = new Random();
-            var testsFromThisCategory = tests.All.Where(test => test.CategoryId == categoryID).
+            var testsFromThisCategory = tests.All.Where(test => test.CategoryId == categoryID && test.Status==TestStatus.Published).//test status should be published
                                                         Include(t => t.Questions).
                                                         ThenInclude(x => x.Answers)
                                                         .ToList();

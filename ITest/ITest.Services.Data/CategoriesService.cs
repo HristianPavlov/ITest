@@ -1,4 +1,5 @@
 ﻿using ITest.Data.Models;
+using ITest.Data.Models.Enums;
 using ITest.Data.Repository;
 using ITest.Data.UnitOfWork;
 using ITest.DTO;
@@ -42,7 +43,7 @@ namespace ITest.Services.Data
 
             foreach (var item in categoriesDto)
             {
-                if (item.Tests.Count > 0)
+                if (item.Tests.Count > 0 && item.Tests.Any(t => t.Status == TestStatus.Published))
                 {
                     item.CategoryState = UserTestState.Start;
                 }
