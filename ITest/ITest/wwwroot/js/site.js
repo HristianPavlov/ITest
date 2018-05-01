@@ -4,22 +4,22 @@
 $(document).ready(function () {
     var questionTemplate =
         `
-<div class="panel panel-default question" name="Questions{{q_id}}">
+<div class="panel panel-default question" name="Questions{{q_id}}" style="margin: 7% 0% 7% 0%; border: none; shadow: none; background-color:transparent;">
     
         <div>
-            <h3>Question{{qh_id}}</h3>
-            <button type="button" class="delete-button">Delete</button>
+            <div style="display: inline-block; padding-left: 15px;"><h3>Question{{qh_id}}</h3></div>
+            <button type="button" class="delete-button">Delete Question</button>
         </div>
         <div class="form-group">
-        <input id="Questions_{{q_id}}__.Content" name="Questions[{{q_id}}].Content" placeholder="Title" class="form-control" />
-            
+        <input id="Questions_{{q_id}}__.Content" name="Questions[{{q_id}}].Content" placeholder="Question content" class="form-control" style="width: 70%; margin-left: 10px; display:inline-block;" />
+        <button type="button" class="add-answer">Add Answer</button>
         </div>
 
         <div class="answer-container">
-        <button type="button" class="add-answer">Add Answer</button>
-        <div class="form-group col-lg-offset-1">
-            <input type="text"     id="Questions_{{q_id}}__.Answers_0__.Content"  name="Questions[{{q_id}}].Answers[0].Content" placeholder="Answer1" class="form-control" />
-            <input type="radio" id="Questions_{{q_id}}__.Answers_0__.Correct"   name="radio_{{q_id}}" class="form-control" value="true" /> 
+
+        <div style="height: 50px;" class="form-group col-lg-offset-1">
+            <input type="text"  style="width: 70%; margin-right: 15px;"   id="Questions_{{q_id}}__.Answers_0__.Content"  name="Questions[{{q_id}}].Answers[0].Content" placeholder="Answer1" class="form-control" />
+            <input type="radio" id="Questions_{{q_id}}__.Answers_0__.Correct"   name="radio_{{q_id}}" class="form-control" value="true" style="box-shadow:none; border:none;"/> 
 
            
         </div>
@@ -32,14 +32,14 @@ $(document).ready(function () {
 
     var answerTemplate =
         `
-    <div style="width: 70%; height: 50px;" class="answer-container">
+    <div style="height: 50px;" class="answer-container">
         <div class="form-group col-lg-offset-1">
-            <input type="text"    id="Questions_{{q_id}}__.Answers_{{a_id}}__.Content" name="Questions[{{q_id}}].Answers[{{a_id}}].Content" placeholder="Answer{{ap_id}}" class="form-control" />
-            <input type="radio" id="Questions_{{q_id}}__.Answers_{{a_id}}__.Correct"  name="radio_{{q_id}}" class="form-control" value="true"/>
+            <input type="text"  style="width: 70%; margin-right: 15px;"  id="Questions_{{q_id}}__.Answers_{{a_id}}__.Content" name="Questions[{{q_id}}].Answers[{{a_id}}].Content" placeholder="Answer{{ap_id}}" class="form-control" />
+            <input type="radio" id="Questions_{{q_id}}__.Answers_{{a_id}}__.Correct"  name="radio_{{q_id}}" class="form-control" value="true" style="box-shadow:none; border:none;"/>
             
         </div>
 
-        </div>;
+        </div>
    `;
     var total = 0;
 

@@ -6,14 +6,14 @@
 }
 
 #Content {
-    width: 70%;
+    width: 100%;
     margin-right: 20px;
 }
 
 #createTest-content {
     font-size: 15px;
     width: 100%;
-    padding: 2% 10% 3% 10%;
+    /*padding: 2% 10% 3% 10%;*/
 }
 
     #createTest-content button {
@@ -52,4 +52,15 @@
 
 #submitBtnArea {
     padding-right: 48%;
+}
+
+.panel {
+    -webkit-box-shadow:none;
+    border:none;
+}
+
+input[type=radio] {
+    -ms-transform: scale(1.5); /* IE 9 */
+    -webkit-transform: scale(1.5); /* Chrome, Safari, Opera */
+    transform: scale(1.5);
 }

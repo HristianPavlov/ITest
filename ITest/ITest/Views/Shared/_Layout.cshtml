@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html>
+<html style="height:100%;">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -21,7 +21,7 @@
 
     </environment>
 </head>
-<body>
+<body style="min-height: 100%; background-color:#F2F2F2;">
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
@@ -49,11 +49,13 @@
         </div>
     </nav>
 
-    <div class="container body-content">
-        @RenderBody()
+    <div class="container body-content" style=" margin: 0px 0px 0px 0px; width: 100%; height: 100%;" >
+        <div style="padding: 0% 15% 0% 15%;">
+            @RenderBody()
+        </div>
         <hr />
         <footer>
-            <p>&copy; 2018 - ITest</p>
+            <p></p>
         </footer>
     </div>
 

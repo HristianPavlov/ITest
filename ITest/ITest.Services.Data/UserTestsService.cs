@@ -109,23 +109,7 @@ namespace ITest.Services.Data
             userTests.Add(testModel);
             saver.SaveChanges();
         }
-        public void Publish(UserTestsDTO test)
-        {
-            var testModel = mapper.MapTo<UserTests>(test);
-            var score = testService.GetResult(test);
-
-            //testModel.Score = score;
-            //userTests.Update(testModel);
-            //saver.SaveChanges();
-            //Update doesnt work "cannot track many instances of same type"
-
-            var updatingtest = userTests.All.FirstOrDefault(x => x.TestId == test.TestId && x.UserId == test.UserId);
-            updatingtest.ExecutionTime = testModel.ExecutionTime;
-            updatingtest.Score = score;
-            updatingtest.SerializedAnswers = testModel.SerializedAnswers;
-            updatingtest.Submitted = true;
-            saver.SaveChanges();
-        }
+        
         public SolveTestDTO GetCorrectSolveTest(string userId, string category)
         {
             if (this.UserStartedTest(userId, category))
@@ -217,6 +201,23 @@ namespace ITest.Services.Data
             completedTest.UserId = userId;
             completedTest.ExecutionTime = countDown - Math.Round(executionTimeMinutes, 2);
             this.Publish(completedTest);
+        }
+        public void Publish(UserTestsDTO test)
+        {
+            var testModel = mapper.MapTo<UserTests>(test);
+            var score = testService.GetResult(test);
+
+            //testModel.Score = score;
+            //userTests.Update(testModel);
+            //saver.SaveChanges();
+            //Update doesnt work "cannot track many instances of same type"
+
+            var updatingtest = userTests.All.FirstOrDefault(x => x.TestId == test.TestId && x.UserId == test.UserId);
+            updatingtest.ExecutionTime = testModel.ExecutionTime;
+            updatingtest.Score = score;
+            updatingtest.SerializedAnswers = testModel.SerializedAnswers;
+            updatingtest.Submitted = true;
+            saver.SaveChanges();
         }
         public UserTestsDTO GetUserTest(string email, int testId)
         {
