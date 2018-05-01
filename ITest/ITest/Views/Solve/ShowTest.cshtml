@@ -31,7 +31,7 @@
                 {
                     <div class="form-check">
                         <label>
-                            <input type="radio" name="radio-@questionNum"> <span class="label-text @questionNum" id="@questionNum@answerNum">@answer.Content</span>
+                            <input type="radio" name="radio-@questionNum"> <span class="label-text @question.Id" id="@questionNum@answerNum">@answer.Content</span>
                         </label>
                     </div>
                     answerNum++;
@@ -44,11 +44,11 @@
                 //<p>@i</p>
                 //<p>@Model.Storage[i]</p>
 
-                <textarea type="text" asp-for="@Model.StorageOfAnswers[i]" style="display:none" class="Answer-@i" id="Answer-@i"></textarea>
+                <textarea type="text" asp-for="@Model.StorageOfAnswers[i]" style="display:none" class="Answer-@i" id="Answer-@Model.CorrectOrderOfQuestionId[i]"></textarea>
             }
             <p>
                 <input type="submit" value="Submit" id="submitButton" />
-            </p>
+            </p
         </form>
     </div>
 </div>

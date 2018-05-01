@@ -21,6 +21,7 @@ namespace ITest.Services.Data
         private readonly ITestService testService;
         private readonly ICategoriesService categoriesService;
         private readonly IRepository<UserTests> userTests;
+        private readonly IGenericShuffler shuffler;
         private readonly ISaver saver;
 
         public UserTestsService(IMappingProvider mapper,
@@ -28,6 +29,7 @@ namespace ITest.Services.Data
                                 ITestService testService,
                                 ICategoriesService categoriesService,
                                 IRepository<UserTests> userTests,
+                                IGenericShuffler shuffler,
                                 ISaver saver)
         {
             this.mapper = mapper;
@@ -35,8 +37,10 @@ namespace ITest.Services.Data
             this.testService = testService;
             this.categoriesService = categoriesService;
             this.userTests = userTests;
+            this.shuffler = shuffler;
             this.saver = saver;
         }
+
         public bool UserStartedTest(string userId, string category)
         {
             if (this.userTests.All.Any(x => x.UserId == userId && x.Category == category))
@@ -128,7 +132,16 @@ namespace ITest.Services.Data
             {
                 var testId = this.GetTestIdFromUserIdAndCategory(userId, category);
                 var test = testService.GetTestById(testId);
-                var testView = mapper.MapTo<SolveTestDTO>(test);
+                var solveTestDto = mapper.MapTo<SolveTestDTO>(test);
+                //shuffling start here /need to set the correct sequance of question ids in the answer views
+                var collOfQuestionIds = new List<int>();
+                foreach (var q in solveTestDto.Questions)
+                {
+                    collOfQuestionIds.Add(q.Id);
+                }
+                solveTestDto.CorrectOrderOfQuestionId = collOfQuestionIds;
+                solveTestDto.Questions = shuffler.Shuffle(test.Questions.ToList());
+                //
                 var testAllowedTime = double.Parse(test.TimeInMinutes.ToString());
                 var startedTime = this.StartedTestCreationTime(userId, category);
                 if (this.TestIsSubmitted(userId, category))
@@ -138,25 +151,33 @@ namespace ITest.Services.Data
                 }
                 var endTime = startedTime.Value.AddMinutes(testAllowedTime);
                 var reaminingTime = Math.Round((endTime - dateTime.GetDateTimeNow()).TotalSeconds);
-                testView.Category = category;
-                testView.RemainingTime = int.Parse(reaminingTime.ToString());
+                solveTestDto.Category = category;
+                solveTestDto.RemainingTime = int.Parse(reaminingTime.ToString());
                 if (reaminingTime < 0)
                 {
                     throw new TimeUpNeverSubmittedException();
                     //RedirectToAction("TimeUpNotSubmitted", "Solve")
                 }
-                testView.StorageOfAnswers = new List<string>();
-                for (int i = 0; i < testView.Questions.Count; i++)
+                solveTestDto.StorageOfAnswers = new List<string>();
+                for (int i = 0; i < solveTestDto.Questions.Count; i++)
                 {
-                    testView.StorageOfAnswers.Add("No Answer");
+                    solveTestDto.StorageOfAnswers.Add("No Answer");
                 }
-                return testView;
+                return solveTestDto;
             }
             else
             {
                 var categoryId = categoriesService.GetIdByCategoryName(category);
                 var randomTest = testService.GetRandomTestFromCategory(categoryId);
-                var testViewModel = mapper.MapTo<SolveTestDTO>(randomTest);
+                var solveTestDto = mapper.MapTo<SolveTestDTO>(randomTest);
+                //shuffling start here /need to set the correct sequance of question ids in the answer views
+                var collOfQuestionIds = new List<int>();
+                foreach (var q in solveTestDto.Questions)
+                {
+                    collOfQuestionIds.Add(q.Id);
+                }
+                solveTestDto.CorrectOrderOfQuestionId = collOfQuestionIds;
+                solveTestDto.Questions = shuffler.Shuffle(randomTest.Questions.ToList());
                 // add the test in base on creation
                 var saveThisTestCreation = new UserTestsDTO
                 {
@@ -166,16 +187,16 @@ namespace ITest.Services.Data
                 };
                 this.SaveTest(saveThisTestCreation);
                 //added the up
-                testViewModel.StorageOfAnswers = new List<string>();
-                for (int i = 0; i < testViewModel.Questions.Count; i++)
+                solveTestDto.StorageOfAnswers = new List<string>();
+                for (int i = 0; i < solveTestDto.Questions.Count; i++)
                 {
-                    testViewModel.StorageOfAnswers.Add("No Answer");
+                    solveTestDto.StorageOfAnswers.Add("No Answer");
                 }
-                testViewModel.Category = category;
-                testViewModel.CreatedOn = dateTime.GetDateTimeNow();
-                testViewModel.RemainingTime =
+                solveTestDto.Category = category;
+                solveTestDto.CreatedOn = dateTime.GetDateTimeNow();
+                solveTestDto.RemainingTime =
                 Convert.ToInt32(((dateTime.GetDateTimeNow().AddMinutes(randomTest.TimeInMinutes) - dateTime.GetDateTimeNow()).TotalSeconds));
-                return testViewModel;
+                return solveTestDto;
             }
         }
         public void ValidateAndAdd(SolveTestDTO solveTestDto, string userId)
@@ -197,7 +218,6 @@ namespace ITest.Services.Data
             completedTest.ExecutionTime = countDown - Math.Round(executionTimeMinutes, 2);
             this.Publish(completedTest);
         }
-
         public UserTestsDTO GetUserTest(string email, int testId)
         {
             var userTest = this.userTests.All.Where(ut => ut.User.Email == email && ut.TestId == testId).

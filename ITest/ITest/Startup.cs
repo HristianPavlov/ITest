@@ -64,6 +64,7 @@ namespace ITest
             services.AddTransient<IDateTimeProvider, DateTimeProvider>();
             services.AddTransient<IRandomProvider, RandomProvider>();
             services.AddTransient<IRepoTimeProvider, RepoTimeProvider>();
+            services.AddTransient<IGenericShuffler, GenericShuffler>();
         }
         private void RegisterAuthentication(IServiceCollection services)
         {
