@@ -8,7 +8,6 @@
     ViewData["Title"] = "Good luck";
 }
 
-<h1>hello here we start testing</h1>
 <div style="position:fixed; right:0%; top:10%">
     <div class="clock"></div>
 </div>
@@ -25,8 +24,9 @@
             @{int questionNum = 0; int answerNum = 1;}
             @foreach (var question in Model.Questions)
             {
-                <div class="well"><h2>Question @questionNum</h2></div>
-                <h2>@question.Content</h2>
+                <span style="font-size:2em; font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">Question @questionNum</span>
+                <br />
+                <span style="font-size:2em; font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif">@question.Content</span>
                 @foreach (var answer in question.Answers)
                 {
                     <div class="form-check">
