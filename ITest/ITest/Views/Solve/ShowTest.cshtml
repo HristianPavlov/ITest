@@ -8,12 +8,10 @@
     ViewData["Title"] = "Good luck";
 }
 
-<div style="position:fixed; right:0%; top:10%">
+<div style="position:fixed; right:0%; top:10%; height:100%; width:40%;">
     <div class="clock"></div>
 </div>
 <div style="display:none" id="secondsYouHave">@Model.RemainingTime</div>
-
-
 <div class="container">
     <div class="col-md-4">
         <form asp-controller="Solve" asp-action="PublishAnswers" method="post">
@@ -45,7 +43,7 @@
                 //<p>@i</p>
                 //<p>@Model.Storage[i]</p>
 
-                <textarea type="text" asp-for="@Model.StorageOfAnswers[i]" @*style="display:none" *@ class="Answer-@i" id="Answer-@Model.CorrectOrderOfQuestionId[i]"></textarea>
+                <textarea type="text" asp-for="@Model.StorageOfAnswers[i]" @*style="display:none"*@ class="Answer-@i" id="Answer-@Model.CorrectOrderOfQuestionId[i]"></textarea>
             }
 
 

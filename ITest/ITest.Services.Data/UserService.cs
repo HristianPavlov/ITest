@@ -14,6 +14,10 @@ namespace ITest.Services.Data
         {
             this.userManager = userManager;
         }
+        public UserService()
+        {
+                
+        }
 
         public string GetLoggedUserId(ClaimsPrincipal claims)
         {

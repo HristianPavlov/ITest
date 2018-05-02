@@ -60,8 +60,8 @@ namespace ITest.Controllers
                 var category = id;
                 var userId = userService.GetLoggedUserId(this.User);
                 var correctUserTestDto = userTestsService.GetCorrectSolveTest(userId, category);
-                var correctUserTest = mapper.MapTo<SolveTestViewModel>(correctUserTestDto);
-                return View(correctUserTest);
+                var correctUserTestView = mapper.MapTo<SolveTestViewModel>(correctUserTestDto);
+                return View(correctUserTestView);
             }
             catch (CategoryDoneException)
             {

@@ -35,30 +35,31 @@
             <div id="@counterQuestion" class="panel-collapse collapse in">
                 <div class="panel-body">
                     <p>Q : @q.Content</p>
+                    @{bool noAnswer = true;}
                     @foreach (var a in q.Answers)
                     {
                         if (a.Correct && Model.StorageOfAnswers[counterQuestion] == q.Answers.Where(x => x.Correct).First().Content)
                         {
                             <span style="color:green;font-weight:bold">&#x2714;@a.Content</span>
-
+                            noAnswer = false;
                         }
                         else if (a.Correct)
                         {
                             <span style="color:green;font-weight:bold">@a.Content</span>
+
                         }
                         else if (Model.StorageOfAnswers[counterQuestion] == a.Content)
                         {
                             <span style="color:red;font-weight:bold">&#x2718;@a.Content</span>
+                            noAnswer = false;
                         }
                         else
                         {
                             <span>@a.Content</span>
-
                         }
                         <br>
                     }
-
-                    @if (Model.StorageOfAnswers[counterQuestion] == "No Answer")
+                    @if (noAnswer)
                     {
                         <span style="color:red">User did not answer</span>
                     }
