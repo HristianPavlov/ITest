@@ -86,7 +86,7 @@ $(document).ready(function () {
     $('#questions-container').on('click', '.delete-button', function () {
         var x = $(this).closest(`.panel.panel-default.question`).attr(`name`).replace(`Questions`, ``);
         var number = parseInt(x);
-        console.log(number);
+        //console.log(number);
         $(this).closest('.panel.panel-default.question').remove();
         $(document).find(`input`).each(function () {
 

@@ -12,9 +12,10 @@ using System;
 namespace ITest.Data.Migrations
 {
     [DbContext(typeof(ITestDbContext))]
-    partial class ITestDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180430101237_Unique Name")]
+    partial class UniqueName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

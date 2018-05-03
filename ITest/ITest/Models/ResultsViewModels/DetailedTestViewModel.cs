@@ -8,7 +8,7 @@ namespace ITest.Models.ResultsViewModels
 {
     public class DetailedTestViewModel
     {
-        public ShowTestViewModel Test { get; set; }
+        public TestViewModel Test { get; set; }
         public List<string> StorageOfAnswers { get; set; }
     }
 }

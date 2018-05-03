@@ -26,6 +26,11 @@ namespace ITest.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             //strin + int take care!!!!!
+            builder
+                .Entity<Test>()
+                .HasIndex(u => u.Name)
+                .IsUnique();
+
             builder.Entity<UserTests>()
                 .HasKey(x => new { x.UserId, x.TestId });
 

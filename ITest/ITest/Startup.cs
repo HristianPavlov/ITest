@@ -96,7 +96,7 @@ namespace ITest
         {
           
             services.AddDbContext<ITestDbContext>(options =>
-               options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+               options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))); /*, ServiceLifetime.Transient*/
 
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
             services.AddScoped<ISaver, EFSaver>();
@@ -104,16 +104,7 @@ namespace ITest
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, RoleManager<IdentityRole> roleManager)
         {
-            using (var scope = app.ApplicationServices.CreateScope())
-            {
-
-                scope.ServiceProvider.GetService<ITestDbContext>().Database.EnsureCreated();
-               // scope.ServiceProvider.GetService<ITestDbContext>().Database.Migrate();
-
-
-
-
-            }
+         
 
             if (env.IsDevelopment())
             {
@@ -128,7 +119,7 @@ namespace ITest
 
             app.UseAuthentication();
             //The seeding of roles
-           // UserRoleInitializer.SeedRoles(roleManager);
+            //UserRoleInitializer.SeedRoles(roleManager);
 
             app.UseStaticFiles();
 

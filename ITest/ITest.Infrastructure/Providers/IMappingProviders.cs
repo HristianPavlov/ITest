@@ -11,8 +11,16 @@ namespace ITest.Infrastructure.Providers
     {
         TDestination MapTo<TDestination>(object source);
 
-        IEnumerable<TDestination> ProjectTo<TDestination>(IQueryable<object> source);
+        TDestination MapTo<TSource, TDestination>(TSource source, TDestination destination);
+        IEnumerable<TDestination> EnumerableProjectTo<TSource, TDestination>(IEnumerable<TSource> source);
 
+
+        IEnumerable<TDestination> ProjectTo<TDestination>(IQueryable<object> source);
         IEnumerable<TDestination> EnumProjectTo<TDestination>(IEnumerable<object> source);
+        IQueryable<TDestination> QueryableProjectTo<TDestination>(IQueryable<object> source);
+
+
+
+
     }
 }

@@ -44,5 +44,28 @@ namespace ITest.Infrastructure.Providers
         {
             return source.AsQueryable().ProjectTo<TDestination>();
         }
+        public IQueryable<TDestination> QueryableProjectTo<TDestination>(IQueryable<object> source)
+        {
+            return source.ProjectTo<TDestination>();
+        }
+
+
+
+
+
+
+
+        public IEnumerable<TDestination> EnumerableProjectTo<TSource, TDestination>(IEnumerable<TSource> source)
+        {
+            // AsQuryable cast to avoid query materialization errors
+            return source.AsQueryable().ProjectTo<TDestination>();
+        }
+
+        public TDestination MapTo<TSource, TDestination>(TSource source, TDestination destination)
+        {
+            return this.mapper.Map<TSource, TDestination>(source, destination);
+        }
+
+       
     }
 }

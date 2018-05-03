@@ -9,7 +9,13 @@ namespace ITest.Services.Data
     {
         TestDTO GetRandomTestFromCategory(int categoryID);
         TestDTO GetTestById(int id);
+        TestDTO GetTestByName(string name);
+        TestEditDTO GetTestByNameEditDTO(string name);
+
         int GetTestCountDownByTestId(int id);
+
         decimal GetResult(UserTestsDTO test);
+        IEnumerable<TestDTO> GetAllTests();
+        IEnumerable<TestEditDTO> GetAllTestsWithOutStuffInIttEditDTO();
     }
 }

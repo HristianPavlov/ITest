@@ -48,6 +48,8 @@ namespace ITest.Controllers
             return this.RedirectToAction("Index", "Home");
         }
 
+
+
         public IActionResult ShowCategories()
         {
             var model = new CategoriesViewModel();

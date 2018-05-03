@@ -63,6 +63,7 @@ namespace ITest.Services.Data
                                         Include(t => t.Test).
                                         Include(u => u.User);
             return mapper.ProjectTo<UserTestsDTO>(allUserTests);
+
         }
         public IEnumerable<UserTestsDTO> GetCurrentUserTests(string userId)
         {
