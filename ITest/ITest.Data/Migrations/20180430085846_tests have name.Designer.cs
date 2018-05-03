@@ -12,8 +12,8 @@ using System;
 namespace ITest.Data.Migrations
 {
     [DbContext(typeof(ITestDbContext))]
-    [Migration("20180429105550_afterSeedRolesDelete")]
-    partial class afterSeedRolesDelete
+    [Migration("20180430085846_tests have name")]
+    partial class testshavename
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -110,6 +110,8 @@ namespace ITest.Data.Migrations
                     b.Property<bool>("IsDeleted");
 
                     b.Property<DateTime?>("ModifiedOn");
+
+                    b.Property<string>("Name");
 
                     b.Property<int>("Status");
 

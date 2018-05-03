@@ -64,6 +64,7 @@ namespace ITest
             services.AddTransient<IDateTimeProvider, DateTimeProvider>();
             services.AddTransient<IRandomProvider, RandomProvider>();
             services.AddTransient<IRepoTimeProvider, RepoTimeProvider>();
+            services.AddTransient<IGenericShuffler, GenericShuffler>();
         }
         private void RegisterAuthentication(IServiceCollection services)
         {
@@ -104,8 +105,6 @@ namespace ITest
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, RoleManager<IdentityRole> roleManager)
         {
-         
-
             if (env.IsDevelopment())
             {
                 app.UseBrowserLink();
@@ -116,7 +115,6 @@ namespace ITest
             {
                 app.UseExceptionHandler("/Home/Error");
             }
-
             app.UseAuthentication();
             //The seeding of roles
             //UserRoleInitializer.SeedRoles(roleManager);

@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html>
+<html style="height:100%;">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -21,7 +21,7 @@
 
     </environment>
 </head>
-<body>
+<body style="min-height: 100%; background-color:#F2F2F2;">
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
@@ -34,37 +34,28 @@
                 <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">ITest</a>
             </div>
             <div class="navbar-collapse collapse">
+
                 <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
-
-                    @if (User.Identity.IsAuthenticated)
-    {
-                <li id="SolveArea"><a asp-area="" asp-controller="Category" asp-action="ShowCategories">SolveTests</a></li>
-                <li><a asp-area="" asp-controller="CreateTests" asp-action="CreateNewTest">CreateTests</a></li>
-                <li><a asp-area="" asp-controller="EditTest" asp-action="SearchTest">SearchTest</a></li>
-
-}
-                    @if (User.IsInRole("Admin"))
-    {
-    }
-
-                    <li><a asp-area="" asp-controller="Results" asp-action="RecalculateTests">Resolve</a></li>
+                    <li id="SolveArea"><a asp-area="" asp-controller="Category" asp-action="ShowCategories">SolveTests</a></li>
+                    <li><a asp-area="" asp-controller="CreateTests" asp-action="CreateNewTest">CreateTests</a></li>
                     <li><a asp-area="" asp-controller="Category" asp-action="CreateCategory">CreateCategory</a></li>
+                    <li><a asp-area="" asp-controller="Results" asp-action="RecalculateTests">Resolve</a></li>
                     <li><a asp-area="" asp-controller="Results" asp-action="ShowResults">Results</a></li>
                 </ul>
+
                 @*write such partials for logged in and admin checks*@
                 @await Html.PartialAsync("_LoginPartial")
             </div>
         </div>
     </nav>
 
-    <div class="container body-content">
-        @RenderBody()
+    <div class="container body-content" style=" margin: 0px 0px 0px 0px; width: 100%; height: 100%;" >
+        <div style="padding: 0% 15% 0% 15%;">
+            @RenderBody()
+        </div>
         <hr />
         <footer>
-            <p>&copy; 2018 - ITest</p>
+            <p></p>
         </footer>
     </div>
 

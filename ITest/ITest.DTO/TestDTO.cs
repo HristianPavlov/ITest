@@ -24,5 +24,7 @@ namespace ITest.DTO
         public CategoryDTO Category { get; set; }
     
         public int TimeInMinutes { get; set; }
+
+        public bool IsDeleted { get; set; }
     }
 }

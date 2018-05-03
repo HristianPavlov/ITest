@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace ITest.Data.Migrations
 {
-    public partial class afterSeedRolesDelete : Migration
+    public partial class testshavename : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -187,6 +187,7 @@ namespace ITest.Data.Migrations
                     DeletedOn = table.Column<DateTime>(nullable: true),
                     IsDeleted = table.Column<bool>(nullable: false),
                     ModifiedOn = table.Column<DateTime>(nullable: true),
+                    Name = table.Column<string>(nullable: true),
                     Status = table.Column<int>(nullable: false),
                     TimeInMinutes = table.Column<int>(nullable: false)
                 },

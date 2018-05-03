@@ -9,13 +9,16 @@ namespace ITest.Models.TestViewModels
 {
     public class SolveTestViewModel
     {
-        public ICollection<ShowQuestionViewModel> Questions { get; set; }
+        public List<ShowQuestionViewModel> Questions { get; set; }
+
+        public List<int> CorrectOrderOfQuestionId { get; set; }
 
         public string UserId { get; set; }
 
         public int Id { get; set; }
 
         public List<string> StorageOfAnswers { get; set; }
+        
 
         public DateTime? CreatedOn { get; set; }
 

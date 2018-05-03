@@ -11,14 +11,10 @@ namespace ITest.Data.Models
 {
     public class Test : DataModel
     {
-
         //public Test()
         //{
         //    this.Questions = new HashSet<Question>();
         //}
-
-
-
         //[ForeignKey("User")]
         //[Required]
         
@@ -42,10 +38,5 @@ namespace ITest.Data.Models
         public Category Category { get; set; }
      
         public int TimeInMinutes { get; set; }
-
-        ///public bool Published { get; set; }
-
-
-
     }
 }
