@@ -43,8 +43,11 @@ namespace ITest.Services.Data
                 .FirstOrDefault(x => x.Name == dto.Name);
           
             var id = TestUpdate.Id;
+            var catId = TestUpdate.CategoryId;
             TestUpdate = this.mapper.MapTo(dto, TestUpdate);
             TestUpdate.Id = id;
+            TestUpdate.CategoryId = catId;
+
 
             this.tests.Update(TestUpdate);
             this.saver.SaveChanges();

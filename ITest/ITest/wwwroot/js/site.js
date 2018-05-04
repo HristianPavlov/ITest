@@ -113,7 +113,7 @@ $(document).ready(function () {
 
 
 
-    $('#question-form').on('click', '#submitNewTestBtn', function () {
+    $('#question-form').on('click', '#submitBtnArea', function () {
         //event.preventDefault();
         var qwerty = $('input:radio');
         for (var i = 0; i < qwerty.length; i++) {

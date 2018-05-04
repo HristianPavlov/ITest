@@ -56,6 +56,10 @@ namespace ITest.Services.Data
             return categoriesDto;
         }
 
+        public IEnumerable<string> GetAllCategoriesNames()
+        {
+            return this.categories.All.Select(c => c.Name);
+        }
 
         public void Update()
         {
@@ -64,5 +68,7 @@ namespace ITest.Services.Data
             //categories.Update(cat);
             //this.saver.SaveChanges();
         }
+
+        
     }
 }

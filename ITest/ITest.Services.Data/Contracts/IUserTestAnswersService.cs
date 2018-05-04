@@ -8,6 +8,6 @@ namespace ITest.Services.Data
     {
         void SaveQuestionAnswers(UserTestsDTO test);
         decimal GetResult(string userId, string category);
-        void RecalculateAllTakenTestsWithId(Guid testId);
+        void RecalculateAllTakenTestsWithId(string name);
     }
 }
