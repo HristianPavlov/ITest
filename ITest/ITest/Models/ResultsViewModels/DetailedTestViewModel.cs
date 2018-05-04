@@ -9,6 +9,6 @@ namespace ITest.Models.ResultsViewModels
     public class DetailedTestViewModel
     {
         public ShowTestViewModel Test { get; set; }
-        public List<string> StorageOfAnswers { get; set; }
+        public Dictionary<Guid, Guid> QuestionAnswers { get; set; }
     }
 }

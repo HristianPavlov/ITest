@@ -1,11 +1,12 @@
 ﻿using ITest.Data.Models.Enums;
+using System;
 using System.Collections.Generic;
 
 namespace ITest.DTO
 {
     public class TestDTO
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         public string Name { get; set; }
 
@@ -13,13 +14,13 @@ namespace ITest.DTO
 
         public TestStatus Status { get; set; }
 
+        public DateTime? CreatedOn { get; set; }
+
         public ICollection<QuestionDTO> Questions { get; set; }
 
         public ICollection<UserTestsDTO> Users { get; set; }
 
-        //public bool Published { get; set; }
-
-        public int CategoryId { get; set; }
+        public Guid CategoryId { get; set; }
 
         public CategoryDTO Category { get; set; }
     

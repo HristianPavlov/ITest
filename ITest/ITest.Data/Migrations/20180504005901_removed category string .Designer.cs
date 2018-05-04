@@ -12,9 +12,10 @@ using System;
 namespace ITest.Data.Migrations
 {
     [DbContext(typeof(ITestDbContext))]
-    partial class ITestDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180504005901_removed category string ")]
+    partial class removedcategorystring
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -226,6 +227,8 @@ namespace ITest.Data.Migrations
                     b.Property<DateTime?>("ModifiedOn");
 
                     b.Property<decimal>("Score");
+
+                    b.Property<string>("SerializedAnswers");
 
                     b.Property<bool>("Submitted");
 

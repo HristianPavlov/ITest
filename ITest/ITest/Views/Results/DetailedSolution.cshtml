@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "DetailedSolution";
 }
+<h1>@Model.Test.Name</h1>
 <div class="panel-group" id="accordion" style="margin-top:20px;">
     @{var counterQuestion = 0;}
     @foreach (var q in Model.Test.Questions)
@@ -11,12 +12,12 @@
             <div class="panel-heading">
                 <h4 class="panel-title">
                     <a data-toggle="collapse" data-parent="#accordion" href="#@counterQuestion">
-
-                        @if (Model.StorageOfAnswers[counterQuestion] == q.Answers.Where(a => a.Correct).First().Content)
+                        @*@if (Model.StorageOfAnswers[counterQuestion] == q.Answers.Where(a => a.Correct).First().Content)*@
+                        @if (Model.QuestionAnswers.ContainsKey(q.Id) && Model.QuestionAnswers[q.Id] == q.Answers.First(x => x.Correct).Id)
                         {
                             <div>
                                 <span style="color:green">
-                                    &#x2714; Question number @counterQuestion
+                                    &#x2714;@q.Content
                                 </span>
                             </div>
                         }
@@ -24,46 +25,42 @@
                         {
                             <div>
                                 <span style="color:red">
-                                    &#x2718; Question number @counterQuestion
+                                    &#x2718; @q.Content
                                 </span>
                             </div>
                         }
-
                     </a>
                 </h4>
             </div>
             <div id="@counterQuestion" class="panel-collapse collapse in">
                 <div class="panel-body">
-                    <p>Q : @q.Content</p>
-                    @{bool noAnswer = true;}
+                    @*<p>Q : @q.Content</p>*@
                     @foreach (var a in q.Answers)
                     {
-                        if (a.Correct && Model.StorageOfAnswers[counterQuestion] == q.Answers.Where(x => x.Correct).First().Content)
+                        if (a.Correct && Model.QuestionAnswers.ContainsKey(q.Id) && Model.QuestionAnswers[q.Id]==a.Id)
                         {
-                            <span style="color:green;font-weight:bold">&#x2714;@a.Content</span>
-                            noAnswer = false;
+                            <span style="color:green;font-weight:bold">&#x2714;@a.Content</span> //user answered correct
                         }
                         else if (a.Correct)
+                            
                         {
-                            <span style="color:green;font-weight:bold">@a.Content</span>
+                            <span style="color:green;font-weight:bold">- @a.Content</span> //correct answer but user didnt click 
 
                         }
-                        else if (Model.StorageOfAnswers[counterQuestion] == a.Content)
+                        else if (!a.Correct && Model.QuestionAnswers.ContainsKey(q.Id) && Model.QuestionAnswers[q.Id]==a.Id)
                         {
-                            <span style="color:red;font-weight:bold">&#x2718;@a.Content</span>
-                            noAnswer = false;
+                            <span style="color:red;font-weight:bold">- &#x2718;@a.Content</span> //user answered wrong
                         }
                         else
                         {
-                            <span>@a.Content</span>
+                            <span>- @a.Content</span> //other cases just show the answer
                         }
                         <br>
                     }
-                    @if (noAnswer)
+                    @if (!Model.QuestionAnswers.ContainsKey(q.Id))
                     {
                         <span style="color:red">User did not answer</span>
                     }
-                        
                 </div>
             </div>
         </div>

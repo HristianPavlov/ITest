@@ -33,15 +33,14 @@ namespace ITest.Services.Data
             this.saver = saver;
         }
 
-        public int GetTestCountDownByTestId(int id)
+        public int GetTestCountDownByTestId(Guid id)
         {
             var testsFromThisCategory = tests.All.Where(test => test.Id == id);
             var currentTest = testsFromThisCategory.First();
             var countDownMins = currentTest.TimeInMinutes;
             return countDownMins;
         }
-
-        public TestDTO GetRandomTestFromCategory(int categoryID)
+        public TestDTO GetRandomTestFromCategory(Guid categoryID)
         {
             // test status should be published and test shouldnt be deleted
              var testsFromThisCategory = tests.All.Where(test => test.CategoryId == categoryID && test.Status == TestStatus.Published && !test.IsDeleted).
@@ -56,7 +55,7 @@ namespace ITest.Services.Data
             var randomTestDto = mapper.MapTo<TestDTO>(randomTest);
             return randomTestDto;
         }
-        public TestDTO GetTestById(int id)
+        public TestDTO GetTestById(Guid id)
         {
             var testsFromThisCategory = tests.All.Where(test => test.Id == id).
                                                         Include(t => t.Questions).
@@ -64,26 +63,6 @@ namespace ITest.Services.Data
             var currentTest = testsFromThisCategory.First();
             var foundTestDto = mapper.MapTo<TestDTO>(currentTest);
             return foundTestDto;
-        }
-        public decimal GetResult(UserTestsDTO solvedTest)
-        {
-            var realTests = tests.All.Where(t => t.Id == solvedTest.TestId).
-                                                Include(t => t.Questions).
-                                                ThenInclude(x => x.Answers);
-            var realTest = realTests.First();
-            decimal correctAnswers = 0;
-            var indexOfAnswer = 0;
-            foreach (var question in realTest.Questions)
-            {
-                var currCorrAnswer = question.Answers.FirstOrDefault(a => a.Correct);
-                if (currCorrAnswer.Content == solvedTest.StorageOfAnswers[indexOfAnswer])
-                {
-                    correctAnswers++;
-                }
-                indexOfAnswer++;
-            }
-            decimal score = Math.Round(((correctAnswers / realTest.Questions.Count()) * 100), 2);
-            return score;
         }
     }
 }

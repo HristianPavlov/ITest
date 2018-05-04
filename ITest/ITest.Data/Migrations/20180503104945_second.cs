@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace ITest.Data.Migrations
 {
-    public partial class testshavename : Migration
+    public partial class second : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -56,8 +56,7 @@ namespace ITest.Data.Migrations
                 name: "Categories",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Id = table.Column<Guid>(nullable: false),
                     CreatedOn = table.Column<DateTime>(nullable: true),
                     DeletedOn = table.Column<DateTime>(nullable: true),
                     IsDeleted = table.Column<bool>(nullable: false),
@@ -179,10 +178,9 @@ namespace ITest.Data.Migrations
                 name: "Test",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Id = table.Column<Guid>(nullable: false),
                     AuthorId = table.Column<string>(nullable: true),
-                    CategoryId = table.Column<int>(nullable: false),
+                    CategoryId = table.Column<Guid>(nullable: false),
                     CreatedOn = table.Column<DateTime>(nullable: true),
                     DeletedOn = table.Column<DateTime>(nullable: true),
                     IsDeleted = table.Column<bool>(nullable: false),
@@ -212,14 +210,13 @@ namespace ITest.Data.Migrations
                 name: "Question",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Id = table.Column<Guid>(nullable: false),
                     Content = table.Column<string>(nullable: true),
                     CreatedOn = table.Column<DateTime>(nullable: true),
                     DeletedOn = table.Column<DateTime>(nullable: true),
                     IsDeleted = table.Column<bool>(nullable: false),
                     ModifiedOn = table.Column<DateTime>(nullable: true),
-                    TestId = table.Column<int>(nullable: false)
+                    TestId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -236,8 +233,7 @@ namespace ITest.Data.Migrations
                 name: "UserTests",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(nullable: false),
-                    TestId = table.Column<int>(nullable: false),
+                    Id = table.Column<Guid>(nullable: false),
                     Category = table.Column<string>(nullable: true),
                     CreatedOn = table.Column<DateTime>(nullable: true),
                     DeletedOn = table.Column<DateTime>(nullable: true),
@@ -246,11 +242,13 @@ namespace ITest.Data.Migrations
                     ModifiedOn = table.Column<DateTime>(nullable: true),
                     Score = table.Column<decimal>(nullable: false),
                     SerializedAnswers = table.Column<string>(nullable: true),
-                    Submitted = table.Column<bool>(nullable: false)
+                    Submitted = table.Column<bool>(nullable: false),
+                    TestId = table.Column<Guid>(nullable: false),
+                    UserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserTests", x => new { x.UserId, x.TestId });
+                    table.PrimaryKey("PK_UserTests", x => x.Id);
                     table.ForeignKey(
                         name: "FK_UserTests_Test_TestId",
                         column: x => x.TestId,
@@ -262,22 +260,21 @@ namespace ITest.Data.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Answer",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Id = table.Column<Guid>(nullable: false),
                     Content = table.Column<string>(nullable: false),
                     Correct = table.Column<bool>(nullable: false),
                     CreatedOn = table.Column<DateTime>(nullable: true),
                     DeletedOn = table.Column<DateTime>(nullable: true),
                     IsDeleted = table.Column<bool>(nullable: false),
                     ModifiedOn = table.Column<DateTime>(nullable: true),
-                    QuestionId = table.Column<int>(nullable: false)
+                    QuestionId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -288,6 +285,35 @@ namespace ITest.Data.Migrations
                         principalTable: "Question",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserTestAnswers",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    AnswerId = table.Column<Guid>(nullable: false),
+                    CreatedOn = table.Column<DateTime>(nullable: true),
+                    DeletedOn = table.Column<DateTime>(nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    ModifiedOn = table.Column<DateTime>(nullable: true),
+                    UserTestId = table.Column<Guid>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserTestAnswers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserTestAnswers_Answer_AnswerId",
+                        column: x => x.AnswerId,
+                        principalTable: "Answer",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserTestAnswers_UserTests_UserTestId",
+                        column: x => x.UserTestId,
+                        principalTable: "UserTests",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -350,16 +376,28 @@ namespace ITest.Data.Migrations
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_UserTestAnswers_AnswerId",
+                table: "UserTestAnswers",
+                column: "AnswerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserTestAnswers_UserTestId",
+                table: "UserTestAnswers",
+                column: "UserTestId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_UserTests_TestId",
                 table: "UserTests",
                 column: "TestId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserTests_UserId",
+                table: "UserTests",
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Answer");
-
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -376,13 +414,19 @@ namespace ITest.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "UserTestAnswers");
+
+            migrationBuilder.DropTable(
+                name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Answer");
+
+            migrationBuilder.DropTable(
                 name: "UserTests");
 
             migrationBuilder.DropTable(
                 name: "Question");
-
-            migrationBuilder.DropTable(
-                name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "Test");
