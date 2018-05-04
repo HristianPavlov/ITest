@@ -12,7 +12,19 @@ namespace ITest.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            if (User.IsInRole("Admin"))
+            {
+                return this.RedirectToAction("ShowResults", "Results");
+            }
+            else if (User.Identity.IsAuthenticated)
+            {
+                return this.RedirectToAction("ShowCategories", "Category");
+            }
+            else
+            {
+                return this.RedirectToAction("Authorize", "Account");
+            }
+
         }
 
         public IActionResult About()
@@ -33,5 +45,7 @@ namespace ITest.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+
     }
 }

@@ -22,6 +22,9 @@ namespace ITest.Infrastructure.RoleInitializer
                 role.Name = "Admin";
                 IdentityResult roleResult = roleManager.CreateAsync(role).Result;
             }
+
+
+
         }
     }
 }

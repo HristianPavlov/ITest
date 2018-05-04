@@ -42,17 +42,6 @@ namespace ITest.Controllers
         [TempData]
         public string ErrorMessage { get; set; }
 
-        [HttpGet]
-        [AllowAnonymous]
-        public async Task<IActionResult> Login(string returnUrl = null)
-        {
-            // Clear the existing external cookie to ensure a clean login process
-            await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
-
-            ViewData["ReturnUrl"] = returnUrl;
-            return View();
-        }
-
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -63,7 +52,7 @@ namespace ITest.Controllers
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+                var result = await _signInManager.PasswordSignInAsync(model.LoginEmail, model.LoginPassword, model.LoginRememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
@@ -71,7 +60,7 @@ namespace ITest.Controllers
                 }
                 if (result.RequiresTwoFactor)
                 {
-                    return RedirectToAction(nameof(LoginWith2fa), new { returnUrl, model.RememberMe });
+                    return RedirectToAction(nameof(LoginWith2fa), new { returnUrl, model.LoginRememberMe });
                 }
                 if (result.IsLockedOut)
                 {
@@ -81,12 +70,12 @@ namespace ITest.Controllers
                 else
                 {
                     ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                    return View(model);
+                    return View(nameof(AccountController.Authorize), model);
                 }
             }
 
             // If we got this far, something failed, redisplay form
-            return View(model);
+            return View(nameof(AccountController.Authorize), model);
         }
 
         [HttpGet]
@@ -208,8 +197,11 @@ namespace ITest.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult Register(string returnUrl = null)
+        public async Task<IActionResult> Authorize(string returnUrl = null)
         {
+            // Clear the existing external cookie to ensure a clean login process
+            await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
+
             ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
@@ -222,8 +214,8 @@ namespace ITest.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new User { UserName = model.Email, Email = model.Email };
-                var result = await _userManager.CreateAsync(user, model.Password);
+                var user = new User { UserName = model.RegisterEmail, Email = model.RegisterEmail };
+                var result = await _userManager.CreateAsync(user, model.RegisterPassword);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
@@ -234,13 +226,15 @@ namespace ITest.Controllers
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation("User created a new account with password.");
-                    return RedirectToLocal(returnUrl);
+                    return this.RedirectToAction("ShowCategories", "Category");
+                    //return RedirectToLocal(returnUrl);
                 }
                 AddErrors(result);
             }
 
             // If we got this far, something failed, redisplay form
-            return View(model);
+            
+            return View(nameof(AccountController.Authorize), model);
         }
 
         [HttpPost]

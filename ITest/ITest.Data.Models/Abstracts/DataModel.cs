@@ -8,7 +8,7 @@ namespace ITest.Data.Models.Abstracts
     public abstract class DataModel : IAuditable, IDeletable
     {
         [Key]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         public bool IsDeleted { get; set; }
 

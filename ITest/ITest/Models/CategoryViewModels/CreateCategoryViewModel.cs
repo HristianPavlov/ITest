@@ -9,9 +9,8 @@ namespace ITest.Models.CategoryViewModels
     public class CreateCategoryViewModel
     {
         [Required]
-        [MinLength(1)]
+        [MinLength(2)]
         [MaxLength(20)]
         public string Name { get; set; }
-
     }
 }

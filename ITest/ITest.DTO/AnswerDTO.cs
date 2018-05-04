@@ -6,14 +6,10 @@ namespace ITest.DTO
 {
     public class AnswerDTO
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string Content { get; set; }
-
         public bool Correct { get; set; }
-        public int QuestionId { get; set; }
+        public Guid QuestionId { get; set; }
         public QuestionDTO Question { get; set; }
-
-        
-
     }
 }

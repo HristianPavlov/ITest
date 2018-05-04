@@ -25,10 +25,10 @@ namespace ITest.Services.Data
             this.questions = questions;
         }
 
-        public void Create(QuestionDTO dto)
+        public void Create(TestDTO dto)
         {
-            var model = this.mapper.MapTo<Question>(dto);
-            this.questions.Add(model);
+            var model = this.mapper.MapTo<Test>(dto);
+            //this.questions.Add(model);
             this.saver.SaveChanges();
         }
     }

@@ -7,7 +7,7 @@ namespace ITest.Services.Data.Contracts
 {
   public  interface IQuestionService
     {
-        void Create(QuestionDTO dto);
+        void Create(TestDTO dto);
 
     }
 }

@@ -1,0 +1,50 @@
+﻿<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.css">
+<link href="https://fonts.googleapis.com/css?family=Fjalla+One" rel="stylesheet">
+@using ITest.Models.ResultsViewModels
+@model ResultBagViewModel
+
+@{
+    ViewData["Title"] = "ShowResults";
+}
+
+<h2>ShowResults</h2>
+<table id="table_id" class="display">
+    <thead>
+        <tr>
+            <th>Test Name</th>
+            <th>User Email</th>
+            <th>Category</th>
+            <th>Requested Time</th>
+            <th>Execution Time</th>
+            <th>Result</th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model.ResultBag)
+        {
+            <tr>
+                <td>@item.Test.Name</td>
+                <td>@item.UserEmail</td>
+                <td>@item.CategoryName</td>
+                <td>@item.Test.TimeInMinutes mins</td>
+                <td>@((int)item.ExecutionTime) mins @Math.Round(item.ExecutionTime % 1 * 60) sec</td>
+                <td>@item.Score</td>
+                <td>
+                    <a href="/Results/DetailedSolution?userEmail=@item.UserEmail&testId=@item.Test.Id">Details</a>
+                    @*binds correctly*@
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts{
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script>
+    <script src="~/js/showResults.js"></script>
+
+}
+
+
