@@ -61,9 +61,9 @@ namespace ITest.Services.Data
             decimal score = Math.Round((correctAnswers / allQuestionsCount * 100), 2);
             return score;
         }
-        public void RecalculateAllTakenTestsWithId(Guid testId)
+        public void RecalculateAllTakenTestsWithId(string name)
         {
-            var correctTests = this.userTestAnswers.All.Where(uta => uta.UserTest.TestId == testId)
+            var correctTests = this.userTestAnswers.All.Where(uta => uta.UserTest.Test.Name == name)
                 .Include(uta => uta.UserTest)
                     .ThenInclude(ut => ut.Test)
                         .ThenInclude(ut => ut.Questions)

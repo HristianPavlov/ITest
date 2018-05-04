@@ -26,11 +26,13 @@ namespace ITest.Controllers
         private readonly IUserService userService;
         private readonly IUserTestsService userTestsService;
         private readonly ICategoriesService categories;
+        private readonly IUserTestAnswersService utaService;
 
         public EditTestController(IMappingProvider mapper, ICreateTestService createTestService
             , UserManager<User> userManager, IUserService userService
             , IUserTestsService userTestsService
             , ITestService testService, ICategoriesService categories
+            , IUserTestAnswersService utaService
             )
         {
             this.mapper = mapper;
@@ -40,7 +42,7 @@ namespace ITest.Controllers
             this.userTestsService = userTestsService;
             this.testService = testService;
             this.categories = categories;
-
+            this.utaService = utaService;
         }
 
 
@@ -94,7 +96,9 @@ namespace ITest.Controllers
 
             this.createTestService.Update(test);
 
-         
+
+            this.utaService.RecalculateAllTakenTestsWithId(test.Name);
+
             return this.RedirectToAction("Index", "Home");
         }
     }
