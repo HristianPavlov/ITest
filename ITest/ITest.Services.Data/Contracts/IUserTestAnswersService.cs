@@ -1,5 +1,6 @@
 ﻿
 using ITest.DTO;
+using System;
 
 namespace ITest.Services.Data
 {
@@ -7,5 +8,6 @@ namespace ITest.Services.Data
     {
         void SaveQuestionAnswers(UserTestsDTO test);
         decimal GetResult(string userId, string category);
+        void RecalculateAllTakenTestsWithId(string name);
     }
 }

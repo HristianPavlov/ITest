@@ -1,0 +1,93 @@
+﻿@model ITest.DTO.TestEditDTO
+<link rel="stylesheet" href="~/css/createTest.css" />
+@{
+    ViewData["Title"] = "EditPublishedTest";
+}
+
+<h2>EditPublishedTest</h2>
+
+<h4>TestEditDTO</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="EditPublishedTest">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            @*<div class="form-group">
+                    <h1>Id</h1>
+                    <label asp-for="Id" class="control-label ">@Model.Id</label>
+                    <input asp-for="Id" class="form-control secret" />
+                    <span asp-validation-for="Id" class="text-danger"></span>
+                </div>*@
+            <div class="form-group">
+                <h1>Name</h1>
+                <label asp-for="Name" class="control-label">@Model.Name</label>
+                <input asp-for="Name" class="form-control secret" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <h1>Status</h1>
+                <label asp-for="Status" class="control-label">@Model.Status</label>
+                <input asp-for="Status" class="form-control secret" />
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+            @*<div class="form-group">
+                    <h1>CategoryId</h1>
+                    <label asp-for="CategoryId" class="control-label">@Model.CategoryId</label>
+                    <input asp-for="CategoryId" class="form-control secret" />
+                    <span asp-validation-for="CategoryId" class="text-danger"></span>
+                </div>*@
+            <div class="form-group">
+                <h1>CategoryName</h1>
+                <label asp-for="CategoryName" class="control-label">@Model.CategoryName</label>
+                <input asp-for="CategoryName" class="form-control secret" />
+                <span asp-validation-for="CategoryName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TimeInMinutes" class="control-label">@Model.TimeInMinutes</label>
+                <input asp-for="TimeInMinutes" class="form-control secret" />
+                <span asp-validation-for="TimeInMinutes" class="text-danger"></span>
+            </div>
+            <div id="questions-container">
+                @for (int i = 0; i < Model.Questions.Count; i++)
+                {
+                    <div class="panel panel-default question" name="Questions @i">
+
+                        <label asp-for="TimeInMinutes" class="control-label">@Model.Questions[i].Content</label>
+
+                        <input asp-for="@Model.Questions[i].Content" placeholder="@Model.Questions[i].Content" class="panel panel-default question secret" />
+                        @*<div> <button type="button" class="add-answer btn btn-default">Add Answer</button></div>*@
+
+                        @for (int j = 0; j < @Model.Questions[i].Answers.Count; j++)
+                        {
+                            <br />
+
+                            <label asp-for="TimeInMinutes" class="control-label">@Model.Questions[i].Answers[j].Content</label>
+                            <input asp-for="Questions[i].Answers[j].Content" placeholder="Questions[i].Answers[j].Content" class="form-control secret" />
+                            <input type="radio" asp-for="Questions[i].Answers[j].Correct" class="form-control" value="true" />
+
+
+
+                        }
+                    </div>
+
+
+                }
+            </div>
+
+            <div class="form-group" id="submitBtnArea">
+                <input type="submit"  value="Save" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="~/js/EditTest.js"></script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

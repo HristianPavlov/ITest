@@ -43,12 +43,11 @@ namespace ITest.Services.Data
          
             return mapper.ProjectTo<TestDTO>(allTests);
         }
-
         public IEnumerable<TestEditDTO> GetAllTestsWithOutStuffInIttEditDTO()
         {
             //.Include(test => test.Questions)
             //        .ThenInclude(q => q.Answers)
-            var allTests = tests.All.AsNoTracking();
+            var allTests = tests.All.AsNoTracking().Include(t=>t.Category).AsNoTracking();
                 
 
             return mapper.ProjectTo<TestEditDTO>(allTests);
@@ -94,8 +93,6 @@ namespace ITest.Services.Data
             var foundTestDto = mapper.MapTo<TestDTO>(currentTest);
             return foundTestDto;
         }
-
-
         public TestEditDTO GetTestByNameEditDTO(string name)
         {
             var testsFromThisCategory = tests.All.AsNoTracking().Where(test => test.Name == name).AsNoTracking().

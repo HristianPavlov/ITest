@@ -7,14 +7,11 @@ namespace ITest.Services.Data
 {
     public interface ITestService
     {
-        TestDTO GetRandomTestFromCategory(int categoryID);
-        TestDTO GetTestById(int id);
+        TestDTO GetRandomTestFromCategory(Guid categoryID);
+        TestDTO GetTestById(Guid id);
         TestDTO GetTestByName(string name);
         TestEditDTO GetTestByNameEditDTO(string name);
-
-        int GetTestCountDownByTestId(int id);
-
-        decimal GetResult(UserTestsDTO test);
+        int GetTestCountDownByTestId(Guid id);
         IEnumerable<TestDTO> GetAllTests();
         IEnumerable<TestEditDTO> GetAllTestsWithOutStuffInIttEditDTO();
     }

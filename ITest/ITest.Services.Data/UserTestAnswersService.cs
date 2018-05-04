@@ -5,6 +5,7 @@ using ITest.Data.UnitOfWork;
 using ITest.DTO;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace ITest.Services.Data
@@ -59,6 +60,27 @@ namespace ITest.Services.Data
             }
             decimal score = Math.Round((correctAnswers / allQuestionsCount * 100), 2);
             return score;
+        }
+        public void RecalculateAllTakenTestsWithId(string name)
+        {
+            var correctTests = this.userTestAnswers.All.Where(uta => uta.UserTest.Test.Name == name)
+                .Include(uta => uta.UserTest)
+                    .ThenInclude(ut => ut.Test)
+                        .ThenInclude(ut => ut.Questions)
+                .Include(uta => uta.Answer)
+                .ToList(); ;
+            foreach (var ut in correctTests)
+            {
+                var userTest = ut.UserTest;
+                userTest.Score = GetThisUserTestScore(userTest);
+            }
+            saver.SaveChanges();
+        }
+        public decimal GetThisUserTestScore(UserTests userTest)
+        {
+            decimal correctAnswers = userTest.Answers.Where(a => a.Answer.Correct).Count();
+            decimal numOfQuestions = userTest.Test.Questions.Count();
+            return Math.Round((correctAnswers / numOfQuestions * 100), 2);
         }
     }
 }

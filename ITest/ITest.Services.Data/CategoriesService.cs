@@ -56,13 +56,19 @@ namespace ITest.Services.Data
             return categoriesDto;
         }
 
+        public IEnumerable<string> GetAllCategoriesNames()
+        {
+            return this.categories.All.Select(c => c.Name);
+        }
 
         public void Update()
         {
-            var cat = categories.All.Where(x => x.Id == 3).First();
-            cat.Name = "Fuck you";
-            categories.Update(cat);
-            this.saver.SaveChanges();
+            //var cat = categories.All.Where(x => x.Id == 3).First();
+            //cat.Name = "Fuck you";
+            //categories.Update(cat);
+            //this.saver.SaveChanges();
         }
+
+        
     }
 }
