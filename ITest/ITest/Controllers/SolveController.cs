@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ITest.DTO;
+using ITest.Infrastructure.CustomExceptions;
 using ITest.Infrastructure.Providers;
 using ITest.Models.AnswerViewModels;
 using ITest.Models.CategoryViewModels;
 using ITest.Models.TestViewModels;
 using ITest.Services.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -17,125 +19,80 @@ namespace ITest.Controllers
     public class SolveController : Controller
     {
         private readonly IMappingProvider mapper;
+        private readonly IUserTestsService userTestsService;
         private readonly ICategoriesService categoriesService;
-        private readonly ITestRandomService testsService;
-        private readonly UserService userService;
-        //add interface to userService
+        private readonly ITestService testsService;
+        private readonly IUserService userService;
 
         public SolveController(IMappingProvider mapper,
+            IUserTestsService userTestsService,
             ICategoriesService categoriesService,
-            ITestRandomService testsService,
-            UserService userService)
+            ITestService testsService,
+            IUserService userService)
         {
             this.mapper = mapper;
+            this.userTestsService = userTestsService;
             this.categoriesService = categoriesService;
             this.testsService = testsService;
-            this.userService = userService ?? throw new ArgumentNullException(nameof(userService));
-        }
-        public IActionResult SolveTests()
-        {
-            var model = new CategoriesViewModel();
-
-            var categories = this.categoriesService.GetAllCategories();
-            model.AllCategories = this.mapper.ProjectTo<CategoryViewModel>(categories).ToList();
-            return View(model);
+            this.userService = userService;
         }
         public IActionResult CategoryDone()
         {
             return View();
         }
-
-        public IActionResult GenerateTest(string id)
+        public IActionResult TimeUpNotSubmitted()
         {
-            return Json(Url.Action("ShowTest/" + id));
+            return View();
         }
-
+        public IActionResult SubmittingLate()
+        {
+            return View();
+        }
+        public IActionResult CategoryEmpty()
+        {
+            return View();
+        }
         public IActionResult ShowTest(string id)
         //beneath is the category name not id !!
         {
-            var category = id;
-            var userId = userService.GetLoggedUserId(this.User);
-
-            if (testsService.UserStartedTest(userId, category))
+            try
             {
-                var testId = testsService.GetTestIdFromUserIdAndCategory(userId, category);
-                var test = testsService.GetTestById(testId);
-
-                var testView = mapper.MapTo<SolveTestViewModel>(test);
-                var testAllowedTime = double.Parse(test.TimeInMinutes.ToString());
-                var startedTime = testsService.StartedTestCreationTime(userId, category);
-                if (startedTime == null)
-                {
-                    return this.RedirectToAction("CategoryDone", "Solve");
-                }
-                var endTime = startedTime.Value.AddMinutes(testAllowedTime);
-                var reaminingTime = Math.Round((endTime - DateTime.Now).TotalSeconds);
-
-                testView.Category = category;
-                testView.RemainingTime = int.Parse(reaminingTime.ToString());
-
-                if (reaminingTime < 0)
-                {
-                    return this.RedirectToAction("CategoryDone", "Solve");
-                }
-
-                testView.StorageOfAnswers = new List<string>();
-                for (int i = 0; i < testView.Questions.Count; i++)
-                {
-                    testView.StorageOfAnswers.Add("No Answer");
-                }
-                return View(testView);
+                var category = id;
+                var userId = userService.GetLoggedUserId(this.User);
+                var correctUserTestDto = userTestsService.GetCorrectSolveTest(userId, category);
+                var correctUserTestView = mapper.MapTo<SolveTestViewModel>(correctUserTestDto);
+                return View(correctUserTestView);
             }
-            else
+            catch (CategoryDoneException)
             {
-                var categoryId = categoriesService.GetIdByCategoryName(category);
-                var randomTest = testsService.GetRandomTestFromCategory(categoryId);
-                var testViewModel = mapper.MapTo<SolveTestViewModel>(randomTest);
-                // add the test in base on creation
-                var saveThisTestCreation = new UserTestsDTO
-                {
-                    UserId = userId,
-                    Category = category,
-                    TestId = randomTest.Id
-                };
-                testsService.SaveTest(saveThisTestCreation);
-                //added the up
-
-                testViewModel.StorageOfAnswers = new List<string>();
-                for (int i = 0; i < testViewModel.Questions.Count; i++)
-                {
-                    testViewModel.StorageOfAnswers.Add("No Answer");
-                }
-
-                testViewModel.Category = category;
-                testViewModel.CreatedOn = DateTime.Now;
-                testViewModel.RemainingTime =
-                    Convert.ToInt32(((DateTime.Now.AddMinutes(randomTest.TimeInMinutes) - DateTime.Now).TotalSeconds).ToString());
-                return View(testViewModel);
+                return this.RedirectToAction("CategoryDone", "Solve");
             }
+            catch (TimeUpNeverSubmittedException)
+            {
+                return this.RedirectToAction("TimeUpNotSubmitted", "Solve");
+            }
+            catch (CategoryEmptyException)
+            {
+                return this.RedirectToAction("CategoryEmpty", "Solve");
+
+            }
+
         }
-
         [HttpPost]
         public IActionResult PublishAnswers(SolveTestViewModel answers)
         {
             if (ModelState.IsValid)
             {
-                //make it here to not be publishable if remaining time is incorrect
-
-                var userId = userService.GetLoggedUserId(this.User);
-                var startedTime = testsService.StartedTestCreationTime(userId, answers.Category);
-                //check if time is valid
-
-                var completedTest = mapper.MapTo<UserTestsDTO>(answers);
-                //if (true)
-                //{
-                //    return this.RedirectToAction("AddedLate", "Solve");
-                //}
-                //fix this in the view
-                completedTest.TestId = completedTest.Id;
-                completedTest.UserId = userId;
-
-                testsService.Publish(completedTest);
+                try
+                {
+                    var userId = userService.GetLoggedUserId(this.User);
+                    var solveTestDto = mapper.MapTo<SolveTestDTO>(answers);
+                    userTestsService.ValidateAndAdd(solveTestDto, userId);
+                }
+                catch (SubmittingLateException)
+                {
+                    RedirectToAction("SubmittingLate", "Solve");
+                }
             }
             return this.RedirectToAction("Index", "Home");
         }

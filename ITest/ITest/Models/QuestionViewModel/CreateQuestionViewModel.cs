@@ -14,11 +14,7 @@ namespace ITest.Models.QuestionViewModel
         [DataType(DataType.Text)]
         public string Content { get; set; }
 
-        public bool isRemoved { get; set;}
-
-
         public List<CreateAnswerViewModel> Answers { get; set; }
-        //public ICollection<CreateAnswerViewModel> Answers { get; set; }
 
     }
 }

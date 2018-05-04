@@ -6,13 +6,17 @@ using System.Threading.Tasks;
 
 namespace ITest.Services.Data
 {
-    public class UserService
+    public class UserService : IUserService
     {
         private readonly UserManager<User> userManager;
 
         public UserService(UserManager<User> userManager)
         {
             this.userManager = userManager;
+        }
+        public UserService()
+        {
+                
         }
 
         public string GetLoggedUserId(ClaimsPrincipal claims)

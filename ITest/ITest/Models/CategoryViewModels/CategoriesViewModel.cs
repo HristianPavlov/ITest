@@ -9,5 +9,6 @@ namespace ITest.Models.CategoryViewModels
     public class CategoriesViewModel
     {
         public IEnumerable<CategoryViewModel> AllCategories { get; set; }
+        
     }
 }

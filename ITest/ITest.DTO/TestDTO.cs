@@ -6,9 +6,10 @@ namespace ITest.DTO
     public class TestDTO
     {
         public int Id { get; set; }
-        public string AuthorId { get; set; }
 
-        public UserDTO Author { get; set; }
+        public string Name { get; set; }
+
+        public string AuthorId { get; set; }
 
         public TestStatus Status { get; set; }
 
@@ -16,10 +17,14 @@ namespace ITest.DTO
 
         public ICollection<UserTestsDTO> Users { get; set; }
 
+        //public bool Published { get; set; }
+
         public int CategoryId { get; set; }
 
         public CategoryDTO Category { get; set; }
     
         public int TimeInMinutes { get; set; }
+
+        public bool IsDeleted { get; set; }
     }
 }

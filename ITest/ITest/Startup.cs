@@ -20,6 +20,7 @@ using ITest.Data.UnitOfWork;
 using AutoMapper;
 using ITest.Data.Repository;
 using ITest.Services.External;
+using ITest.Data.Providers;
 
 namespace ITest
 {
@@ -47,11 +48,11 @@ namespace ITest
         {
             services.AddTransient<ICategoriesService, CategoriesService>();
             services.AddTransient<IQuestionService, QuestionService>();
+            services.AddTransient<IUserTestsService, UserTestsService>();
+            services.AddTransient<ITestService, TestService>();
+            services.AddTransient<ICreateTestService, CreateTestService>();
+            services.AddTransient<IUserService, UserService>();
             services.AddTransient<IEmailSender, EmailSender>();
-            services.AddTransient<UserService>();
-
-            services.AddTransient<ITestRandomService, TestRandomService>();
-
         }
 
         private void RegisterInfrastructure(IServiceCollection services)
@@ -60,6 +61,10 @@ namespace ITest
             services.AddAutoMapper();
 
             services.AddScoped<IMappingProvider, MappingProvider>();
+            services.AddTransient<IDateTimeProvider, DateTimeProvider>();
+            services.AddTransient<IRandomProvider, RandomProvider>();
+            services.AddTransient<IRepoTimeProvider, RepoTimeProvider>();
+            services.AddTransient<IGenericShuffler, GenericShuffler>();
         }
         private void RegisterAuthentication(IServiceCollection services)
         {
@@ -87,10 +92,12 @@ namespace ITest
             }
         }
 
+
         private void RegisterData(IServiceCollection services)
-        {   
+        {
+          
             services.AddDbContext<ITestDbContext>(options =>
-               options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+               options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))); /*, ServiceLifetime.Transient*/
 
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
             services.AddScoped<ISaver, EFSaver>();
@@ -108,10 +115,10 @@ namespace ITest
             {
                 app.UseExceptionHandler("/Home/Error");
             }
-
             app.UseAuthentication();
             //The seeding of roles
-            UserRoleInitializer.SeedRoles(roleManager);
+            //UserRoleInitializer.SeedRoles(roleManager);
+
             app.UseStaticFiles();
 
             app.UseAuthentication();

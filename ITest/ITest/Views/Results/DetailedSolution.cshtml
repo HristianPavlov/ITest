@@ -1,0 +1,74 @@
+﻿@using ITest.Models.ResultsViewModels
+@model DetailedTestViewModel
+@{
+    ViewData["Title"] = "DetailedSolution";
+}
+<div class="panel-group" id="accordion" style="margin-top:20px;">
+    @{var counterQuestion = 0;}
+    @foreach (var q in Model.Test.Questions)
+    {
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#@counterQuestion">
+
+                        @if (Model.StorageOfAnswers[counterQuestion] == q.Answers.Where(a => a.Correct).First().Content)
+                        {
+                            <div>
+                                <span style="color:green">
+                                    &#x2714; Question number @counterQuestion
+                                </span>
+                            </div>
+                        }
+                        else
+                        {
+                            <div>
+                                <span style="color:red">
+                                    &#x2718; Question number @counterQuestion
+                                </span>
+                            </div>
+                        }
+
+                    </a>
+                </h4>
+            </div>
+            <div id="@counterQuestion" class="panel-collapse collapse in">
+                <div class="panel-body">
+                    <p>Q : @q.Content</p>
+                    @{bool noAnswer = true;}
+                    @foreach (var a in q.Answers)
+                    {
+                        if (a.Correct && Model.StorageOfAnswers[counterQuestion] == q.Answers.Where(x => x.Correct).First().Content)
+                        {
+                            <span style="color:green;font-weight:bold">&#x2714;@a.Content</span>
+                            noAnswer = false;
+                        }
+                        else if (a.Correct)
+                        {
+                            <span style="color:green;font-weight:bold">@a.Content</span>
+
+                        }
+                        else if (Model.StorageOfAnswers[counterQuestion] == a.Content)
+                        {
+                            <span style="color:red;font-weight:bold">&#x2718;@a.Content</span>
+                            noAnswer = false;
+                        }
+                        else
+                        {
+                            <span>@a.Content</span>
+                        }
+                        <br>
+                    }
+                    @if (noAnswer)
+                    {
+                        <span style="color:red">User did not answer</span>
+                    }
+                        
+                </div>
+            </div>
+        </div>
+        counterQuestion++;
+    }
+</div>
+
+

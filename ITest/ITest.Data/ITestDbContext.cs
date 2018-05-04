@@ -26,6 +26,11 @@ namespace ITest.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             //strin + int take care!!!!!
+            builder
+                .Entity<Test>()
+                .HasIndex(u => u.Name)
+                .IsUnique();
+
             builder.Entity<UserTests>()
                 .HasKey(x => new { x.UserId, x.TestId });
 
@@ -34,23 +39,16 @@ namespace ITest.Data
                 .WithMany(t => t.Tests)
                 .HasForeignKey(u => u.UserId);
 
-
             builder.Entity<UserTests>()
               .HasOne(t => t.Test)
               .WithMany(u => u.Users)
               .HasForeignKey(t => t.TestId);
-
-
-
-
-
 
             base.OnModelCreating(builder);
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
         }
-
         private void ApplyAuditInfoRules()
         {
             var newlyCreatedEntities = this.ChangeTracker.Entries()

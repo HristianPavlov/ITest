@@ -1,0 +1,64 @@
+﻿@*@model ITest.Models.CreateTestViewModel*@
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.css">
+<link href="https://fonts.googleapis.com/css?family=Fjalla+One" rel="stylesheet">
+
+@using ITest.Models.TestRealBagViewModel
+@model  TestRealBagViewModel
+
+@{
+    ViewData["Title"] = "SearchTest";
+}
+
+
+@*<h2>SearchTest</h2>*@
+
+<table id="table_id" class="display">
+    <thead>
+        <tr>
+            <th>Test Name</th>
+
+
+            <th>Status</th>
+
+            <th>Category</th>
+
+
+            <th></th>
+            <th></th>
+            <th></th>
+
+
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model.ResultBag)
+        {
+        <tr>
+            <td>@item.Name</td>
+
+            <td>@item.Status</td>
+
+            <td>@item.CategoryName</td>
+            <td>
+                @*<a href="/Results/DetailedSolution?userEmail=@item.UserEmail&testId=@item.Test.Id">Publish</a>*@
+            </td>
+            <td>
+                <a href="/EditTest/EditTest/@item.Name">Edit</a>
+
+            </td>
+            <td>
+                @*<a href="/Results/DetailedSolution?userEmail=@item.UserEmail&testId=@item.Test.Id">Disable</a>*@
+            </td>
+
+
+        </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts{
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script>
+    <script src="~/js/showResults.js"></script>
+
+}
