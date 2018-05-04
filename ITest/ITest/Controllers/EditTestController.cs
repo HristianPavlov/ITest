@@ -47,8 +47,7 @@ namespace ITest.Controllers
         //[HttpGet]
         public IActionResult SearchTest()
         {
-            //categories.Update();
-            
+          
             var model = new TestRealBagViewModel();
 
             var userTests = this.testService.GetAllTestsWithOutStuffInIttEditDTO();
@@ -57,13 +56,13 @@ namespace ITest.Controllers
         }
 
 
-        
-        
+
+
         public IActionResult EditTest(string id)
         {
             var testDto = this.testService.GetTestByNameEditDTO(id);
-            
-            //TestViewModel test = this.mapper.MapTo<TestViewModel>(testDto);
+
+           
 
             return View("EditTest", testDto);
         }
@@ -74,23 +73,29 @@ namespace ITest.Controllers
         {
 
 
-            
-           //var testDto = this.testService.GetTestByNameEditDTO(test.Name);
-
-            //var model = this.mapper.MapTo<TestEditDTO>(test);
-            //model.Id = testDto.Id;
-            //model.Category = testDto.Category;
-            //model.CategoryId = testDto.CategoryId;
-            //model.AuthorId = testDto.AuthorId;
-
-
             this.createTestService.Update(test);
 
-           // TempData["Success-Message"] = "You published a new post!";
+          
             return this.RedirectToAction("Index", "Home");
         }
 
+        public IActionResult EditPublishedTest(string id)
+        {
+            var testDto = this.testService.GetTestByNameEditDTO(id);
 
 
+            return View("EditPublishedTest", testDto);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult EditPublishedTest(TestEditDTO test)
+        {
+
+            this.createTestService.Update(test);
+
+         
+            return this.RedirectToAction("Index", "Home");
+        }
     }
 }

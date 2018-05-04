@@ -4,27 +4,48 @@
 <link rel="stylesheet" href="~/css/createTest.css" />
 @model CreateTestViewModel
 
-@{
+@*@{
     ViewData["Title"] = "CreateNewTEst";
-}
+}*@
 <div id="createTest-content" style="font-size: 16px;">
     <h1 class="pageTitle">Create New Test</h1>
     <div class="row">
         <div>
             <form asp-controller="CreateTests" asp-action="CreateNewTest" method="post" class="form-inline" id="question-form">
                 <div class="form-group">
-                    <input asp-for="Name" placeholder="Test name" id="input-test" class="form-control" style="margin-right: 3%;" />
-                    <input asp-for="CategoryId" placeholder="Test Category" id="input-test" class="form-control" style="margin-right: 3%;" />
-                    <input asp-for="TimeInMinutes" placeholder="TimeInMinutes" id="input-test" class="form-control" style="margin-right: 3%;" />
-                    <label>
+                    <div class="col-md-4">
+                        <input asp-for="Name" placeholder="Test name" id="input-test" class="form-control" style="margin-right: 3%;" />
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="TimeInMinutes">TimeInMinutes</label>
+                        <input asp-for="TimeInMinutes" id="input-test" class="form-control" style="margin-right: 3%;" />
+                    </div>
+                    @*<input asp-for="CategoryId" placeholder="Test Category" id="input-test" class="form-control" style="margin-right: 3%;" />*@
+
+                    <div class="input-group">
+                        <span class="input-group-addon">Category Name</span>
+
+                        <select asp-for="CategoryName" class="selectpicker form-control">
+
+                            <option disabled selected>Please choose ONE</option>
+                            @for (int i = 0; i < Model.CategoryNames.Count; i++)
+                            {
+                                <option>@Model.CategoryNames[i]</option>
+                            }
+                        </select>
+                    </div>
+                    <span asp-validation-for="CategoryName" class="text-danger"></span>
+
+                    @*<label class="secret">
                         Status
                         @Html.DropDownList("Status", new List<SelectListItem>
-                                            {
-                                                new SelectListItem{ Text="Published", Value = "1" },
-                                                new SelectListItem{ Text="Draft", Value = "2" },
 
-                                             })
-                    </label>
+                {
+                    new SelectListItem{ Text="Published", Value = "1" },
+                                        new SelectListItem{ Text="Draft", Value = "2" },
+
+                                     })
+                    </label>*@
                 </div>
                 <br />
                 <div id="questions-container">
@@ -49,12 +70,11 @@
                     <button type="button" class="add-question btn btn-default">Add Question</button>
                 </div>
                 <br />
-                @*<div>
-                        <button type="button" class="writeStuffdown">writeStuffdown</button>
-                    </div>*@
+
                 <div id="submitBtnArea" class="form-group" style="margin-top: 120px;">
-                    <button id="saveDraft" type="submit" value="submit" class="btn btn-default" style="font-size: 20px; width: 160px; margin-right: 3%;">Save as draft</button>
-                    <button id="submitNewTestBtn" type="submit" value="submit" class="btn btn-default" style="font-size: 20px; width: 160px; margin-right: 3%;">Publish</button>
+                  
+                    <button id="saveDraft"   name="Status" type="submit" value="2" class="btn btn-default submitttt" style="font-size: 20px; width: 160px; margin-right: 3%;">Save as draft</button>
+                    <button id="submitNewTestBtn" name="Status" type="submit" value="1" class="btn btn-default submitttt" style="font-size: 20px; width: 160px; margin-right: 3%;">Publish</button>
                 </div>
             </form>
         </div>
@@ -98,7 +118,7 @@
 
 
 
-<script>
+@*<script>
     $('#summernote').summernote({
         placeholder: 'Hello bootstrap 4',
         tabsize: 2,
@@ -108,5 +128,5 @@
 
 <div>
     <a asp-action="Index">Back to List</a>
-</div>
+</div>*@
 

@@ -21,7 +21,11 @@ namespace ITest.Properties
         public MappingSettings()
         {
             //to create tests
-            this.CreateMap<CreateTestViewModel, TestDTO>(MemberList.Source);
+            this.CreateMap<CreateTestViewModel, TestDTO>(MemberList.Source)
+                .ForSourceMember(x => x.CategoryNames, opt => opt.Ignore());
+                
+              
+           
             this.CreateMap<CreateCategoryViewModel, CategoryDTO>();
             this.CreateMap<CategoryDTO, Category>();
             this.CreateMap<Category, CategoryDTO>(MemberList.Source);
@@ -46,6 +50,7 @@ namespace ITest.Properties
            
             this.CreateMap<Test, TestEditDTO>(MemberList.Destination)
                 .ForMember(x => x.CategoryName, opt => opt.MapFrom(src => src.Category.Name));
+
             this.CreateMap<TestEditDTO, Test>(MemberList.Source);
 
             this.CreateMap<Question, QuestionEditDTO>(MemberList.Destination);              

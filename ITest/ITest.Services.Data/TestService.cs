@@ -48,7 +48,7 @@ namespace ITest.Services.Data
         {
             //.Include(test => test.Questions)
             //        .ThenInclude(q => q.Answers)
-            var allTests = tests.All.AsNoTracking();
+            var allTests = tests.All.AsNoTracking().Include(t=>t.Category).AsNoTracking();
                 
 
             return mapper.ProjectTo<TestEditDTO>(allTests);

@@ -18,7 +18,12 @@ namespace ITest.Models
 
         public List<CreateQuestionViewModel> Questions { get; set; }
 
-        public Guid CategoryId { get; set; }
+       // public Guid CategoryId { get; set; }
+
+        public string CategoryName { get; set; }
+
+
+        public List<string> CategoryNames { get; set; }
 
 
         public int TimeInMinutes { get; set; }

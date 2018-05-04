@@ -3,7 +3,7 @@
 <link href="https://fonts.googleapis.com/css?family=Fjalla+One" rel="stylesheet">
 
 @using ITest.Models.TestRealBagViewModel
-@model  TestRealBagViewModel
+@model TestRealBagViewModel
 
 @{
     ViewData["Title"] = "SearchTest";
@@ -23,9 +23,8 @@
             <th>Category</th>
 
 
-            <th></th>
-            <th></th>
-            <th></th>
+            <th>Actions</th>
+
 
 
         </tr>
@@ -34,25 +33,45 @@
     <tbody>
         @foreach (var item in Model.ResultBag)
         {
-        <tr>
-            <td>@item.Name</td>
+            <tr>
+                <td>@item.Name</td>
 
-            <td>@item.Status</td>
+                <td>@item.Status</td>
 
-            <td>@item.CategoryName</td>
-            <td>
-                @*<a href="/Results/DetailedSolution?userEmail=@item.UserEmail&testId=@item.Test.Id">Publish</a>*@
-            </td>
-            <td>
-                <a href="/EditTest/EditTest/@item.Name">Edit</a>
+                <td>@item.CategoryName</td>
+                <td>
+                    Publish
+                    @*<a href="/Results/DetailedSolution?userEmail=@item.UserEmail&testId=@item.Test.Id">Disable</a>*@
+                </td>
 
-            </td>
-            <td>
-                @*<a href="/Results/DetailedSolution?userEmail=@item.UserEmail&testId=@item.Test.Id">Disable</a>*@
-            </td>
+                <td>
+                    @if (item.Status.ToString() == "Draft")
+                    {
+                        <a href="/EditTest/EditTest/@item.Name">Edit</a>
+
+                    }
+                    else
+                    {
 
 
-        </tr>
+                        <a href="/EditTest/EditPublishedTest/@item.Name">Edit</a>
+                    }
+
+
+
+
+                </td>
+                <td>
+                    Disable
+                    @*<a href="/Results/DetailedSolution?userEmail=@item.UserEmail&testId=@item.Test.Id">Publish</a>*@
+                </td>
+                <td>
+                    Delete
+                    @*<a href="/Results/DetailedSolution?userEmail=@item.UserEmail&testId=@item.Test.Id">Publish</a>*@
+                </td>
+
+
+            </tr>
         }
     </tbody>
 </table>
