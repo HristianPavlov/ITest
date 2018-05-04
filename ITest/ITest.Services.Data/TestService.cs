@@ -33,9 +33,30 @@ namespace ITest.Services.Data
             this.saver = saver;
         }
 
-        public int GetTestCountDownByTestId(Guid id)
+        public IEnumerable<TestDTO> GetAllTests()
+        {//Why the fuck you called it GetAllTest and add object Category 
+
+            //.Include(test => test.Questions)
+            //        .ThenInclude(q => q.Answers)
+            var allTests = tests.All.AsNoTracking()
+                .Include(test=>test.Category).AsNoTracking();
+         
+            return mapper.ProjectTo<TestDTO>(allTests);
+        }
+
+        public IEnumerable<TestEditDTO> GetAllTestsWithOutStuffInIttEditDTO()
         {
-            var testsFromThisCategory = tests.All.Where(test => test.Id == id);
+            //.Include(test => test.Questions)
+            //        .ThenInclude(q => q.Answers)
+            var allTests = tests.All.AsNoTracking();
+                
+
+            return mapper.ProjectTo<TestEditDTO>(allTests);
+        }
+        public int GetTestCountDownByTestId(Guid id)
+
+        {
+            var testsFromThisCategory = tests.All.AsNoTracking().Where(test => test.Id == id);
             var currentTest = testsFromThisCategory.First();
             var countDownMins = currentTest.TimeInMinutes;
             return countDownMins;
@@ -57,11 +78,33 @@ namespace ITest.Services.Data
         }
         public TestDTO GetTestById(Guid id)
         {
-            var testsFromThisCategory = tests.All.Where(test => test.Id == id).
+            var testsFromThisCategory = tests.All.AsNoTracking().Where(test => test.Id == id).
                                                         Include(t => t.Questions).
                                                         ThenInclude(x => x.Answers);
             var currentTest = testsFromThisCategory.First();
             var foundTestDto = mapper.MapTo<TestDTO>(currentTest);
+            return foundTestDto;
+        }
+        public TestDTO GetTestByName(string name)
+        {   var testsFromThisCategory = tests.All.AsNoTracking().Where(test => test.Name == name).
+                                                        Include(t=>t.Category).
+                                                        Include(t => t.Questions).
+                                                        ThenInclude(x => x.Answers);
+            var currentTest = testsFromThisCategory.First();
+            var foundTestDto = mapper.MapTo<TestDTO>(currentTest);
+            return foundTestDto;
+        }
+
+
+        public TestEditDTO GetTestByNameEditDTO(string name)
+        {
+            var testsFromThisCategory = tests.All.AsNoTracking().Where(test => test.Name == name).AsNoTracking().
+                                                        Include(t => t.Category).AsNoTracking().
+                                                        Include(t => t.Questions).
+                                                        ThenInclude(x => x.Answers).AsNoTracking();
+            var currentTest = testsFromThisCategory.First();
+
+            var foundTestDto = mapper.MapTo<TestEditDTO>(currentTest);
             return foundTestDto;
         }
     }

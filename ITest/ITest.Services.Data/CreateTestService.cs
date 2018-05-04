@@ -4,6 +4,8 @@ using ITest.Data.Repository;
 using ITest.Data.UnitOfWork;
 using ITest.DTO;
 using ITest.Infrastructure.Providers;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace ITest.Services.Data
 {
@@ -14,6 +16,7 @@ namespace ITest.Services.Data
         private readonly IRepository<Question> questions;
         private readonly IRepository<Test> tests;
         private readonly IRepository<Answer> answers;
+
 
 
 
@@ -30,6 +33,20 @@ namespace ITest.Services.Data
         {
             var model = this.mapper.MapTo<Test>(dto);
             this.tests.Add(model);
+            this.saver.SaveChanges();
+        }
+
+        public void Update(TestEditDTO dto)
+        {            
+            var TestUpdate = this.tests.All.Include(x => x.Questions)
+                .ThenInclude(q => q.Answers)
+                .FirstOrDefault(x => x.Name == dto.Name);
+          
+            var id = TestUpdate.Id;
+            TestUpdate = this.mapper.MapTo(dto, TestUpdate);
+            TestUpdate.Id = id;
+
+            this.tests.Update(TestUpdate);
             this.saver.SaveChanges();
         }
     }

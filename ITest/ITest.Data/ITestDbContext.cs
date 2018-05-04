@@ -30,6 +30,12 @@ namespace ITest.Data
                 .HasOne(t => t.Category)
                 .WithMany(c => c.Tests)
                 .HasForeignKey(t => t.CategoryId);
+            //strin + int take care!!!!!
+            builder
+                .Entity<Test>()
+                .HasIndex(u => u.Name)
+                .IsUnique();
+
 
             builder.Entity<Question>()
                 .HasOne(q => q.Test)

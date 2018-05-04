@@ -10,6 +10,6 @@ namespace ITest.Services.Data
         void Add(CategoryDTO dto);
         IEnumerable<CategoryDTO> GetAllCategories();
         Guid GetIdByCategoryName(string name);
-       
+        void Update();
     }
 }

@@ -45,16 +45,16 @@ namespace ITest.Controllers.Createontrollers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult CreateNewTest(CreateTestViewModel question)
+        public IActionResult CreateNewTest(CreateTestViewModel test)
         {
 
-            var model = this.mapper.MapTo<TestDTO>(question);
-           // model.AuthorId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var model = this.mapper.MapTo<TestDTO>(test);
+          
             model.AuthorId = userService.GetLoggedUserId(this.User);
            
             this.createTestService.Create(model);
 
-            TempData["Success-Message"] = "You published a new post!";
+            //TempData["Success-Message"] = "You published a new post!";
             return this.View(); /*this.RedirectToAction("Index", "Home");*/
         }
     }

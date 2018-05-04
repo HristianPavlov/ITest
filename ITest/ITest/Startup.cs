@@ -98,7 +98,7 @@ namespace ITest
         {
           
             services.AddDbContext<ITestDbContext>(options =>
-               options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+               options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))); /*, ServiceLifetime.Transient*/
 
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
             services.AddScoped<ISaver, EFSaver>();
@@ -118,7 +118,7 @@ namespace ITest
             }
             app.UseAuthentication();
             //The seeding of roles
-            UserRoleInitializer.SeedRoles(roleManager);
+            //UserRoleInitializer.SeedRoles(roleManager);
 
             app.UseStaticFiles();
 

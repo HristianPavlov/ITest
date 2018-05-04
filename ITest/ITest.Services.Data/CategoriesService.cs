@@ -55,5 +55,14 @@ namespace ITest.Services.Data
             }
             return categoriesDto;
         }
+
+
+        public void Update()
+        {
+            var cat = categories.All.Where(x => x.Id == 3).First();
+            cat.Name = "Fuck you";
+            categories.Update(cat);
+            this.saver.SaveChanges();
+        }
     }
 }

@@ -1,7 +1,4 @@
-﻿
-//name="Questions[{{q_id}}].Answers[{{a_id}}].Correct"
-//name="Questions[{{q_id}}].Answers[{{a_id}}].Correct"
-$(document).ready(function () {
+﻿$(document).ready(function () {
     var questionTemplate =
         `
 <div class="panel panel-default question" name="Questions{{q_id}}" style="margin: 7% 0% 7% 0%; border: none; shadow: none; background-color:transparent;">
@@ -18,7 +15,7 @@ $(document).ready(function () {
         <div class="answer-container">
 
         <div style="height: 50px;" class="form-group col-lg-offset-1">
-            <input type="text"  style="width: 70%; margin-right: 15px;"   id="Questions_{{q_id}}__.Answers_0__.Content"  name="Questions[{{q_id}}].Answers[0].Content" placeholder="Answer1" class="form-control" />
+            <input type="text"     id="Questions_{{q_id}}__.Answers_0__.Content"  name="Questions[{{q_id}}].Answers[0].Content" placeholder="Answer1" class="form-control" style="width: 70%; margin-right: 15px;" />
             <input type="radio" id="Questions_{{q_id}}__.Answers_0__.Correct"   name="radio_{{q_id}}" class="form-control" value="true" style="box-shadow:none; border:none;"/> 
 
            
@@ -34,13 +31,16 @@ $(document).ready(function () {
         `
     <div style="height: 50px;" class="answer-container">
         <div class="form-group col-lg-offset-1">
-            <input type="text"  style="width: 70%; margin-right: 15px;"  id="Questions_{{q_id}}__.Answers_{{a_id}}__.Content" name="Questions[{{q_id}}].Answers[{{a_id}}].Content" placeholder="Answer{{ap_id}}" class="form-control" />
+            <input type="text"    id="Questions_{{q_id}}__.Answers_{{a_id}}__.Content" name="Questions[{{q_id}}].Answers[{{a_id}}].Content" placeholder="Answer{{ap_id}}" class="form-control" style="width: 70%; margin-right: 15px;" />
             <input type="radio" id="Questions_{{q_id}}__.Answers_{{a_id}}__.Correct"  name="radio_{{q_id}}" class="form-control" value="true" style="box-shadow:none; border:none;"/>
             
         </div>
 
         </div>
    `;
+
+    var qwerty = $('input:radio');
+
     var total = 0;
 
     $('.add-question').click(function () {
@@ -111,14 +111,31 @@ $(document).ready(function () {
     });
 
 
+    //when the page loads
+    for (var i = 0; i < qwerty.length; i++) {
+        var theName = qwerty[i].getAttribute(`id`);
+        var parts = theName.split("__Answers_");
 
+        var NumberOfTheAnswerInThisQuestionArr = parts[1].split("__");
+        var NumberOfTheAnswerInThisQuestion = NumberOfTheAnswerInThisQuestionArr[0];
 
-    $('#question-form').on('click', '#submitNewTestBtn', function () {
+        var IdOfTheQuestionArr = parts[0].split("_");
+        var IdOfTheQuestion = IdOfTheQuestionArr[1];
+        //"Questions[{{q_id}}].Answers[{{a_id}}].Correct"
+        //.replace(/{{a_id}}/, NumberOfTheAnswerInThisQuestion)
+        var newNameForTheInput = "radio_A_{{q_id}}"
+            .replace(/{{q_id}}/, IdOfTheQuestion);
+
+        qwerty[i].setAttribute("name", newNameForTheInput);
+
+    }
+    //submit
+    $(document).on('click', '#submitBtnArea', function () {
         //event.preventDefault();
         var qwerty = $('input:radio');
         for (var i = 0; i < qwerty.length; i++) {
             var theName = qwerty[i].getAttribute(`id`);
-            var parts = theName.split("__.Answers_");
+            var parts = theName.split("__Answers_");
 
             var NumberOfTheAnswerInThisQuestionArr = parts[1].split("__");
             var NumberOfTheAnswerInThisQuestion = NumberOfTheAnswerInThisQuestionArr[0];
@@ -130,16 +147,12 @@ $(document).ready(function () {
                 .replace(/{{a_id}}/, NumberOfTheAnswerInThisQuestion);
 
             qwerty[i].setAttribute("name", newNameForTheInput);
-
-          
-
         }
-         
-
-
-
-    
-        
     });
 
+
+
+
+   
 });
+
