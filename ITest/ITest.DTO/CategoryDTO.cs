@@ -7,10 +7,9 @@ namespace ITest.DTO
 {
     public class CategoryDTO
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string Name { get; set; }
         public ICollection<TestDTO> Tests { get; set; }
         public UserTestState CategoryState { get; set; }
-
     }
 }

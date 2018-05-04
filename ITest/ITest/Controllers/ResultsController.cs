@@ -37,20 +37,22 @@ namespace ITest.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult RecalculateTests()
         {
-            this.userTestsService.RecalculateAllTestsScore();
+            //this.userTestsService.RecalculateAllTestsScore();
             return this.RedirectToAction("Index", "Home");
         }
 
         [Authorize(Roles = "Admin")]
         //[HttpPost]
-        public IActionResult DetailedSolution(string userEmail, int testId)
+        public IActionResult DetailedSolution(string userEmail, Guid testId)
         {
-            var modelDto = this.userTestsService.GetUserTest(userEmail, testId);
-            if (!modelDto.StorageOfAnswers.Any())
-            {
-                return this.RedirectToAction("ShowResults", "Results");
-            }
-            var viewModel = this.mapper.MapTo<DetailedTestViewModel>(modelDto);
+            var detailsDto = this.userTestsService.GetDetailedSolution(userEmail, testId);
+
+            //var modelDto = this.userTestsService.GetUserTest(userEmail, testId);
+            //if (!modelDto.StorageOfAnswers.Any())
+            //{
+            //    return this.RedirectToAction("ShowResults", "Results");
+            //}
+            var viewModel = this.mapper.MapTo<DetailedTestViewModel>(detailsDto);
             return View(viewModel);
         }
 

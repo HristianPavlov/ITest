@@ -31,7 +31,7 @@ namespace ITest.Services.Data
             this.categories.Add(model);
             this.saver.SaveChanges();
         }
-        public int GetIdByCategoryName(string name)
+        public Guid GetIdByCategoryName(string name)
         {
             return categories.All.First(cat => cat.Name == name).Id;
         }

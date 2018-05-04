@@ -12,9 +12,10 @@ using System;
 namespace ITest.Data.Migrations
 {
     [DbContext(typeof(ITestDbContext))]
-    partial class ITestDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180503104945_second")]
+    partial class second
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -122,10 +123,6 @@ namespace ITest.Data.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.HasIndex("Name")
-                        .IsUnique()
-                        .HasFilter("[Name] IS NOT NULL");
-
                     b.ToTable("Test");
                 });
 
@@ -219,6 +216,8 @@ namespace ITest.Data.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("Category");
+
                     b.Property<DateTime?>("CreatedOn");
 
                     b.Property<DateTime?>("DeletedOn");
@@ -230,6 +229,8 @@ namespace ITest.Data.Migrations
                     b.Property<DateTime?>("ModifiedOn");
 
                     b.Property<decimal>("Score");
+
+                    b.Property<string>("SerializedAnswers");
 
                     b.Property<bool>("Submitted");
 

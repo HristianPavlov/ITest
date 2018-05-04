@@ -20,6 +20,7 @@ namespace ITest.Services.Data
         private readonly IDateTimeProvider dateTime;
         private readonly ITestService testService;
         private readonly ICategoriesService categoriesService;
+        private readonly IUserTestAnswersService utaService;
         private readonly IRepository<UserTests> userTests;
         private readonly IGenericShuffler shuffler;
         private readonly ISaver saver;
@@ -28,6 +29,7 @@ namespace ITest.Services.Data
                                 IDateTimeProvider dateTime,
                                 ITestService testService,
                                 ICategoriesService categoriesService,
+                                IUserTestAnswersService utaService,
                                 IRepository<UserTests> userTests,
                                 IGenericShuffler shuffler,
                                 ISaver saver)
@@ -36,14 +38,32 @@ namespace ITest.Services.Data
             this.dateTime = dateTime;
             this.testService = testService;
             this.categoriesService = categoriesService;
+            this.utaService = utaService;
             this.userTests = userTests;
             this.shuffler = shuffler;
             this.saver = saver;
         }
-
+        public TestSolutionDTO GetDetailedSolution(string userEmail, Guid testId)
+        {
+            var userTest = userTests.All.Where(ut => ut.TestId == testId && ut.User.Email == userEmail)
+                .Include(ut => ut.Test)
+                    .ThenInclude(t => t.Questions)
+                    .ThenInclude(q => q.Answers)
+                .Include(ut => ut.Answers)
+                    .ThenInclude(uta => uta.Answer)
+                .First();
+            var userTestAnswers = userTest.Answers;
+            var testSolutionDto = mapper.MapTo<TestSolutionDTO>(userTest);
+            testSolutionDto.QuestionAnswers = new Dictionary<Guid, Guid>();
+            foreach (var uta in userTestAnswers)
+            {
+                testSolutionDto.QuestionAnswers.Add(uta.Answer.QuestionId, uta.Answer.Id);
+            }
+            return testSolutionDto;
+        }
         public bool UserStartedTest(string userId, string category)
         {
-            if (this.userTests.All.Any(x => x.UserId == userId && x.Category == category))
+            if (this.userTests.All.Any(x => x.UserId == userId && x.Test.Category.Name == category))
             {
                 return true;
             }
@@ -51,22 +71,36 @@ namespace ITest.Services.Data
         }
         public DateTime? StartedTestCreationTime(string userId, string category)
         {
-            return userTests.All.First(x => x.UserId == userId && x.Category == category).CreatedOn;
+            return userTests.All.First(x => x.UserId == userId && x.Test.Category.Name == category).CreatedOn;
         }
         public bool TestIsSubmitted(string userId, string category)
         {
-            return userTests.All.First(x => x.UserId == userId && x.Category == category).Submitted;
+            return userTests.All.First(x => x.UserId == userId && x.Test.Category.Name == category).Submitted;
         }
-        public int GetTestIdFromUserIdAndCategory(string userId, string category)
+        public TestDTO GetTestFromUserIdAndCategory(string userId, string category)
         {
-            var testsFromThisCategory = userTests.All.First(x => x.UserId == userId && x.Category == category);
-            return testsFromThisCategory.TestId;
+            var testsFromThisCategory = userTests.All.Where(x => x.UserId == userId && x.Test.Category.Name == category)
+                .Include(ut => ut.Test)
+                    .ThenInclude(t => t.Questions)
+                    .ThenInclude(q => q.Answers)
+                .First();
+            var testDtoToReturn = mapper.MapTo<TestDTO>(testsFromThisCategory.Test);
+            testDtoToReturn.CreatedOn = testsFromThisCategory.CreatedOn;
+            return testDtoToReturn;
+            //setting the correct time here so 
         }
+        public Guid GetUserTestId(string userId, string category)
+        {
+            return userTests.All.First(x => x.UserId == userId && x.Test.Category.Name == category).Id;
+        }
+
         public IEnumerable<UserTestsDTO> GetAllUserTests()
         {
             var allUserTests = userTests.All.
                                         Include(t => t.Test).
+                                             ThenInclude(t => t.Category).
                                         Include(u => u.User);
+
             return mapper.ProjectTo<UserTestsDTO>(allUserTests);
 
         }
@@ -74,7 +108,9 @@ namespace ITest.Services.Data
         {
             var currentUserTests = userTests.All.Where(u => u.UserId == userId).
                                         Include(t => t.Test).
+                                            ThenInclude(x => x.Category).
                                         Include(u => u.User);
+
             var currentUserCategories = mapper.ProjectTo<UserTestsDTO>(currentUserTests).ToList();
             if (currentUserCategories.Count() == 0)
             {
@@ -110,43 +146,29 @@ namespace ITest.Services.Data
             userTests.Add(testModel);
             saver.SaveChanges();
         }
-        
+
         public SolveTestDTO GetCorrectSolveTest(string userId, string category)
         {
             if (this.UserStartedTest(userId, category))
             {
-                var testId = this.GetTestIdFromUserIdAndCategory(userId, category);
-                var test = testService.GetTestById(testId);
+                var test = this.GetTestFromUserIdAndCategory(userId, category);
                 var solveTestDto = mapper.MapTo<SolveTestDTO>(test);
-                //shuffling start here /need to set the correct sequance of question ids in the answer views
-                var collOfQuestionIds = new List<int>();
-                foreach (var q in solveTestDto.Questions)
-                {
-                    collOfQuestionIds.Add(q.Id);
-                }
-                solveTestDto.CorrectOrderOfQuestionId = collOfQuestionIds;
                 solveTestDto.Questions = shuffler.Shuffle(test.Questions.ToList());
-                //
-                var testAllowedTime = double.Parse(test.TimeInMinutes.ToString());
-                var startedTime = this.StartedTestCreationTime(userId, category);
+                var testAllowedTime = Convert.ToDouble(test.TimeInMinutes);
+                var startedTime = test.CreatedOn;
                 if (this.TestIsSubmitted(userId, category))
                 {
                     throw new CategoryDoneException();
                     //RedirectToAction("CategoryDone", "Solve")
                 }
                 var endTime = startedTime.Value.AddMinutes(testAllowedTime);
-                var reaminingTime = Math.Round((endTime - dateTime.GetDateTimeNow()).TotalSeconds);
+                var remainingTime = Math.Round((endTime - dateTime.GetDateTimeNow()).TotalSeconds);
                 solveTestDto.Category = category;
-                solveTestDto.RemainingTime = int.Parse(reaminingTime.ToString());
-                if (reaminingTime < 0)
+                solveTestDto.RemainingTime = int.Parse(remainingTime.ToString());
+                if (remainingTime < 0)
                 {
                     throw new TimeUpNeverSubmittedException();
                     //RedirectToAction("TimeUpNotSubmitted", "Solve")
-                }
-                solveTestDto.StorageOfAnswers = new List<string>();
-                for (int i = 0; i < solveTestDto.Questions.Count; i++)
-                {
-                    solveTestDto.StorageOfAnswers.Add("No Answer");
                 }
                 return solveTestDto;
             }
@@ -155,13 +177,7 @@ namespace ITest.Services.Data
                 var categoryId = categoriesService.GetIdByCategoryName(category);
                 var randomTest = testService.GetRandomTestFromCategory(categoryId);
                 var solveTestDto = mapper.MapTo<SolveTestDTO>(randomTest);
-                //shuffling start here /need to set the correct sequance of question ids in the answer views
-                var collOfQuestionIds = new List<int>();
-                foreach (var q in solveTestDto.Questions)
-                {
-                    collOfQuestionIds.Add(q.Id);
-                }
-                solveTestDto.CorrectOrderOfQuestionId = collOfQuestionIds;
+                //shuffling start here 
                 solveTestDto.Questions = shuffler.Shuffle(randomTest.Questions.ToList());
                 // add the test in base on creation
                 var saveThisTestCreation = new UserTestsDTO
@@ -172,15 +188,10 @@ namespace ITest.Services.Data
                 };
                 this.SaveTest(saveThisTestCreation);
                 //added the up
-                solveTestDto.StorageOfAnswers = new List<string>();
-                for (int i = 0; i < solveTestDto.Questions.Count; i++)
-                {
-                    solveTestDto.StorageOfAnswers.Add("No Answer");
-                }
                 solveTestDto.Category = category;
                 solveTestDto.CreatedOn = dateTime.GetDateTimeNow();
-                solveTestDto.RemainingTime =
                 Convert.ToInt32(((dateTime.GetDateTimeNow().AddMinutes(randomTest.TimeInMinutes) - dateTime.GetDateTimeNow()).TotalSeconds));
+                solveTestDto.RemainingTime = randomTest.TimeInMinutes * 60;//in seconds
                 return solveTestDto;
             }
         }
@@ -200,13 +211,15 @@ namespace ITest.Services.Data
             var completedTest = mapper.MapTo<UserTestsDTO>(solveTestDto);
             completedTest.TestId = completedTest.Id;
             completedTest.UserId = userId;
-            completedTest.ExecutionTime = countDown - Math.Round(executionTimeMinutes, 2);
+            completedTest.ExecutionTime = Math.Round(countDown - executionTimeMinutes, 3);
             this.Publish(completedTest);
         }
         public void Publish(UserTestsDTO test)
         {
             var testModel = mapper.MapTo<UserTests>(test);
-            var score = testService.GetResult(test);
+            test.UserTestId = this.GetUserTestId(test.UserId, test.Category);
+            utaService.SaveQuestionAnswers(test);
+            var score = this.utaService.GetResult(test.UserId, test.Category);
 
             //testModel.Score = score;
             //userTests.Update(testModel);
@@ -216,43 +229,43 @@ namespace ITest.Services.Data
             var updatingtest = userTests.All.FirstOrDefault(x => x.TestId == test.TestId && x.UserId == test.UserId);
             updatingtest.ExecutionTime = testModel.ExecutionTime;
             updatingtest.Score = score;
-            updatingtest.SerializedAnswers = testModel.SerializedAnswers;
             updatingtest.Submitted = true;
             saver.SaveChanges();
         }
-        public UserTestsDTO GetUserTest(string email, int testId)
+        public UserTestsDTO GetUserTest(string email, Guid testId)
         {
             var userTest = this.userTests.All.Where(ut => ut.User.Email == email && ut.TestId == testId).
                                               Include(ut => ut.Test).
-                                              ThenInclude(t =>t.Questions).
+                                              ThenInclude(t => t.Questions).
                                               ThenInclude(q => q.Answers).
                                               First();
-            var userTestDto =  mapper.MapTo<UserTestsDTO>(userTest);
+            var userTestDto = mapper.MapTo<UserTestsDTO>(userTest);
             return userTestDto;
 
         }
-        public void RecalculateAllTestsScore()
-        {
-            var testsToRecalc = this.userTests.All.Where(x => x.Submitted);
-            foreach (var item in testsToRecalc)
-            {
-                var itemDto = this.mapper.MapTo<UserTestsDTO>(item);
-                decimal newScore = this.testService.GetResult(itemDto);
-                item.Score = newScore;
-            }
-            saver.SaveChanges();
-        }
-        public void RecalculateTestScoreByTestId(int id)
-        {
-            var testsToRecalc = this.userTests.All.Where(t => t.TestId == id && t.Submitted);
-            foreach (var item in testsToRecalc)
-            {
-                var itemDto = this.mapper.MapTo<UserTestsDTO>(item);
-                decimal newScore = this.testService.GetResult(itemDto);
-                item.Score = newScore;
-            }
-            saver.SaveChanges();
-        }
+
+        //public void RecalculateAllTestsScore()
+        //{
+        //    var testsToRecalc = this.userTests.All.Where(x => x.Submitted);
+        //    foreach (var item in testsToRecalc)
+        //    {
+        //        var itemDto = this.mapper.MapTo<UserTestsDTO>(item);
+        //        decimal newScore = this.utaService.GetResult(itemDto);
+        //        item.Score = newScore;
+        //    }
+        //    saver.SaveChanges();
+        //}
+        //public void RecalculateTestScoreByTestId(Guid id)
+        //{
+        //    var testsToRecalc = this.userTests.All.Where(t => t.TestId == id && t.Submitted);
+        //    foreach (var item in testsToRecalc)
+        //    {
+        //        var itemDto = this.mapper.MapTo<UserTestsDTO>(item);
+        //        decimal newScore = this.testService.GetResult(itemDto);
+        //        item.Score = newScore;
+        //    }
+        //    saver.SaveChanges();
+        //}
     }
 }
 

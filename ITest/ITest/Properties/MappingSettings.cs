@@ -63,6 +63,7 @@ namespace ITest.Properties
             this.CreateMap<SolveTestDTO, SolveTestViewModel>(MemberList.Source).ReverseMap();
             this.CreateMap<Question, QuestionDTO>(MemberList.Source);
             this.CreateMap<QuestionDTO, ShowQuestionViewModel>(MemberList.Source);
+            this.CreateMap<ShowQuestionViewModel, QuestionDTO>(MemberList.Source);
             this.CreateMap<Answer, AnswerDTO>(MemberList.Source);
             this.CreateMap<AnswerDTO, ShowAnswerViewModel>(MemberList.Source);
 
@@ -77,21 +78,16 @@ namespace ITest.Properties
             this.CreateMap<SolveTestViewModel, UserTestsDTO>(MemberList.Source);
 
             this.CreateMap<SolveTestDTO, UserTestsDTO>(MemberList.Source);
-            this.CreateMap<UserTestsDTO, UserTests>(MemberList.Source).
-                ForMember(x => x.SerializedAnswers, opt => opt.MapFrom(src => string.Join(";", src.StorageOfAnswers)));
+            this.CreateMap<UserTestsDTO, UserTests>(MemberList.Source);
             this.CreateMap<UserTests, UserTestsDTO>(MemberList.Source).
-                ForMember
-                (
-                    x => x.StorageOfAnswers, opt => opt.MapFrom
-                        (
-                        src => src.SerializedAnswers.Split(new char[] { ';' }).ToList()
-                        )
-                );
+                ForMember(x => x.Category, opt => opt.MapFrom(src => src.Test.Category.Name));//here
             this.CreateMap<UserTestsDTO, ResultsViewModel>(MemberList.Source);
 
             this.CreateMap<UserTestsDTO, CategoryViewModel>(MemberList.Source);
 
-            this.CreateMap<UserTestsDTO, DetailedTestViewModel>(MemberList.Destination);
+            //results (detailed)
+            this.CreateMap<UserTests, TestSolutionDTO>(MemberList.Destination);
+            this.CreateMap<TestSolutionDTO, DetailedTestViewModel>();
 
 
         }

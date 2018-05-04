@@ -11,14 +11,11 @@ namespace ITest.Models.TestViewModels
     {
         public List<ShowQuestionViewModel> Questions { get; set; }
 
-        public List<int> CorrectOrderOfQuestionId { get; set; }
+        public int NumberOfQuestions { get; set; }
 
         public string UserId { get; set; }
 
-        public int Id { get; set; }
-
-        public List<string> StorageOfAnswers { get; set; }
-        
+        public Guid Id { get; set; }
 
         public DateTime? CreatedOn { get; set; }
 
@@ -29,5 +26,10 @@ namespace ITest.Models.TestViewModels
         public int TimeInMinutes { get; set; }
 
         public bool Submitted { get; set; }
+
+        //depricated
+
+        public List<int> CorrectOrderOfQuestionId { get; set; }
+        public List<string> StorageOfAnswers { get; set; }
     }
 }

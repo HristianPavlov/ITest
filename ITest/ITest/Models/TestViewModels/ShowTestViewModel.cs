@@ -9,5 +9,6 @@ namespace ITest.Models.TestViewModels
     public class ShowTestViewModel
     {
         public ICollection<ShowQuestionViewModel> Questions { get; set; }
+        public string Name { get; set; }
     }
 }
