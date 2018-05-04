@@ -43,7 +43,6 @@ namespace ITest.Services.Data
          
             return mapper.ProjectTo<TestDTO>(allTests);
         }
-
         public IEnumerable<TestEditDTO> GetAllTestsWithOutStuffInIttEditDTO()
         {
             //.Include(test => test.Questions)
