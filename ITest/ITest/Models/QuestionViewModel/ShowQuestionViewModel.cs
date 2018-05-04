@@ -10,8 +10,10 @@ namespace ITest.Models.QuestionViewModel
     {
         public string Content { get; set; }
 
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
-        public ICollection<ShowAnswerViewModel> Answers { get; set; }
+        public Guid SelectedAnswerId { get; set; }
+
+        public IList<ShowAnswerViewModel> Answers { get; set; }
     }
 }

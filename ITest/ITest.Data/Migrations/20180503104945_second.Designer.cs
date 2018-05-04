@@ -12,8 +12,8 @@ using System;
 namespace ITest.Data.Migrations
 {
     [DbContext(typeof(ITestDbContext))]
-    [Migration("20180430101237_Unique Name")]
-    partial class UniqueName
+    [Migration("20180503104945_second")]
+    partial class second
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -24,7 +24,7 @@ namespace ITest.Data.Migrations
 
             modelBuilder.Entity("ITest.Data.Models.Answer", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Content")
@@ -40,7 +40,7 @@ namespace ITest.Data.Migrations
 
                     b.Property<DateTime?>("ModifiedOn");
 
-                    b.Property<int>("QuestionId");
+                    b.Property<Guid>("QuestionId");
 
                     b.HasKey("Id");
 
@@ -51,7 +51,7 @@ namespace ITest.Data.Migrations
 
             modelBuilder.Entity("ITest.Data.Models.Category", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<DateTime?>("CreatedOn");
@@ -72,7 +72,7 @@ namespace ITest.Data.Migrations
 
             modelBuilder.Entity("ITest.Data.Models.Question", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Content");
@@ -85,7 +85,7 @@ namespace ITest.Data.Migrations
 
                     b.Property<DateTime?>("ModifiedOn");
 
-                    b.Property<int>("TestId");
+                    b.Property<Guid>("TestId");
 
                     b.HasKey("Id");
 
@@ -96,12 +96,12 @@ namespace ITest.Data.Migrations
 
             modelBuilder.Entity("ITest.Data.Models.Test", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("AuthorId");
 
-                    b.Property<int>("CategoryId");
+                    b.Property<Guid>("CategoryId");
 
                     b.Property<DateTime?>("CreatedOn");
 
@@ -122,10 +122,6 @@ namespace ITest.Data.Migrations
                     b.HasIndex("AuthorId");
 
                     b.HasIndex("CategoryId");
-
-                    b.HasIndex("Name")
-                        .IsUnique()
-                        .HasFilter("[Name] IS NOT NULL");
 
                     b.ToTable("Test");
                 });
@@ -189,11 +185,36 @@ namespace ITest.Data.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("ITest.Data.Models.UserTestAnswers", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<Guid>("AnswerId");
+
+                    b.Property<DateTime?>("CreatedOn");
+
+                    b.Property<DateTime?>("DeletedOn");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<DateTime?>("ModifiedOn");
+
+                    b.Property<Guid>("UserTestId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AnswerId");
+
+                    b.HasIndex("UserTestId");
+
+                    b.ToTable("UserTestAnswers");
+                });
+
             modelBuilder.Entity("ITest.Data.Models.UserTests", b =>
                 {
-                    b.Property<string>("UserId");
-
-                    b.Property<int>("TestId");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("Category");
 
@@ -213,9 +234,15 @@ namespace ITest.Data.Migrations
 
                     b.Property<bool>("Submitted");
 
-                    b.HasKey("UserId", "TestId");
+                    b.Property<Guid>("TestId");
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("TestId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("UserTests");
                 });
@@ -356,6 +383,19 @@ namespace ITest.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("ITest.Data.Models.UserTestAnswers", b =>
+                {
+                    b.HasOne("ITest.Data.Models.Answer", "Answer")
+                        .WithMany("UserTests")
+                        .HasForeignKey("AnswerId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("ITest.Data.Models.UserTests", "UserTest")
+                        .WithMany("Answers")
+                        .HasForeignKey("UserTestId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
             modelBuilder.Entity("ITest.Data.Models.UserTests", b =>
                 {
                     b.HasOne("ITest.Data.Models.Test", "Test")
@@ -365,8 +405,7 @@ namespace ITest.Data.Migrations
 
                     b.HasOne("ITest.Data.Models.User", "User")
                         .WithMany("Tests")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

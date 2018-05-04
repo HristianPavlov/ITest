@@ -8,25 +8,19 @@ namespace ITest.Data.Models
 {
     public class Question : DataModel
     {
-
+        
         //public Question()
         //{
         //    this.Answers = new HashSet<Answer>();
 
         //}
 
-
         //[Required]
         public string Content { get; set; }
 
-        
-        public int TestId { get; set; }
-
+        public Guid TestId { get; set; }
         public Test Test { get; set; }
 
         public ICollection<Answer> Answers { get; set; }
-
-
-
     }
 }

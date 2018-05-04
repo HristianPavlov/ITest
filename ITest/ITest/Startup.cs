@@ -52,6 +52,7 @@ namespace ITest
             services.AddTransient<ITestService, TestService>();
             services.AddTransient<ICreateTestService, CreateTestService>();
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IUserTestAnswersService, UserTestAnswersService>();
             services.AddTransient<IEmailSender, EmailSender>();
         }
 

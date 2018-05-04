@@ -9,9 +9,7 @@ namespace ITest.Models
 {
     public class CreateTestViewModel
     {
-        public int Id { get; set; }
-
-        
+        public Guid Id { get; set; }
 
 
         public int Status { get; set; }
@@ -20,13 +18,9 @@ namespace ITest.Models
 
         public List<CreateQuestionViewModel> Questions { get; set; }
 
-        public int CategoryId { get; set; }
+        public Guid CategoryId { get; set; }
 
-        
 
         public int TimeInMinutes { get; set; }
-
-       
-
     }
 }

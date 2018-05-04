@@ -8,13 +8,9 @@ namespace ITest.DTO
     {
         public ICollection<QuestionDTO> Questions { get; set; }
 
-        public List<int> CorrectOrderOfQuestionId { get; set; }
+        public Guid UserId { get; set; }
 
-        public string UserId { get; set; }
-
-        public int Id { get; set; }
-
-        public List<string> StorageOfAnswers { get; set; }
+        public Guid Id { get; set; }
 
         public DateTime? CreatedOn { get; set; }
 

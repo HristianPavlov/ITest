@@ -15,7 +15,7 @@ namespace ITest.Models.ResultsViewModels
 
         public decimal Score { get; set; }
 
-        public string Category { get; set; }
+        public string CategoryName { get; set; }
 
         public double ExecutionTime { get; set; }
     }
