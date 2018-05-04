@@ -94,8 +94,6 @@ namespace ITest.Services.Data
             var foundTestDto = mapper.MapTo<TestDTO>(currentTest);
             return foundTestDto;
         }
-
-
         public TestEditDTO GetTestByNameEditDTO(string name)
         {
             var testsFromThisCategory = tests.All.AsNoTracking().Where(test => test.Name == name).AsNoTracking().
