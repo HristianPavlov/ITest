@@ -93,7 +93,6 @@ namespace ITest.Services.Data
         {
             return userTests.All.First(x => x.UserId == userId && x.Test.Category.Name == category).Id;
         }
-
         public IEnumerable<UserTestsDTO> GetAllUserTests()
         {
             var allUserTests = userTests.All.
@@ -146,7 +145,6 @@ namespace ITest.Services.Data
             userTests.Add(testModel);
             saver.SaveChanges();
         }
-
         public SolveTestDTO GetCorrectSolveTest(string userId, string category)
         {
             if (this.UserStartedTest(userId, category))
@@ -255,6 +253,7 @@ namespace ITest.Services.Data
         //    }
         //    saver.SaveChanges();
         //}
+
         //public void RecalculateTestScoreByTestId(Guid id)
         //{
         //    var testsToRecalc = this.userTests.All.Where(t => t.TestId == id && t.Submitted);
