@@ -64,7 +64,7 @@ h3{
 }
 
 
-#createTest-content button{
+#createTest-content.button{
         font-weight: bold;
         -webkit-border-radius: 11px;
         -moz-border-radius: 11px;
