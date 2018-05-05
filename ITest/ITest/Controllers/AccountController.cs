@@ -218,6 +218,7 @@ namespace ITest.Controllers
                 var result = await _userManager.CreateAsync(user, model.RegisterPassword);
                 if (result.Succeeded)
                 {
+
                     _logger.LogInformation("User created a new account with password.");
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -226,14 +227,17 @@ namespace ITest.Controllers
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation("User created a new account with password.");
-                    return this.RedirectToAction("ShowCategories", "Category");
+                    await this._userManager.AddToRoleAsync(user, "User");
+                    //return this.RedirectToAction("ShowCategories", "Category", new { area = "User" });
+                    return this.RedirectToAction("Index", "Home");
+
                     //return RedirectToLocal(returnUrl);
                 }
                 AddErrors(result);
             }
 
             // If we got this far, something failed, redisplay form
-            
+
             return View(nameof(AccountController.Authorize), model);
         }
 

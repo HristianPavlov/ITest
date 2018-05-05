@@ -8,17 +8,18 @@ using ITest.Models;
 
 namespace ITest.Controllers
 {
+
     public class HomeController : Controller
     {
         public IActionResult Index()
         {
             if (User.IsInRole("Admin"))
             {
-                return this.RedirectToAction("ShowResults", "Results");
+                return this.RedirectToAction("ShowResults", "Results", new { area = "Admin" });
             }
             else if (User.Identity.IsAuthenticated)
             {
-                return this.RedirectToAction("ShowCategories", "Category");
+                return this.RedirectToAction("ShowCategories", "Category", new { area = "User" });
             }
             else
             {
