@@ -95,10 +95,10 @@ namespace ITest.Services.Data
         }
         public TestEditDTO GetTestByNameEditDTO(string name)
         {
-            var testsFromThisCategory = tests.All.AsNoTracking().Where(test => test.Name == name).AsNoTracking().
-                                                        Include(t => t.Category).AsNoTracking().
-                                                        Include(t => t.Questions).
-                                                        ThenInclude(x => x.Answers).AsNoTracking();
+            var testsFromThisCategory = tests.All.AsNoTracking().Where(test => test.Name == name).AsNoTracking()
+                                                        .Include(t => t.Category).AsNoTracking()
+                                                        .Include(t => t.Questions)
+                                                        .ThenInclude(x => x.Answers).AsNoTracking();
             var currentTest = testsFromThisCategory.First();
 
             var foundTestDto = mapper.MapTo<TestEditDTO>(currentTest);
