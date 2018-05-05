@@ -6,5 +6,6 @@ namespace ITest.Services.Data
     {
         void Create(TestDTO dto);
          void Update(TestEditDTO dto);
+        void PublishedUpdate(TestEditDTO dto);
     }
 }

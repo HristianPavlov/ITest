@@ -7,7 +7,7 @@ namespace ITest.DTO
 {
    public class TestEditDTO
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         public string Name { get; set; }
 
@@ -17,7 +17,7 @@ namespace ITest.DTO
         public IList<QuestionEditDTO> Questions { get; set; }
       
 
-        public int CategoryId { get; set; }
+        public string CategoryId { get; set; }
 
         public string CategoryName { get; set; }
 

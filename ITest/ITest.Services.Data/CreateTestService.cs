@@ -5,6 +5,7 @@ using ITest.Data.UnitOfWork;
 using ITest.DTO;
 using ITest.Infrastructure.Providers;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace ITest.Services.Data
@@ -37,20 +38,48 @@ namespace ITest.Services.Data
         }
 
         public void Update(TestEditDTO dto)
-        {            
-            var TestUpdate = this.tests.All.Include(x => x.Questions)
-                .ThenInclude(q => q.Answers)
-                .FirstOrDefault(x => x.Name == dto.Name);
+        {
+
+            var TestUpdate = this.tests.All.Where(t => t.Name == dto.Name)
+                .Include(x => x.Questions)
+                .ThenInclude(q => q.Answers).First();
+               
           
             var id = TestUpdate.Id;
+            dto.Id = id.ToString();
             var catId = TestUpdate.CategoryId;
-            TestUpdate = this.mapper.MapTo(dto, TestUpdate);
-            TestUpdate.Id = id;
-            TestUpdate.CategoryId = catId;
+            dto.CategoryId = catId.ToString();
+
+            this.mapper.MapTo(dto, TestUpdate);
+            //TestUpdate.Id = id;
+            //TestUpdate.CategoryId = catId;
 
 
             this.tests.Update(TestUpdate);
             this.saver.SaveChanges();
+        }
+
+
+        public void PublishedUpdate(TestEditDTO dto)
+        {
+            var listOfAnswers = new List<AnswerEditDTO>();
+            foreach (var item in dto.Questions)
+            {
+                foreach (var A in item.Answers)
+                {
+
+                    var x = this.mapper.MapTo<Answer>(A);
+                    this.answers.Update(x);
+                    //listOfAnswers.Add(A);
+                }
+            }
+
+           // var Answers = this.mapper.EnumProjectTo<Answer>(listOfAnswers);
+
+
+
+            this.saver.SaveChanges();
+
         }
     }
 }

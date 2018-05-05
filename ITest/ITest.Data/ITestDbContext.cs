@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using ITest.Data.Models;
 using ITest.Data.Models.Abstracts;
+using Microsoft.AspNetCore.Identity;
 
 namespace ITest.Data
 {
@@ -14,6 +15,7 @@ namespace ITest.Data
         public ITestDbContext(DbContextOptions<ITestDbContext> options)
             : base(options)
         {
+            //this.Seed().Wait();
         }
         public DbSet<Category> Categories { get; set; }
 
@@ -25,6 +27,8 @@ namespace ITest.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+           
+
             //Trying to fix the keys
             builder.Entity<Test>()
                 .HasOne(t => t.Category)
@@ -86,6 +90,48 @@ namespace ITest.Data
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
+        }
+        private async Task Seed()
+        {
+            this.Database.EnsureCreated();
+
+            if (!this.Roles.Any(r => r.Name == "Admin"))
+            {
+                var adminRole = new IdentityRole("Admin");
+                this.Roles.Add(adminRole);
+            }
+
+            if (!this.Categories.Any())
+            {
+                var categoriesToAdd = new List<Category>()
+            {
+                new Category()
+                {
+                    Name = "Java"
+                },
+
+                new Category()
+                {
+                    Name = ".NET"
+                },
+
+                new Category()
+                {
+                    Name = "Javascript"
+                },
+
+                new Category()
+                {
+                    Name = "SQL"
+                }
+            };
+
+                categoriesToAdd
+                    .ForEach(c => this.Categories.Add(c));
+
+            }
+
+            await this.SaveChangesAsync();
         }
         private void ApplyAuditInfoRules()
         {

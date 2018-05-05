@@ -94,7 +94,7 @@ namespace ITest.Controllers
         public IActionResult EditPublishedTest(TestEditDTO test)
         {
 
-            this.createTestService.Update(test);
+            this.createTestService.PublishedUpdate(test);
 
 
             this.utaService.RecalculateAllTakenTestsWithId(test.Name);
