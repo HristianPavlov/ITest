@@ -56,36 +56,6 @@ namespace ITest.Data
                 .WithMany(ut => ut.Answers)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            //Trying to fix the keys
-
-
-            //builder.Entity<UserTests>()
-            //    .HasKey(x => new { x.UserId, x.TestId });
-
-            //builder.Entity<UserTests>()
-            //    .HasOne(userTests => userTests.User)
-            //    .WithMany(User => User.Tests)
-            //    .HasForeignKey(u => u.UserId);
-
-            //builder.Entity<UserTests>()
-            //  .HasOne(t => t.Test)
-            //  .WithMany(u => u.Users)
-            //  .HasForeignKey(t => t.TestId);
-
-
-            //builder.Entity<UserTestAnswers>()
-            //   .HasKey(x => new { x.UserTestsId, x.AnswerId });
-
-            //builder.Entity<UserTestAnswers>()
-            //    .HasOne(uta => uta.UserTest)
-            //    .WithMany(userTest => userTest.Answers)
-            //    .HasForeignKey(uta => uta.UserTestsId);
-
-            //builder.Entity<UserTestAnswers>()
-            //  .HasOne(uta => uta.Answer)
-            //  .WithMany(answer => answer.UserTests)
-            //  .HasForeignKey(uta => uta.AnswerId);
-
             base.OnModelCreating(builder);
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.

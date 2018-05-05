@@ -26,10 +26,5 @@ namespace ITest.Models.TestViewModels
         public int TimeInMinutes { get; set; }
 
         public bool Submitted { get; set; }
-
-        //depricated
-
-        public List<int> CorrectOrderOfQuestionId { get; set; }
-        public List<string> StorageOfAnswers { get; set; }
     }
 }

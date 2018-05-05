@@ -15,6 +15,8 @@ using System.Security.Claims;
 
 namespace ITest.Controllers.Createontrollers
 {
+    [Area("Admin")]
+    //[Authorize(Roles = "User")]
     public class CreateTestsController : Controller
     {
         private readonly IMappingProvider mapper;
@@ -23,8 +25,6 @@ namespace ITest.Controllers.Createontrollers
         private readonly UserManager<User> userManager;
         private readonly IUserService userService;
         private readonly ICategoriesService categoriesServices;
-
-
         public CreateTestsController(IMappingProvider mapper, IQuestionService questionsService,
             ICreateTestService createTestService, UserManager<User> userManager,
             IUserService userService, ICategoriesService categoriesServices)
@@ -36,9 +36,6 @@ namespace ITest.Controllers.Createontrollers
             this.userService = userService;
             this.categoriesServices = categoriesServices;
         }
-
-
-
         public IActionResult CreateNewTest()
         {
             //var model = new CreateTestViewModel()
