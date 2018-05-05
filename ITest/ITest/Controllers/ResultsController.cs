@@ -25,7 +25,7 @@ namespace ITest.Controllers
             this.utaService = utaService;
         }
 
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public IActionResult ShowResults()
         {
             var model = new ResultBagViewModel();
@@ -44,7 +44,7 @@ namespace ITest.Controllers
         //    return this.RedirectToAction("Index", "Home");
         //}
 
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         //[HttpPost]
         public IActionResult DetailedSolution(string userEmail, Guid testId)
         {
