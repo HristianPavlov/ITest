@@ -16,6 +16,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ITest.Controllers
 {
+    [Area("User")]
+    //[Authorize(Roles = "User")]
     public class SolveController : Controller
     {
         private readonly IMappingProvider mapper;
@@ -74,7 +76,6 @@ namespace ITest.Controllers
             catch (CategoryEmptyException)
             {
                 return this.RedirectToAction("CategoryEmpty", "Solve");
-
             }
 
         }
@@ -95,7 +96,7 @@ namespace ITest.Controllers
                     RedirectToAction("SubmittingLate", "Solve");
                 }
             }
-            return this.RedirectToAction("Index", "Home");
+            return this.RedirectToAction("ShowCategories", "Category");
         }
     }
 }

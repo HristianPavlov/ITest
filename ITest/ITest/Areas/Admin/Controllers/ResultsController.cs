@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ITest.Controllers
 {
+    [Area("Admin")]
+    [Authorize(Roles = "Admin")]
     public class ResultsController : Controller
     {
         private readonly IMappingProvider mapper;
@@ -24,8 +26,6 @@ namespace ITest.Controllers
             this.userTestsService = userTestsService;
             this.utaService = utaService;
         }
-
-        [Authorize(Roles = "Admin")]
         public IActionResult ShowResults()
         {
             var model = new ResultBagViewModel();
@@ -36,15 +36,6 @@ namespace ITest.Controllers
 
             return View(model);
         }
-        //should be deleted (its only used for test purposes)
-        //[Authorize(Roles = "Admin")]
-        //public IActionResult RecalculateTests()
-        //{
-        //    this.utaService.RecalculateAllTakenTestsWithId(Guid.Parse("CFC91AB1-E2C0-48CA-101C-08D5B1B805CE"));
-        //    return this.RedirectToAction("Index", "Home");
-        //}
-
-        [Authorize(Roles = "Admin")]
         //[HttpPost]
         public IActionResult DetailedSolution(string userEmail, Guid testId)
         {

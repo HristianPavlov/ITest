@@ -32,7 +32,7 @@
                 <td>@((int)item.ExecutionTime) mins @Math.Round(item.ExecutionTime % 1 * 60) sec</td>
                 <td>@item.Score</td>
                 <td>
-                    <a href="/Results/DetailedSolution?userEmail=@item.UserEmail&testId=@item.Test.Id">Details</a>
+                    <a href="/Admin/Results/DetailedSolution?userEmail=@item.UserEmail&testId=@item.Test.Id">Details</a>
                     @*binds correctly*@
                 </td>
 
