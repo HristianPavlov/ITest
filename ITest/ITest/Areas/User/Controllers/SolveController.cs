@@ -17,7 +17,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ITest.Controllers
 {
     [Area("User")]
-    //[Authorize(Roles = "User")]
+    [Authorize]
     public class SolveController : Controller
     {
         private readonly IMappingProvider mapper;

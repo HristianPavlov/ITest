@@ -87,7 +87,7 @@ namespace ITest.Controllers
         public IActionResult EditPublishedTest(TestEditDTO test)
         {
             this.createTestService.PublishedUpdate(test);
-            this.utaService.RecalculateAllTakenTestsWithId(test.Name);
+            this.utaService.RecalculateAllTakenTestsWithName(test.Name);
             return this.RedirectToAction("ShowResults", "Results");
         }
     }
