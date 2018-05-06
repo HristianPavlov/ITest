@@ -84,14 +84,13 @@ namespace ITest.Services.Data
                 throw new ArgumentNullException(nameof(name));
             }
 
-            var correctTests = this.userTestAnswers.All;
-            //test purpose only!!
-                //.Where(uta => uta.UserTest.Test.Name == name)
-                //.Include(uta => uta.UserTest)
-                //    .ThenInclude(ut => ut.Test)
-                //        .ThenInclude(ut => ut.Questions)
-                //.Include(uta => uta.Answer)
-                //.ToList();
+            var correctTests = this.userTestAnswers.All
+                .Where(uta => uta.UserTest.Test.Name == name)
+                .Include(uta => uta.UserTest)
+                    .ThenInclude(ut => ut.Test)
+                        .ThenInclude(t => t.Questions)
+                .Include(uta => uta.Answer)
+                .ToList();
 
             foreach (var ut in correctTests)
             {
@@ -104,7 +103,7 @@ namespace ITest.Services.Data
 
         //removing this method because it makes untestable code
 
-        public decimal GetThisUserTestScore(UserTests userTest)
+        private decimal GetThisUserTestScore(UserTests userTest)
         {
             decimal correctAnswers = userTest.Answers.Where(a => a.Answer.Correct).Count();
             decimal numOfQuestions = userTest.Test.Questions.Count();

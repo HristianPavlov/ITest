@@ -206,7 +206,87 @@ namespace BusinessTests.ServicesData
         {
             //arrange & act & assert
             Assert.ThrowsException<ArgumentNullException>(() => fakeUserTestAnswersService.RecalculateAllTakenTestsWithName(null));
-            
+
+        }
+        [TestMethod]
+        public void Recalculate_SetsCorrectNewResult()
+        {
+            //arrange
+            var testName = "Cheficha Cold";
+            //score will be 100 at start and should change to 33,33
+            var currentScore = 100m;
+            var expectedScore = 33.33m;
+
+            var test = new Test
+            {
+                Name = testName,
+                Questions = new List<Question>
+                 {
+                     new Question(),
+                     new Question(),
+                     new Question()
+                 }
+            };
+            var ut = new UserTests
+            {
+                Test = test,
+                Answers = new List<UserTestAnswers>
+                {
+                     new UserTestAnswers
+                      {
+                           Answer = new Answer
+                           {
+                               Correct=true
+                           }
+                      },
+                      new UserTestAnswers
+                     {
+                          Answer = new Answer
+                          {
+                              Correct=false
+                          }
+                     },
+                        new UserTestAnswers
+                     {
+                          Answer = new Answer
+                          {
+                              Correct=false
+                          }
+                     }
+                },
+                Score = currentScore
+            };
+
+            var all = new List<UserTestAnswers>
+            {
+                new UserTestAnswers
+                {
+                     UserTest = ut,
+                },
+                new UserTestAnswers
+                {
+                     UserTest = ut,
+                },
+                new UserTestAnswers
+                {
+                     UserTest = ut,
+                }
+            }.AsQueryable();
+            repoUserTestAnswersMock.Setup(x => x.All).Returns(all);
+            //act
+            fakeUserTestAnswersService.RecalculateAllTakenTestsWithName(testName);
+            //assert
+            Assert.AreEqual(expectedScore, ut.Score);
+        }
+        [TestMethod]
+        public void Recalculate_SaverSaveChangesCalled()
+        {
+            //arrange 
+            var testName = "Cheficha Cold";
+            //act 
+            fakeUserTestAnswersService.RecalculateAllTakenTestsWithName(testName);
+            //assert
+            saverMock.Verify(x => x.SaveChanges(), Times.Once);
         }
     }
 }
