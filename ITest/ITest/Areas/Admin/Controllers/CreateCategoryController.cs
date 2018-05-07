@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ITest.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    //[Authorize(Roles = "User")]
+    [Authorize(Roles = "Admin")]
     public class CreateCategoryController : Controller
     {
         private readonly IUserTestsService userTestsService;
@@ -42,9 +42,9 @@ namespace ITest.Areas.Admin.Controllers
                 this.categoriesService.Add(dto);
 
                 TempData["Success-Message"] = "You published a new post!";
-                return this.RedirectToAction("Index", "Home");
+                return this.RedirectToAction("ShowResults", "Results");
             }
-            return this.RedirectToAction("Index", "Home");
+            return this.RedirectToAction("ShowResults", "Results");
         }
     }
 }

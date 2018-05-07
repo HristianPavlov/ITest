@@ -1,10 +1,13 @@
-﻿$(document).ready(function () {
+﻿$(function () {
+    //{ { qh_id } }
     var questionTemplate =
         `
 <div class="panel panel-default question" name="Questions{{q_id}}" style="margin: 7% 0% 7% 0%; border: none; shadow: none; background-color:transparent;">
     
         <div>
-            <div style="display: inline-block; padding-left: 15px;"><h3>Question{{qh_id}}</h3></div>
+            <div style="display: inline-block; padding-left: 15px;">
+<h3></h3>
+</div>
             <button type="button" class="delete-button">Delete Question</button>
         </div>
         <div class="form-group">
@@ -26,7 +29,6 @@
  
     </div>
   `;
-
     var answerTemplate =
         `
     <div style="height: 50px;" class="answer-container">
@@ -41,18 +43,109 @@
 
     var qwerty = $('input:radio');
 
-    var total = 0;
+    var oldNumber = $(`.panel.panel-default.question`).length;
 
-    $('.add-question').click(function () {
+    var total = $(`.panel.panel-default.question`).length;/**/
 
-        $("#questions-container").append(questionTemplate.replace(/\{\{\q_id\}\}/g, ++total).replace(/\{\{qh_id\}\}/, total + 1));
-    });
+
 
     //$('.radio\_(\d+)\__').change(function () {
     //    $('.radio').not(this).prop('checked', false);
     //});
 
-    $('#questions-container').on('click', '.add-answer', function () {
+    //when the page loads
+    for (var i = 0; i < qwerty.length; i++) {
+        var theName = qwerty[i].getAttribute(`id`);
+        var parts = theName.split("__Answers_");
+
+        var NumberOfTheAnswerInThisQuestionArr = parts[1].split("__");
+        var NumberOfTheAnswerInThisQuestion = NumberOfTheAnswerInThisQuestionArr[0];
+
+        var IdOfTheQuestionArr = parts[0].split("_");
+        var IdOfTheQuestion = IdOfTheQuestionArr[1];
+        //"Questions[{{q_id}}].Answers[{{a_id}}].Correct"
+        //.replace(/{{a_id}}/, NumberOfTheAnswerInThisQuestion)
+        var newNameForTheInput = "radio_A_{{q_id}}"
+            .replace(/{{q_id}}/, IdOfTheQuestion);
+
+        qwerty[i].setAttribute("name", newNameForTheInput);
+
+        //console.log(total);
+    }
+
+    $('#questions-container').on('click', '.add-question', function () {
+
+        $("#questions-container-backup").append(questionTemplate.replace(/\{\{\q_id\}\}/g, total++));
+
+    });
+
+    $('#createTest-content').on('click', '.hide-question', function () {
+
+        var x = $(this).closest(`.panel.panel-default.question`)/*.attr(`name`).replace(`Questions`, ``)*/;
+        var button = x.find(`.checkbox`);
+
+        var y = this.closest(`.panel.panel-default.question`);
+        var ss = x.find(`.checkbox`);
+        $(button).attr(`checked`, `checked`);
+        //console.log(button);
+        $(this).closest('.panel.panel-default.question').hide();
+
+        //var number = parseInt(x);
+        //console.log(number);
+        //
+
+        //$(document).find(`input`).each(function () {
+
+        //    var x = String(this.id).match(/Questions\_(\d+)\__/);
+        //    if (x !== null) {
+        //        var xNumber = parseInt(x[1]);
+        //        if (xNumber > number) {
+        //            var ss = this.id.replace(/Questions\_(\d+)\__/g, `Questions_` + (xNumber - 1) + `__`);
+        //            this.id = ss;
+        //            this.closest('.panel.panel-default.question').setAttribute("name", "Questions" + (xNumber - 1));
+
+        //            var heading = $(this).closest('.panel.panel-default.question');
+        //            //var headd = heading.find(`div h3`);
+        //            var y = heading.find(`div h3`);
+        //            //find(`div h3`).text();
+        //            // console.log(y[0]);
+        //            y.text("Questions" + xNumber);
+        //        }
+        //    }
+        //});
+        //--total;
+    });
+
+
+    $('#createTest-content').on('click', '.delete-button', function () {
+
+        var x = $(this).closest(`.panel.panel-default.question`).attr(`name`).replace(`Questions`, ``);
+        var number = parseInt(x);
+        //console.log(number);
+        $(this).closest('.panel.panel-default.question').remove();
+        $(document).find(`input`).each(function () {
+
+            var x = String(this.id).match(/Questions\_(\d+)\__/);
+            if (x !== null) {
+                var xNumber = parseInt(x[1]);
+                if (xNumber > number) {
+                    var ss = this.id.replace(/Questions\_(\d+)\__/g, `Questions_` + (xNumber - 1) + `__`);
+                    this.id = ss;
+                    this.closest('.panel.panel-default.question').setAttribute("name", "Questions" + (xNumber - 1));
+
+                    var heading = $(this).closest('.panel.panel-default.question');
+                    //var headd = heading.find(`div h3`);
+                    var y = heading.find(`div h3`);
+                    //find(`div h3`).text();
+                    // console.log(y[0]);
+                    y.text("Questions" + xNumber);
+                }
+            }
+        });
+        --total;
+    });
+
+    $('#questions-container').off().on('click', '.add-answer', function () {
 
         var containerr = this.closest('.panel.panel-default.question');
         var containerrr = $(this).closest('.panel.panel-default.question');
@@ -83,54 +176,7 @@
 
     });
 
-    $('#questions-container').on('click', '.delete-button', function () {
-        var x = $(this).closest(`.panel.panel-default.question`).attr(`name`).replace(`Questions`, ``);
-        var number = parseInt(x);
-        //console.log(number);
-        $(this).closest('.panel.panel-default.question').remove();
-        $(document).find(`input`).each(function () {
-
-            var x = String(this.id).match(/Questions\_(\d+)\__/);
-            if (x !== null) {
-                var xNumber = parseInt(x[1]);
-                if (xNumber > number) {
-                    var ss = this.id.replace(/Questions\_(\d+)\__/g, `Questions_` + (xNumber - 1) + `__`);
-                    this.id = ss;
-                    this.closest('.panel.panel-default.question').setAttribute("name", "Questions" + (xNumber - 1));
-
-                    var heading = $(this).closest('.panel.panel-default.question');
-                    //var headd = heading.find(`div h3`);
-                    var y = heading.find(`div h3`);
-                    //find(`div h3`).text();
-                    // console.log(y[0]);
-                    y.text("Questions" + xNumber);
-                }
-            }
-        });
-        --total;
-    });
-
-
-    //when the page loads
-    for (var i = 0; i < qwerty.length; i++) {
-        var theName = qwerty[i].getAttribute(`id`);
-        var parts = theName.split("__Answers_");
-
-        var NumberOfTheAnswerInThisQuestionArr = parts[1].split("__");
-        var NumberOfTheAnswerInThisQuestion = NumberOfTheAnswerInThisQuestionArr[0];
-
-        var IdOfTheQuestionArr = parts[0].split("_");
-        var IdOfTheQuestion = IdOfTheQuestionArr[1];
-        //"Questions[{{q_id}}].Answers[{{a_id}}].Correct"
-        //.replace(/{{a_id}}/, NumberOfTheAnswerInThisQuestion)
-        var newNameForTheInput = "radio_A_{{q_id}}"
-            .replace(/{{q_id}}/, IdOfTheQuestion);
-
-        qwerty[i].setAttribute("name", newNameForTheInput);
-
-    }
-    //submit
-    $(document).on('click', '#submitBtnArea', function () {
+    $(`#createTest-content`).on('click', '#submitBtnArea', function () {
         //event.preventDefault();
         var qwerty = $('input:radio');
         for (var i = 0; i < qwerty.length; i++) {
@@ -150,9 +196,9 @@
         }
     });
 
-
-
-
-   
 });
+
+
+/**//**/
+
 
