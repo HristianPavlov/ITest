@@ -43,24 +43,68 @@ namespace ITest.Services.Data
         {
 
             var TestUpdate = this.tests.All.Where(t => t.Name == dto.Name)
-                .Include(x => x.Questions)
-                .ThenInclude(q => q.Answers).First();
+               .First();
 
 
-            var id = TestUpdate.Id;
-            dto.Id = id.ToString();
-            var catId = TestUpdate.CategoryId;
-            dto.CategoryId = catId.ToString();
+            //var id = TestUpdate.Id;
+            //dto.Id = id.ToString();
+            //var catId = TestUpdate.CategoryId;
+            //dto.CategoryId = catId.ToString();
 
-            this.mapper.MapTo(dto, TestUpdate);
+            //this.mapper.MapTo(dto, TestUpdate);
+
             //TestUpdate.Id = id;
             //TestUpdate.CategoryId = catId;
-
+            TestUpdate.TimeInMinutes = dto.TimeInMinutes;
+            TestUpdate.Name = dto.Name;
 
             this.tests.Update(TestUpdate);
+
+            foreach (var item in dto.Questions)
+            {
+
+                if (item.Id!=null)
+                {
+                    var x = this.mapper.MapTo<Question>(item);
+                    this.UpdateQuestions(x);
+                }
+                else
+                {
+                    var x = this.mapper.MapTo<Question>(item);
+                    x.TestId = TestUpdate.Id;
+                    this.questions.Add(x);
+
+                }
+               
+                
+                
+            }
             this.saver.SaveChanges();
+
+
+            //foreach (var item in dto.Questions)
+            //{
+            //    foreach (var A in item.Answers)
+            //    {
+            //        var x = this.mapper.MapTo<Answer>(A);
+
+            //        this.UpdateAnswers(x);
+            //    }
+                
+            //}
+            //this.saver.SaveChanges();
         }
 
+        private void UpdateQuestions(Question item)
+        {
+            this.questions.Update(item);
+            
+        }
+        //private void UpdateAnswers(Answer item)
+        //{
+        //    this.answers.Update(item);
+
+        //}
 
         public void PublishedUpdate(TestEditDTO dto)
         {

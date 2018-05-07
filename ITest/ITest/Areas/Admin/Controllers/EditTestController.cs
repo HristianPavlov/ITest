@@ -64,17 +64,16 @@ namespace ITest.Controllers
 
             return View(testDto);
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult EditTest(TestEditDTO test)
         {
-
-
             this.createTestService.Update(test);
-
-
+            
             return this.RedirectToAction("ShowResults", "Results");
         }
+
         public IActionResult EditPublishedTest(string id)
         {
             var testDto = this.testService.GetTestByNameEditDTO(id);
