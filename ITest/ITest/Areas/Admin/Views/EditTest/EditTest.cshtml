@@ -19,11 +19,11 @@
         <div>
             <form asp-area="Admin" asp-controller="EditTest" asp-action="EditTest" method="post" class="form-inline" id="question-form">
 
-                <div class="form-group">
+                @*<div class="form-group">
                     <label asp-for="Status" class="control-label"></label>
                     <input asp-for="Status" class="form-control" />
                     <span asp-validation-for="Status" class="text-danger"></span>
-                </div>
+                </div>*@
 
                 <div class="form-group">
                     <label asp-for="Name" class="control-label">Test Name: @Model.Name</label>
@@ -59,35 +59,39 @@
                 <div id="questions-container">
                     @for (int i = 0; i < Model.Questions.Count; i++)
                     {
-                    <div class="panel panel-default question" name="Questions @i">
-
-                        <input asp-for="@Model.Questions[i].IsDeleted" placeholder="@Model.Questions[i].Content" class="checkbox secret" />
-                        <input asp-for="@Model.Questions[i].TestId" placeholder="@Model.Questions[i].Content" class="secret" />
-                        <input asp-for="@Model.Questions[i].Id" placeholder="@Model.Questions[i].Content" class="secret" />
 
 
+                        <div class="panel panel-default question" name="Questions @i">
 
-                        <input asp-for="@Model.Questions[i].Content" placeholder="@Model.Questions[i].Content" />
-                        <div> <button type="button" class="hide-question">DeleteQuetsion</button></div>
-                        <div> <button type="button" class="add-answer btn btn-default">Add Answer</button></div>
-
-                        @for (int j = 0; j < @Model.Questions[i].Answers.Count; j++)
-    {
-                    <input asp-for="@Model.Questions[i].Answers[j].QuestionId" placeholder="@Model.Questions[i].Content" class="secret" />
-                    <input asp-for="@Model.Questions[i].Answers[j].Id" placeholder="@Model.Questions[i].Content" class="secret" />
-
-                    <input asp-for="Questions[i].Answers[j].Content" placeholder="Questions[i].Answers[j].Content" class="form-control" />
-                    <input type="radio" asp-for="Questions[i].Answers[j].Correct" class="form-control" value="true" />
+                            <input asp-for="@Model.Questions[i].IsDeleted" placeholder="@Model.Questions[i].Content" class="checkbox secret" />
+                            <input asp-for="@Model.Questions[i].TestId" placeholder="@Model.Questions[i].Content" class="secret" />
+                            <input asp-for="@Model.Questions[i].Id" placeholder="@Model.Questions[i].Content" class="secret" />
 
 
 
-}
-                    </div>
+                            <input asp-for="@Model.Questions[i].Content" placeholder="@Model.Questions[i].Content" />
+                            <div> <button type="button" class="hide-question">DeleteQuetsion</button></div>
+                            <div> <button type="button" class="add-answer-foreach btn btn-default">Add Answer</button></div>
+
+                            @for (int j = 0; j < @Model.Questions[i].Answers.Count; j++)
+                            {
+                                <div  class="answer-container">
+                                    <input asp-for="@Model.Questions[i].Answers[j].QuestionId" placeholder="@Model.Questions[i].Content" class="secret" />
+                                    <input asp-for="@Model.Questions[i].Answers[j].Id" placeholder="@Model.Questions[i].Content" class="secret" />
+
+                                    <input asp-for="Questions[i].Answers[j].Content" placeholder="Questions[i].Answers[j].Content" class="form-control" />
+                                    <input type="radio" asp-for="Questions[i].Answers[j].Correct" class="form-control" value="true" />
+                                </div>
+                            }
+
+
+
+                        </div>
 
 
                     }
                 </div>
-      
+
 
 
                 <div>
@@ -97,7 +101,7 @@
 
 
                 <div id="submitBtnArea" class="form-group">
-                   
+
 
                     <button id="saveDraft" name="Status" type="submit" value="2" class="btn btn-default">Save as draft</button>
                     <button id="submitNewTestBtn" name="Status" type="submit" value="1" class="btn btn-default">Publish</button>

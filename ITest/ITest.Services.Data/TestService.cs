@@ -102,23 +102,39 @@ namespace ITest.Services.Data
                 throw new ArgumentNullException(nameof(name));
             }
 
-            var testsFromThisCategory = tests.All.AsNoTracking().Where(test => test.Name == name).
+            var testsFromThisCategory = tests.All.Where(test => test.Name == name).
                                                         Include(t=>t.Category).
                                                         Include(t => t.Questions).
                                                         ThenInclude(x => x.Answers);
+
             var currentTest = testsFromThisCategory.First();
             var foundTestDto = mapper.MapTo<TestDTO>(currentTest);
             return foundTestDto;
         }
         public TestEditDTO GetTestByNameEditDTO(string name)
         {
-            var testsFromThisCategory = tests.All.AsNoTracking().Where(test => test.Name == name).AsNoTracking()
-                                                        .Include(t => t.Category).AsNoTracking()
+            var testsFromThisCategory = tests.All.Where(test => test.Name == name)
+                                                        .Include(t => t.Category)
                                                         .Include(t => t.Questions)
-                                                        .ThenInclude(x => x.Answers).AsNoTracking();
+                                                        .ThenInclude(q => q.Answers);
+                                                        
+                                                        
+        
             var currentTest = testsFromThisCategory.First();
 
+            currentTest.Questions = currentTest.Questions.Where(q => q.IsDeleted == false).ToList();
+
+
             var foundTestDto = mapper.MapTo<TestEditDTO>(currentTest);
+
+            //foreach (var item in foundTestDto.Questions)
+            //{
+            //    if (item.IsDeleted == true)
+            //    {
+            //        foundTestDto.Questions.;
+            //    }
+
+            //}
             return foundTestDto;
         }
     }

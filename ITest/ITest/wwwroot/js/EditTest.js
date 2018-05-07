@@ -149,9 +149,9 @@
     });
 
     $('#createTest-content').on('click', '.add-answer', function () {
-
         var containerr = this.closest('.panel.panel-default.question');
         var containerrr = $(this).closest('.panel.panel-default.question');
+        console.log(containerrr);
 
         var arr = containerrr.find(`div input`);
 
@@ -178,6 +178,56 @@
         );
 
     });
+    $('#createTest-content').on('click', '.add-answer-foreach', function () {
+        var containerr = this.closest('.panel.panel-default.question');
+        var containerrr = $(this).closest('.panel.panel-default.question');
+        console.log(containerrr);
+
+        
+
+        //var x = String(arr[0].id).match(/Questions\_(\d+)\__/);
+        //if (x !== null) {
+        //    // console.log(x[1]);
+        //} else {
+        //    x = String(arr[0].id).match(/Questions\_(\d+)\__/);
+        //    x = String(arr[1].id).match(/Questions\_(\d+)\__/);
+
+        //    //console.log(x[1]);
+        //}
+        //var index = parseInt(x[1]);
+        //console.log(arr[0].id);
+        //var indexNumber = parseInt(index);
+
+        var arr = containerr.getAttribute(`name`);
+        console.log(arr);
+        var x = arr.match(/Questions (\d+)/);
+             
+
+        console.log(x[1]);
+          var index = parseInt(x[1]);
+
+        var listOfPageElements = containerr.querySelectorAll(".answer-container");
+        var count = listOfPageElements.length;
+        var countPlaceHolder = count;
+
+        $(this).closest('.panel.panel-default.question').append(answerTemplate
+            .replace(/\{\{\a_id\}\}/g, count++)
+            .replace(/\{\{\ap_id\}\}/g, ++countPlaceHolder)
+            .replace(/\{\{\q_id\}\}/g, index)
+        );
+
+    });
+
+    //<div style="height: 50px;" class="answer-container">
+    //    <div class="form-group col-lg-offset-1">
+    //        <input type="text" id="Questions_{{q_id}}__Answers_{{a_id}}__Content" name="Questions[{{q_id}}].Answers[{{a_id}}].Content" placeholder="Answer{{ap_id}}" class="form-control" style="width: 70%; margin-right: 15px;" />
+    //        <input type="radio" id="Questions_{{q_id}}__Answers_{{a_id}}__Correct" name="radio_A_{{q_id}}" class="form-control" value="true" style="box-shadow:none; border:none;" />
+
+    //    </div>
+
+    //</div>
+
+
 
     $(`#createTest-content`).on('click', '#submitBtnArea', function () {
         //event.preventDefault();
