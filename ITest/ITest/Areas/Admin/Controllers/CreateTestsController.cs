@@ -16,7 +16,7 @@ using System.Security.Claims;
 namespace ITest.Controllers.Createontrollers
 {
     [Area("Admin")]
-    //[Authorize(Roles = "User")]
+    [Authorize(Roles = "Admin")]
     public class CreateTestsController : Controller
     {
         private readonly IMappingProvider mapper;
@@ -64,7 +64,7 @@ namespace ITest.Controllers.Createontrollers
             this.createTestService.Create(model);
 
             //TempData["Success-Message"] = "You published a new post!";
-            return this.RedirectToAction("Index", "Home");/*this.RedirectToAction("Index", "Home");*/
+            return this.RedirectToAction("ShowResults", "Results");
         }
     }
 }

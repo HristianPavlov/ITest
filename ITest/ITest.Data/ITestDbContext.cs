@@ -17,6 +17,10 @@ namespace ITest.Data
         {
             //this.Seed().Wait();
         }
+        public ITestDbContext()
+        {
+
+        }
         public DbSet<Category> Categories { get; set; }
 
         public override int SaveChanges()

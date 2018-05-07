@@ -16,8 +16,8 @@ namespace ITest.Data.Repository
 
         public EfRepository(ITestDbContext context, IRepoTimeProvider dateTime)
         {
-            this.context = context;
-            this.dateTime = dateTime;
+            this.context = context ?? throw new ArgumentNullException(nameof(context));
+            this.dateTime = dateTime ?? throw new ArgumentNullException(nameof(dateTime));
         }
 
         public IQueryable<T> All
@@ -58,8 +58,6 @@ namespace ITest.Data.Repository
             var entry = this.context.Entry(entity);
             entry.State = EntityState.Modified;
         }
-
-        
        
         public void Update(T entity)
         {
@@ -72,7 +70,5 @@ namespace ITest.Data.Repository
 
             entry.State = EntityState.Modified;
         }
-
-       
     }
 }

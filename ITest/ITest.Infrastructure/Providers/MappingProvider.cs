@@ -14,17 +14,14 @@ namespace ITest.Infrastructure.Providers
     {
         private IMapper mapper;
 
-
         public MappingProvider(IMapper mapper)
         {
             this.mapper = mapper;
         }
-
         public TDestination MapTo<TDestination>(object source)
         {
             return this.mapper.Map<TDestination>(source);
         }
-
         //public IEnumerable<TDestination> ProjectTo<TDestination>(IQueryable<object> source)
         //{
         //    var toReturn = source.ProjectTo<TDestination>();
@@ -48,13 +45,6 @@ namespace ITest.Infrastructure.Providers
         {
             return source.ProjectTo<TDestination>();
         }
-
-
-
-
-
-
-
         public IEnumerable<TDestination> EnumerableProjectTo<TSource, TDestination>(IEnumerable<TSource> source)
         {
             // AsQuryable cast to avoid query materialization errors
@@ -65,7 +55,5 @@ namespace ITest.Infrastructure.Providers
         {
             return this.mapper.Map<TSource, TDestination>(source, destination);
         }
-
-       
     }
 }

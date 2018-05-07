@@ -27,12 +27,22 @@ namespace ITest.Services.Data
         }
         public void Add(CategoryDTO dto)
         {
+            if (dto == null)
+            {
+                throw new ArgumentNullException(nameof(dto));
+            }
+
             var model = this.mapper.MapTo<Category>(dto);
             this.categories.Add(model);
             this.saver.SaveChanges();
         }
         public Guid GetIdByCategoryName(string name)
         {
+            if (name == null)
+            {
+                throw new ArgumentNullException(nameof(name));
+            }
+
             return categories.All.First(cat => cat.Name == name).Id;
         }
         public IEnumerable<CategoryDTO> GetAllCategories()
@@ -40,7 +50,7 @@ namespace ITest.Services.Data
             var categories = this.categories.All.Include(x => x.Tests);
 
             var categoriesDto = mapper.ProjectTo<CategoryDTO>(categories).ToList();
-
+            //sets correct category status
             foreach (var item in categoriesDto)
             {
                 if (item.Tests.Count > 0 && item.Tests.Any(t => t.Status == TestStatus.Published && !t.IsDeleted))

@@ -1,9 +1,14 @@
-﻿.pageTitle {
+﻿.secret {
+    visibility: hidden;
+}
+
+.pageTitle {
     font-weight: bolder;
     color: dimgray;
     margin-bottom: 5%;
     text-align: center;
 }
+
 
 .form-control {
     margin-right: 3%;

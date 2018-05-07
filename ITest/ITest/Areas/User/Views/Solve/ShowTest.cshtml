@@ -11,9 +11,10 @@
 <div style="position:fixed; right:0%; top:10%; height:100%; width:40%;">
     <div class="clock"></div>
 </div>
+
 <div style="display:none" id="secondsYouHave">@Model.RemainingTime</div>
-<div class="container">
-    <div class="col-md-4">
+<div class="container" style="font-size:large">
+    <div class="col-md-12">
         <form asp-controller="Solve" asp-action="PublishAnswers" method="post">
 
             <input style="display:none" asp-for="@Model.Id" value="@Model.Id" />

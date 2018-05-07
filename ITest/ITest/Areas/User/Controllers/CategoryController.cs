@@ -16,7 +16,7 @@ using Microsoft.EntityFrameworkCore;
 namespace ITest.Controllers
 {
     [Area("User")]
-    //[Authorize(Roles = "User")]
+    [Authorize]
     public class CategoryController : Controller
     {
         private readonly IUserTestsService userTestsService;

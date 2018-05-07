@@ -53,8 +53,11 @@ namespace ITest.Services.Data
             return mapper.ProjectTo<TestEditDTO>(allTests);
         }
         public int GetTestCountDownByTestId(Guid id)
-
         {
+            if (id == Guid.Empty)
+            {
+                throw new ArgumentNullException();
+            }
             var testsFromThisCategory = tests.All.AsNoTracking().Where(test => test.Id == id);
             var currentTest = testsFromThisCategory.First();
             var countDownMins = currentTest.TimeInMinutes;
@@ -62,6 +65,10 @@ namespace ITest.Services.Data
         }
         public TestDTO GetRandomTestFromCategory(Guid categoryID)
         {
+            if (categoryID == Guid.Empty)
+            {
+                throw new ArgumentNullException();
+            }
             // test status should be published and test shouldnt be deleted
              var testsFromThisCategory = tests.All.Where(test => test.CategoryId == categoryID && test.Status == TestStatus.Published && !test.IsDeleted).
                                                         Include(t => t.Questions).
@@ -77,6 +84,10 @@ namespace ITest.Services.Data
         }
         public TestDTO GetTestById(Guid id)
         {
+            if (id == Guid.Empty)
+            {
+                throw new ArgumentNullException();
+            }
             var testsFromThisCategory = tests.All.AsNoTracking().Where(test => test.Id == id).
                                                         Include(t => t.Questions).
                                                         ThenInclude(x => x.Answers);
@@ -85,7 +96,13 @@ namespace ITest.Services.Data
             return foundTestDto;
         }
         public TestDTO GetTestByName(string name)
-        {   var testsFromThisCategory = tests.All.AsNoTracking().Where(test => test.Name == name).
+        {
+            if (name == null)
+            {
+                throw new ArgumentNullException(nameof(name));
+            }
+
+            var testsFromThisCategory = tests.All.AsNoTracking().Where(test => test.Name == name).
                                                         Include(t=>t.Category).
                                                         Include(t => t.Questions).
                                                         ThenInclude(x => x.Answers);

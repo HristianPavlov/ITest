@@ -228,8 +228,8 @@ namespace ITest.Controllers
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation("User created a new account with password.");
                     await this._userManager.AddToRoleAsync(user, "User");
-                    //return this.RedirectToAction("ShowCategories", "Category", new { area = "User" });
-                    return this.RedirectToAction("Index", "Home");
+                    return this.RedirectToAction("ShowCategories", "Category", new { area = "User" });
+                    //return this.RedirectToAction("Index", "Home");
 
                     //return RedirectToLocal(returnUrl);
                 }
