@@ -65,8 +65,13 @@ namespace ITest.Services.Data
 
             foreach (var item in dto.Questions)
             {
+                if (item.IsDeleted==true)
+                {
+                    var x = this.mapper.MapTo<Question>(item);
+                    this.questions.RealDelete(x);
 
-                if (item.Id!=null)
+                }
+                else if (item.Id!=null)
                 {
                     var x = this.mapper.MapTo<Question>(item);
                     this.UpdateQuestions(x);
@@ -85,17 +90,7 @@ namespace ITest.Services.Data
             this.saver.SaveChanges();
 
 
-            //foreach (var item in dto.Questions)
-            //{
-            //    foreach (var A in item.Answers)
-            //    {
-            //        var x = this.mapper.MapTo<Answer>(A);
-
-            //        this.UpdateAnswers(x);
-            //    }
-                
-            //}
-            //this.saver.SaveChanges();
+          
         }
 
         private void UpdateQuestions(Question item)
