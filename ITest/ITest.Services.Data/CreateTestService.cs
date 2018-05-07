@@ -57,6 +57,9 @@ namespace ITest.Services.Data
             //TestUpdate.CategoryId = catId;
             TestUpdate.TimeInMinutes = dto.TimeInMinutes;
             TestUpdate.Name = dto.Name;
+            TestUpdate.Status = dto.Status;
+
+
 
             this.tests.Update(TestUpdate);
 
