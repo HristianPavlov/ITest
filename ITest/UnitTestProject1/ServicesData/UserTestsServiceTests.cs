@@ -117,7 +117,6 @@ namespace BusinessTests.ServicesData
             saverMock.Verify(x => x.SaveChanges(), Times.Once);
         }
         //VALIDATE AND ADD TESTS HERE
-
         [TestMethod]
         public void Publish_ThrowWhen_UserTestDtoNull()
         {
@@ -126,7 +125,7 @@ namespace BusinessTests.ServicesData
         }
 
         [TestMethod]
-        public void Publish_Calls_MappeMap()
+        public void Publish_Calls_MapperMap()
         {
             //arrange
             var categoryName = "Petko";
