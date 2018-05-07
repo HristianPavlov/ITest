@@ -43,23 +43,15 @@ namespace ITest.Services.Data
             this.shuffler = shuffler;
             this.saver = saver;
         }
-        public TestSolutionDTO GetDetailedSolution(string userEmail, Guid testId)
+        private UserTestsDTO GetUserTest(string email, Guid testId)
         {
-            var userTest = userTests.All.Where(ut => ut.TestId == testId && ut.User.Email == userEmail)
-                .Include(ut => ut.Test)
-                    .ThenInclude(t => t.Questions)
-                    .ThenInclude(q => q.Answers)
-                .Include(ut => ut.Answers)
-                    .ThenInclude(uta => uta.Answer)
-                .First();
-            var userTestAnswers = userTest.Answers;
-            var testSolutionDto = mapper.MapTo<TestSolutionDTO>(userTest);
-            testSolutionDto.QuestionAnswers = new Dictionary<Guid, Guid>();
-            foreach (var uta in userTestAnswers)
-            {
-                testSolutionDto.QuestionAnswers.Add(uta.Answer.QuestionId, uta.Answer.Id);
-            }
-            return testSolutionDto;
+            var userTest = this.userTests.All.Where(ut => ut.User.Email == email && ut.TestId == testId).
+                                              Include(ut => ut.Test).
+                                              ThenInclude(t => t.Questions).
+                                              ThenInclude(q => q.Answers).
+                                              First();
+            var userTestDto = mapper.MapTo<UserTestsDTO>(userTest);
+            return userTestDto;
         }
         private bool UserStartedTest(string userId, string category)
         {
@@ -88,10 +80,21 @@ namespace ITest.Services.Data
             testDtoToReturn.CreatedOn = testsFromThisCategory.CreatedOn;
             return testDtoToReturn;
         }
-        private Guid GetUserTestId(string userId, string category)
+        private Guid GetUserTestId(string userId, string category) //done
         {
+            if (userId == null)
+            {
+                throw new ArgumentNullException(nameof(userId));
+            }
+
+            if (category == null)
+            {
+                throw new ArgumentNullException(nameof(category));
+            }
+
             return userTests.All.First(x => x.UserId == userId && x.Test.Category.Name == category).Id;
         }
+
         public IEnumerable<UserTestsDTO> GetAllUserTests()
         {
             var allUserTests = userTests.All.
@@ -137,12 +140,23 @@ namespace ITest.Services.Data
 
 
         }
-        public void SaveTest(UserTestsDTO test)
+        public TestSolutionDTO GetDetailedSolution(string userEmail, Guid testId)
         {
-            var testModel = mapper.MapTo<UserTests>(test);
-            testModel.CreatedOn = dateTime.GetDateTimeNow();
-            userTests.Add(testModel);
-            saver.SaveChanges();
+            var userTest = userTests.All.Where(ut => ut.TestId == testId && ut.User.Email == userEmail)
+                .Include(ut => ut.Test)
+                    .ThenInclude(t => t.Questions)
+                    .ThenInclude(q => q.Answers)
+                .Include(ut => ut.Answers)
+                    .ThenInclude(uta => uta.Answer)
+                .First();
+            var userTestAnswers = userTest.Answers;
+            var testSolutionDto = mapper.MapTo<TestSolutionDTO>(userTest);
+            testSolutionDto.QuestionAnswers = new Dictionary<Guid, Guid>();
+            foreach (var uta in userTestAnswers)
+            {
+                testSolutionDto.QuestionAnswers.Add(uta.Answer.QuestionId, uta.Answer.Id);
+            }
+            return testSolutionDto;
         }
         public SolveTestDTO GetCorrectSolveTest(string userId, string category)
         {
@@ -192,6 +206,19 @@ namespace ITest.Services.Data
                 return solveTestDto;
             }
         }
+
+        public void SaveTest(UserTestsDTO test)
+        {
+            if (test == null)
+            {
+                throw new ArgumentNullException(nameof(test));
+            }
+
+            var testModel = mapper.MapTo<UserTests>(test);
+            testModel.CreatedOn = dateTime.GetDateTimeNow();
+            userTests.Add(testModel);
+            saver.SaveChanges();
+        }
         public void ValidateAndAdd(SolveTestDTO solveTestDto, string userId)
         {
             var startedTime = this.StartedTestCreationTime(userId, solveTestDto.Category);
@@ -213,31 +240,21 @@ namespace ITest.Services.Data
         }
         public void Publish(UserTestsDTO test)
         {
+            if (test == null)
+            {
+                throw new ArgumentNullException(nameof(test));
+            }
+
             var testModel = mapper.MapTo<UserTests>(test);
             test.UserTestId = this.GetUserTestId(test.UserId, test.Category);
             utaService.SaveQuestionAnswers(test);
+
             var score = this.utaService.GetResult(test.UserId, test.Category);
-
-            //testModel.Score = score;
-            //userTests.Update(testModel);
-            //saver.SaveChanges();
-            //Update doesnt work "cannot track many instances of same type"
-
             var updatingtest = userTests.All.FirstOrDefault(x => x.TestId == test.TestId && x.UserId == test.UserId);
             updatingtest.ExecutionTime = testModel.ExecutionTime;
             updatingtest.Score = score;
             updatingtest.Submitted = true;
             saver.SaveChanges();
-        }
-        private UserTestsDTO GetUserTest(string email, Guid testId)
-        {
-            var userTest = this.userTests.All.Where(ut => ut.User.Email == email && ut.TestId == testId).
-                                              Include(ut => ut.Test).
-                                              ThenInclude(t => t.Questions).
-                                              ThenInclude(q => q.Answers).
-                                              First();
-            var userTestDto = mapper.MapTo<UserTestsDTO>(userTest);
-            return userTestDto;
         }
     }
 }

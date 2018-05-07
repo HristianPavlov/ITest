@@ -14,17 +14,69 @@
                     <ul class="category-select nav nav-tabs">
                         @{ var x = 0; }
                         @foreach (var c in Model.AllCategories)
-                        {
-                            <li class="@c.CategoryState">
-                                <a href="#tab@(x++)default"
-                                   id="#category-tab"
-                                   data-toggle="tab"
-                                   class="@c.CategoryState"
-                                   data-category="@c.Category">
-                                    @c.Category
-                                </a>
-                            </li>
-                        }
+    {
+                    @if (c.CategoryState == UserTestState.CategoryEmpty)
+{
+                    <li class="@c.CategoryState tohover btn btn-primary">
+                        <a href="#tab@(x++)default"
+                           id="#category-tab"
+                           data-toggle="tab"
+                           class="@c.CategoryState somebtn"
+                           data-category="@c.Category">
+                            @c.Category
+                        </a>
+                    </li>
+}
+                    @if (c.CategoryState == UserTestState.CurrentlySolving)
+{
+                    <li class="@c.CategoryState tohover btn btn-warning">
+                        <a href="#tab@(x++)default"
+                           id="#category-tab"
+                           data-toggle="tab"
+                           class="@c.CategoryState somebtn"
+                           data-category="@c.Category">
+                            @c.Category
+                        </a>
+                    </li>
+}
+                    @if (c.CategoryState == UserTestState.Start)
+{
+                    <li class="@c.CategoryState tohover btn btn-link">
+                        <a href="#tab@(x++)default"
+                           id="#category-tab"
+                           data-toggle="tab"
+                           class="@c.CategoryState somebtn"
+                           data-category="@c.Category">
+                            @c.Category
+                        </a>
+                    </li>
+}
+                    @if (c.CategoryState == UserTestState.NotSubmittedOnTime)
+{
+                    <li class="@c.CategoryState tohover btn btn-danger">
+                        <a href="#tab@(x++)default"
+                           id="#category-tab"
+                           data-toggle="tab"
+                           class="@c.CategoryState somebtn"
+                           data-category="@c.Category">
+                            @c.Category
+                        </a>
+                    </li>
+}
+                    @if (c.CategoryState == UserTestState.Submitted)
+{
+                    <li class="@c.CategoryState tohover btn btn-success">
+                        <a href="#tab@(x++)default"
+                           id="#category-tab"
+                           data-toggle="tab"
+                           class="@c.CategoryState somebtn"
+                           data-category="@c.Category">
+                            @c.Category
+                        </a>
+                    </li>
+}
+
+}
                     </ul>
                 </div>
                 <div class="panel-body">

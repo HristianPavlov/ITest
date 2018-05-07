@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
-using System.Data.Entity;
 using System.Linq;
 
 namespace DataTests.Repository
