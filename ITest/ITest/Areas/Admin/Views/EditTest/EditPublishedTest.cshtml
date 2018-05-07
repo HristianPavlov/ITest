@@ -89,7 +89,7 @@
                 </div>
 
                 <div class="form-group" id="submitBtnArea">
-                    <input type="submit" value="Save" class="btn btn-default" />
+                    <input id="submitId" type="submit" value="Save" class="btn btn-default submit" />
                 </div>
             </form>
         </div>
@@ -101,6 +101,6 @@
 
     @section Scripts {
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-        <script src="~/js/EditTest.js"></script>
+        <script src="~/js/EditPublishedTest.js"></script>
         @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     }

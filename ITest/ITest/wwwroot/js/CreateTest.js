@@ -117,8 +117,9 @@ $(document).ready(function () {
     //});
 
     //$('.btn.btn-default.submitttt').click(function () {
-    $('#createTest-content').on('click', '.btn.btn-default.submit', function () {
+    $('#createTest-content').on('click', '.btn.btn-default.submitttt', function () {
         //event.preventDefault();
+        console.log("working");
         var qwerty = $('input:radio');
         for (var i = 0; i < qwerty.length; i++) {
             var theName = qwerty[i].getAttribute(`id`);
@@ -137,6 +138,7 @@ $(document).ready(function () {
         }
     });
 
+   
     
 
 
