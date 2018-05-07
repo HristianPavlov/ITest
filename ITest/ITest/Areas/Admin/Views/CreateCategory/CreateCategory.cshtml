@@ -3,14 +3,14 @@
     ViewData["Title"] = "CreateCategory";
 }
 
-<form asp-controller="Category" asp-action="CreateCategory" method="post">
+<form asp-area="Admin" asp-controller="CreateCategory" asp-action="CreateCategory" method="post">
     <div asp-validation-summary="All" class="text-danger">
         <div class="form-group">
             <label asp-for="Name">Category Name To Add</label>
             <input asp-for="Name" class="form-control" />
             <span asp-validation-for="Name" class="text-danger"></span>
         </div>
-        <button type="submit" class="btn btn-default">Submit</button>
+        <button type="submit" class="btn btn-large btn-success">Submit</button>
     </div>
 </form>
 

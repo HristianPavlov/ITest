@@ -17,7 +17,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ITest.Controllers
 {
     [Area("User")]
-    //[Authorize(Roles = "User")]
+    [Authorize]
     public class SolveController : Controller
     {
         private readonly IMappingProvider mapper;
@@ -93,7 +93,7 @@ namespace ITest.Controllers
                 }
                 catch (SubmittingLateException)
                 {
-                    RedirectToAction("SubmittingLate", "Solve");
+                    return this.RedirectToAction("SubmittingLate", "Solve");
                 }
             }
             return this.RedirectToAction("ShowCategories", "Category");
