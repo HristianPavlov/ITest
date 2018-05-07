@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="EntityFramework" Version="6.2.0" />
     <PackageReference Include="EntityFrameworkTesting" Version="1.2.1" />
     <PackageReference Include="EntityFrameworkTesting.Moq" Version="1.2.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.6.0" />

@@ -1,4 +1,4 @@
-﻿$(function () {
+﻿$(document).ready(function () {
     //{ { qh_id } }
     var questionTemplate =
         `
@@ -6,7 +6,7 @@
     
         <div>
             <div style="display: inline-block; padding-left: 15px;">
-<h3></h3>
+
 </div>
             <button type="button" class="delete-button">Delete Question</button>
         </div>
@@ -18,8 +18,8 @@
         <div class="answer-container">
 
         <div style="height: 50px;" class="form-group col-lg-offset-1">
-            <input type="text"     id="Questions_{{q_id}}__.Answers_0__.Content"  name="Questions[{{q_id}}].Answers[0].Content" placeholder="Answer1" class="form-control" style="width: 70%; margin-right: 15px;" />
-            <input type="radio" id="Questions_{{q_id}}__.Answers_0__.Correct"   name="radio_{{q_id}}" class="form-control" value="true" style="box-shadow:none; border:none;"/> 
+            <input type="text"     id="Questions_{{q_id}}__Answers_0__Content"  name="Questions[{{q_id}}].Answers[0].Content" placeholder="Answer1" class="form-control" style="width: 70%; margin-right: 15px;" />
+            <input type="radio" id="Questions_{{q_id}}__Answers_0__Correct"   name="radio_A_{{q_id}}" class="form-control" value="true" style="box-shadow:none; border:none;"/> 
 
            
         </div>
@@ -33,8 +33,8 @@
         `
     <div style="height: 50px;" class="answer-container">
         <div class="form-group col-lg-offset-1">
-            <input type="text"    id="Questions_{{q_id}}__.Answers_{{a_id}}__.Content" name="Questions[{{q_id}}].Answers[{{a_id}}].Content" placeholder="Answer{{ap_id}}" class="form-control" style="width: 70%; margin-right: 15px;" />
-            <input type="radio" id="Questions_{{q_id}}__.Answers_{{a_id}}__.Correct"  name="radio_{{q_id}}" class="form-control" value="true" style="box-shadow:none; border:none;"/>
+            <input type="text"    id="Questions_{{q_id}}__Answers_{{a_id}}__Content" name="Questions[{{q_id}}].Answers[{{a_id}}].Content" placeholder="Answer{{ap_id}}" class="form-control" style="width: 70%; margin-right: 15px;" />
+            <input type="radio" id="Questions_{{q_id}}__Answers_{{a_id}}__Correct"  name="radio_A_{{q_id}}" class="form-control" value="true" style="box-shadow:none; border:none;"/>
             
         </div>
 
@@ -46,7 +46,8 @@
     var oldNumber = $(`.panel.panel-default.question`).length;
 
     var total = $(`.panel.panel-default.question`).length;/**/
-
+    console.log(total);
+    console.log(oldNumber);
 
 
     //$('.radio\_(\d+)\__').change(function () {
@@ -73,9 +74,11 @@
         //console.log(total);
     }
 
-    $('#questions-container').on('click', '.add-question', function () {
 
-        $("#questions-container-backup").append(questionTemplate.replace(/\{\{\q_id\}\}/g, total++));
+    $('#createTest-content').on('click', '.add-question', function () {
+
+        $("#questions-container").append(questionTemplate.replace(/\{\{\q_id\}\}/g, oldNumber++));
+        console.log(oldNumber);
 
     });
 
@@ -142,10 +145,10 @@
                 }
             }
         });
-        --total;
+        --oldNumber;
     });
 
-    $('#questions-container').off().on('click', '.add-answer', function () {
+    $('#createTest-content').on('click', '.add-answer', function () {
 
         var containerr = this.closest('.panel.panel-default.question');
         var containerrr = $(this).closest('.panel.panel-default.question');
@@ -179,6 +182,12 @@
     $(`#createTest-content`).on('click', '#submitBtnArea', function () {
         //event.preventDefault();
         var qwerty = $('input:radio');
+        for (var j= 0; i < qwerty.length; i++) {
+            console.log(qwerty[j].name);
+            console.log(qwerty[j].id);
+
+        }
+        
         for (var i = 0; i < qwerty.length; i++) {
             var theName = qwerty[i].getAttribute(`id`);
             var parts = theName.split("__Answers_");
@@ -194,6 +203,7 @@
 
             qwerty[i].setAttribute("name", newNameForTheInput);
         }
+        console.log(qwerty.attr.name);
     });
 
 });
