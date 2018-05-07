@@ -15,7 +15,7 @@ namespace ITest.Data
         public ITestDbContext(DbContextOptions<ITestDbContext> options)
             : base(options)
         {
-            //this.Seed().Wait();
+          this.Seed().Wait();
         }
         public ITestDbContext()
         {
@@ -73,6 +73,11 @@ namespace ITest.Data
             {
                 var adminRole = new IdentityRole("Admin");
                 this.Roles.Add(adminRole);
+            }
+            if (!this.Roles.Any(r => r.Name == "User"))
+            {
+                var userRole = new IdentityRole("User");
+                this.Roles.Add(userRole);
             }
 
             if (!this.Categories.Any())
