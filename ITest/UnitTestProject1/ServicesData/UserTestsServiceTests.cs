@@ -211,7 +211,6 @@ namespace BusinessTests.ServicesData
         public void GetUserTestId_ThrowWhen_CategoryNameIsNull()
         {
             //arrange
-            var categoryName = "Petko";
             var someUserTestDto = new UserTestsDTO
             {
                 UserId = correctGuidAsString
@@ -221,5 +220,40 @@ namespace BusinessTests.ServicesData
             // act & assert
             Assert.ThrowsException<ArgumentNullException>(() => fakeUserTestsService.Publish(someUserTestDto));
         }
+
+        //[TestMethod]
+        //public void Publish_Calls_UtaServiceSaveChanges()
+        //{
+        //    //arrange
+        //    var categoryName = "Petko";
+        //    var someUserTestDto = new UserTestsDTO
+        //    {
+        //        Category = categoryName,
+        //        UserId = correctGuidAsString
+        //    };
+        //    var fakeUserTest = new UserTests();
+        //    mapperMock.Setup(x => x.MapTo<UserTests>(It.IsAny<UserTestsDTO>())).Returns(fakeUserTest);
+        //    var fakeUserTests = new List<UserTests>
+        //    {
+        //        new UserTests
+        //        {
+        //            UserId = correctGuidAsString,
+        //            Id = wrongGuid,
+        //            Test = new Test
+        //            {
+        //                Category = new Category
+        //                {
+        //                    Name=categoryName
+        //                }
+        //            }
+
+        //        }
+        //    }.AsQueryable();
+        //    repoUserTestsMock.Setup(x => x.All).Returns(fakeUserTests);
+        //    // act
+        //    fakeUserTestsService.Publish(someUserTestDto);
+        //    // assert
+        //    utaServiceMock.Verify(x => x.SaveQuestionAnswers(It.IsAny<UserTestsDTO>()), Times.Once);
+        //}
     }
 }

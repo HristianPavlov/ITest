@@ -250,7 +250,8 @@ namespace ITest.Services.Data
             utaService.SaveQuestionAnswers(test);
 
             var score = this.utaService.GetResult(test.UserId, test.Category);
-            var updatingtest = userTests.All.FirstOrDefault(x => x.TestId == test.TestId && x.UserId == test.UserId);
+            var updatingtest = userTests.All.FirstOrDefault
+                (x => x.TestId == test.TestId && x.UserId == test.UserId);
             updatingtest.ExecutionTime = testModel.ExecutionTime;
             updatingtest.Score = score;
             updatingtest.Submitted = true;
