@@ -93,7 +93,7 @@ namespace ITest.Controllers
                 }
                 catch (SubmittingLateException)
                 {
-                    RedirectToAction("SubmittingLate", "Solve");
+                    return this.RedirectToAction("SubmittingLate", "Solve");
                 }
             }
             return this.RedirectToAction("ShowCategories", "Category");

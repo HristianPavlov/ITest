@@ -42,9 +42,10 @@ namespace ITest.Areas.Admin.Controllers
                 this.categoriesService.Add(dto);
 
                 TempData["Success-Message"] = "You published a new post!";
-                return this.RedirectToAction("Index", "Home");
+                return this.RedirectToAction("ShowResults", "Results");
             }
-            return this.RedirectToAction("Index", "Home");
+            return this.RedirectToAction("ShowResults", "Results");
+
         }
     }
 }

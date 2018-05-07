@@ -100,9 +100,6 @@ namespace ITest.Services.Data
 
             saver.SaveChanges();
         }
-
-        //removing this method because it makes untestable code
-
         private decimal GetThisUserTestScore(UserTests userTest)
         {
             decimal correctAnswers = userTest.Answers.Where(a => a.Answer.Correct).Count();

@@ -15,7 +15,11 @@ namespace ITest.Data
         public ITestDbContext(DbContextOptions<ITestDbContext> options)
             : base(options)
         {
-            this.Seed().Wait();
+            //this.Seed().Wait();
+        }
+        public ITestDbContext()
+        {
+
         }
         public DbSet<Category> Categories { get; set; }
 

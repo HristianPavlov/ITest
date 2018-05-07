@@ -14,10 +14,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Infrastructure\Providers\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\ITest.Data\ITest.Data.csproj" />
     <ProjectReference Include="..\ITest.Infrastructure\ITest.Infrastructure.csproj" />
     <ProjectReference Include="..\ITest.Services.Data\ITest.Services.Data.csproj" />

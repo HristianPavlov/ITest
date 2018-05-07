@@ -61,7 +61,7 @@ namespace ITest.Services.Data
             }
             return testSolutionDto;
         }
-        public bool UserStartedTest(string userId, string category)
+        private bool UserStartedTest(string userId, string category)
         {
             if (this.userTests.All.Any(x => x.UserId == userId && x.Test.Category.Name == category))
             {
@@ -69,15 +69,15 @@ namespace ITest.Services.Data
             }
             return false;
         }
-        public DateTime? StartedTestCreationTime(string userId, string category)
+        private DateTime? StartedTestCreationTime(string userId, string category)
         {
             return userTests.All.First(x => x.UserId == userId && x.Test.Category.Name == category).CreatedOn;
         }
-        public bool TestIsSubmitted(string userId, string category)
+        private bool TestIsSubmitted(string userId, string category)
         {
             return userTests.All.First(x => x.UserId == userId && x.Test.Category.Name == category).Submitted;
         }
-        public TestDTO GetTestFromUserIdAndCategory(string userId, string category)
+        private TestDTO GetTestFromUserIdAndCategory(string userId, string category)
         {
             var testsFromThisCategory = userTests.All.Where(x => x.UserId == userId && x.Test.Category.Name == category)
                 .Include(ut => ut.Test)
@@ -87,9 +87,8 @@ namespace ITest.Services.Data
             var testDtoToReturn = mapper.MapTo<TestDTO>(testsFromThisCategory.Test);
             testDtoToReturn.CreatedOn = testsFromThisCategory.CreatedOn;
             return testDtoToReturn;
-            //setting the correct time here so 
         }
-        public Guid GetUserTestId(string userId, string category)
+        private Guid GetUserTestId(string userId, string category)
         {
             return userTests.All.First(x => x.UserId == userId && x.Test.Category.Name == category).Id;
         }
@@ -230,7 +229,7 @@ namespace ITest.Services.Data
             updatingtest.Submitted = true;
             saver.SaveChanges();
         }
-        public UserTestsDTO GetUserTest(string email, Guid testId)
+        private UserTestsDTO GetUserTest(string email, Guid testId)
         {
             var userTest = this.userTests.All.Where(ut => ut.User.Email == email && ut.TestId == testId).
                                               Include(ut => ut.Test).
@@ -239,32 +238,7 @@ namespace ITest.Services.Data
                                               First();
             var userTestDto = mapper.MapTo<UserTestsDTO>(userTest);
             return userTestDto;
-
         }
-
-        //public void RecalculateAllTestsScore()
-        //{
-        //    var testsToRecalc = this.userTests.All.Where(x => x.Submitted);
-        //    foreach (var item in testsToRecalc)
-        //    {
-        //        var itemDto = this.mapper.MapTo<UserTestsDTO>(item);
-        //        decimal newScore = this.utaService.GetResult(itemDto);
-        //        item.Score = newScore;
-        //    }
-        //    saver.SaveChanges();
-        //}
-
-        //public void RecalculateTestScoreByTestId(Guid id)
-        //{
-        //    var testsToRecalc = this.userTests.All.Where(t => t.TestId == id && t.Submitted);
-        //    foreach (var item in testsToRecalc)
-        //    {
-        //        var itemDto = this.mapper.MapTo<UserTestsDTO>(item);
-        //        decimal newScore = this.testService.GetResult(itemDto);
-        //        item.Score = newScore;
-        //    }
-        //    saver.SaveChanges();
-        //}
     }
 }
 

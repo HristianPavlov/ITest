@@ -64,7 +64,10 @@ namespace ITest.Controllers.Createontrollers
             this.createTestService.Create(model);
 
             //TempData["Success-Message"] = "You published a new post!";
+            return this.RedirectToAction("ShowResults", "Results");
+
             return this.RedirectToAction("Index", "Home");/*this.RedirectToAction("Index", "Home");*/
+
         }
     }
 }
