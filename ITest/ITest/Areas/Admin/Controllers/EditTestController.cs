@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ITest.Areas.Admin.Models.EditViewModels;
 using ITest.Data.Models;
 using ITest.DTO;
 using ITest.Infrastructure.Providers;
@@ -17,7 +18,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ITest.Controllers
 {
     [Area("Admin")]
-    //[Authorize(Roles = "User")]
+    [Authorize(Roles = "Admin")]
     public class EditTestController : Controller
     {
         private readonly IMappingProvider mapper;
@@ -48,7 +49,7 @@ namespace ITest.Controllers
         }
         public IActionResult SearchTest()
         {
-          
+
             var model = new TestRealBagViewModel();
 
             var userTests = this.testService.GetAllTestsWithOutStuffInIttEditDTO();
@@ -59,21 +60,20 @@ namespace ITest.Controllers
         {
             var testDto = this.testService.GetTestByNameEditDTO(id);
 
-           
+
 
             return View(testDto);
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult EditTest(TestEditDTO test)
         {
-
-
             this.createTestService.Update(test);
-
-          
+            
             return this.RedirectToAction("ShowResults", "Results");
         }
+
         public IActionResult EditPublishedTest(string id)
         {
             var testDto = this.testService.GetTestByNameEditDTO(id);
@@ -90,5 +90,53 @@ namespace ITest.Controllers
             this.utaService.RecalculateAllTakenTestsWithName(test.Name);
             return this.RedirectToAction("ShowResults", "Results");
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteTest(string testName)
+        {
+            this.createTestService.DeleteTest(testName);
+
+            return this.Json(true);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult DisableTest(string testName)
+        {
+
+            this.createTestService.Disable(testName);
+
+            var model = new TestRealBagViewModel();
+
+            var userTests = this.testService.GetAllTestsWithOutStuffInIttEditDTO();
+            model.ResultBag = mapper.ProjectTo<TestEditDTO>(userTests.AsQueryable());
+
+            return View("SearchTest", model);
+
+
+
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult PublishTest(string testName)
+        {
+
+            this.createTestService.Publish(testName);
+            var model = new TestRealBagViewModel();
+
+            var userTests = this.testService.GetAllTestsWithOutStuffInIttEditDTO();
+            model.ResultBag = mapper.ProjectTo<TestEditDTO>(userTests.AsQueryable());
+
+            return View("SearchTest", model);
+        }
+
+
+
+
+
     }
+
 }

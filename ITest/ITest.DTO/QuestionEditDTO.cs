@@ -12,6 +12,7 @@ namespace ITest.DTO
 
         public string TestId { get; set; }
 
+        public bool IsDeleted { get; set; }
         
         public IList<AnswerEditDTO> Answers { get; set; }
     }
