@@ -93,30 +93,7 @@
         //console.log(button);
         $(this).closest('.panel.panel-default.question').hide();
 
-        //var number = parseInt(x);
-        //console.log(number);
-        //
-
-        //$(document).find(`input`).each(function () {
-
-        //    var x = String(this.id).match(/Questions\_(\d+)\__/);
-        //    if (x !== null) {
-        //        var xNumber = parseInt(x[1]);
-        //        if (xNumber > number) {
-        //            var ss = this.id.replace(/Questions\_(\d+)\__/g, `Questions_` + (xNumber - 1) + `__`);
-        //            this.id = ss;
-        //            this.closest('.panel.panel-default.question').setAttribute("name", "Questions" + (xNumber - 1));
-
-        //            var heading = $(this).closest('.panel.panel-default.question');
-        //            //var headd = heading.find(`div h3`);
-        //            var y = heading.find(`div h3`);
-        //            //find(`div h3`).text();
-        //            // console.log(y[0]);
-        //            y.text("Questions" + xNumber);
-        //        }
-        //    }
-        //});
-        //--total;
+  
     });
 
 

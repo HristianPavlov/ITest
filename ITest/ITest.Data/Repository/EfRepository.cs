@@ -58,7 +58,18 @@ namespace ITest.Data.Repository
             var entry = this.context.Entry(entity);
             entry.State = EntityState.Modified;
         }
-       
+
+        public void RealDelete(T entity)
+        {
+        
+            if (context.Entry(entity).State == EntityState.Detached)
+            {
+                this.context.Attach(entity);
+            }
+            this.context.Remove(entity);
+        
+    }
+
         public void Update(T entity)
         {
             EntityEntry entry = this.context.Entry(entity);

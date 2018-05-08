@@ -117,33 +117,30 @@ $(document).ready(function () {
     //});
 
     //$('.btn.btn-default.submitttt').click(function () {
-        $('#createTest-content').on('click', '.submitttt', function () {
-            //event.preventDefault();
-            var qwerty = $('input:radio');
-            for (var i = 0; i < qwerty.length; i++) {
-                var theName = qwerty[i].getAttribute(`id`);
-                var parts = theName.split("__.Answers_");
+    $('#createTest-content').on('click', '.btn.btn-default.submitttt', function () {
+        //event.preventDefault();
+        console.log("working");
+        var qwerty = $('input:radio');
+        for (var i = 0; i < qwerty.length; i++) {
+            var theName = qwerty[i].getAttribute(`id`);
+            var parts = theName.split("__.Answers_");
 
-                var NumberOfTheAnswerInThisQuestionArr = parts[1].split("__");
-                var NumberOfTheAnswerInThisQuestion = NumberOfTheAnswerInThisQuestionArr[0];
+            var NumberOfTheAnswerInThisQuestionArr = parts[1].split("__");
+            var NumberOfTheAnswerInThisQuestion = NumberOfTheAnswerInThisQuestionArr[0];
 
-                var IdOfTheQuestionArr = parts[0].split("_");
-                var IdOfTheQuestion = IdOfTheQuestionArr[1];
-                var newNameForTheInput = "Questions[{{q_id}}].Answers[{{a_id}}].Correct"
-                    .replace(/{{q_id}}/, IdOfTheQuestion)
-                    .replace(/{{a_id}}/, NumberOfTheAnswerInThisQuestion);
+            var IdOfTheQuestionArr = parts[0].split("_");
+            var IdOfTheQuestion = IdOfTheQuestionArr[1];
+            var newNameForTheInput = "Questions[{{q_id}}].Answers[{{a_id}}].Correct"
+                .replace(/{{q_id}}/, IdOfTheQuestion)
+                .replace(/{{a_id}}/, NumberOfTheAnswerInThisQuestion);
 
-                qwerty[i].setAttribute("name", newNameForTheInput);
-
-
-
-            }
-
-
-
-
-
-
-        });
-
+            qwerty[i].setAttribute("name", newNameForTheInput);
+        }
     });
+
+   
+    
+
+
+});
+
