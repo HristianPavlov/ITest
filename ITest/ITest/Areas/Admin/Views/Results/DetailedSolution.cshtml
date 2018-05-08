@@ -11,7 +11,7 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h4 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#accordion" href="#@counterQuestion">
+                    <a data-toggle="collapse" class="clickMe" data-parent="#accordion" href="#@counterQuestion">
                         @*@if (Model.StorageOfAnswers[counterQuestion] == q.Answers.Where(a => a.Correct).First().Content)*@
                         @if (Model.QuestionAnswers.ContainsKey(q.Id) && Model.QuestionAnswers[q.Id] == q.Answers.First(x => x.Correct).Id)
                         {
@@ -37,17 +37,17 @@
                     @*<p>Q : @q.Content</p>*@
                     @foreach (var a in q.Answers)
                     {
-                        if (a.Correct && Model.QuestionAnswers.ContainsKey(q.Id) && Model.QuestionAnswers[q.Id]==a.Id)
+                        if (a.Correct && Model.QuestionAnswers.ContainsKey(q.Id) && Model.QuestionAnswers[q.Id] == a.Id)
                         {
                             <span style="color:green;font-weight:bold">&#x2714;@a.Content</span> //user answered correct
                         }
                         else if (a.Correct)
-                            
+
                         {
-                            <span style="color:green;font-weight:bold">- @a.Content</span> //correct answer but user didnt click 
+                            <span style="color:green;font-weight:bold">- @a.Content</span> //correct answer but user didnt click
 
                         }
-                        else if (!a.Correct && Model.QuestionAnswers.ContainsKey(q.Id) && Model.QuestionAnswers[q.Id]==a.Id)
+                        else if (!a.Correct && Model.QuestionAnswers.ContainsKey(q.Id) && Model.QuestionAnswers[q.Id] == a.Id)
                         {
                             <span style="color:red;font-weight:bold">- &#x2718;@a.Content</span> //user answered wrong
                         }

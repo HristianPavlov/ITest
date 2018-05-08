@@ -47,21 +47,12 @@ namespace ITest.Controllers
             this.categories = categories;
             this.utaService = utaService;
         }
-        public IActionResult SearchTest()
-        {
-
-            var model = new TestRealBagViewModel();
-
-            var userTests = this.testService.GetAllTestsWithOutStuffInIttEditDTO();
-            model.ResultBag = mapper.ProjectTo<TestEditDTO>(userTests.AsQueryable());
-            return View(model);
-        }
+        //public IActionResult SearchTest()
+        //{
+        //}
         public IActionResult EditTest(string id)
         {
             var testDto = this.testService.GetTestByNameEditDTO(id);
-
-
-
             return View(testDto);
         }
 
@@ -77,7 +68,6 @@ namespace ITest.Controllers
         public IActionResult EditPublishedTest(string id)
         {
             var testDto = this.testService.GetTestByNameEditDTO(id);
-
 
             return View("EditPublishedTest", testDto);
         }
@@ -97,9 +87,10 @@ namespace ITest.Controllers
         {
             this.createTestService.DeleteTest(testName);
 
-            return this.Json(true);
-        }
+            //return this.Json(true);
+            return this.RedirectToAction("ShowResults", "Results");
 
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -108,15 +99,13 @@ namespace ITest.Controllers
 
             this.createTestService.Disable(testName);
 
-            var model = new TestRealBagViewModel();
+            //var model = new TestRealBagViewModel();
 
-            var userTests = this.testService.GetAllTestsWithOutStuffInIttEditDTO();
-            model.ResultBag = mapper.ProjectTo<TestEditDTO>(userTests.AsQueryable());
+            //var userTests = this.testService.GetAllTestsWithOutStuffInIttEditDTO();
+            //model.ResultBag = mapper.ProjectTo<TestEditDTO>(userTests.AsQueryable());
 
-            return View("SearchTest", model);
-
-
-
+            //return View("SearchTest", model);
+            return this.RedirectToAction("ShowResults", "Results");
         }
 
         [HttpPost]
@@ -125,18 +114,13 @@ namespace ITest.Controllers
         {
 
             this.createTestService.Publish(testName);
-            var model = new TestRealBagViewModel();
+            //var model = new TestRealBagViewModel();
 
-            var userTests = this.testService.GetAllTestsWithOutStuffInIttEditDTO();
-            model.ResultBag = mapper.ProjectTo<TestEditDTO>(userTests.AsQueryable());
+            //var userTests = this.testService.GetAllTestsWithOutStuffInIttEditDTO();
+            //model.ResultBag = mapper.ProjectTo<TestEditDTO>(userTests.AsQueryable());
 
-            return View("SearchTest", model);
+            //return View("SearchTest", model);
+            return this.RedirectToAction("ShowResults", "Results");
         }
-
-
-
-
-
     }
-
 }
