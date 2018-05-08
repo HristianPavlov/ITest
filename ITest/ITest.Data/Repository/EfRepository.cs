@@ -16,8 +16,8 @@ namespace ITest.Data.Repository
 
         public EfRepository(ITestDbContext context, IRepoTimeProvider dateTime)
         {
-            this.context = context;
-            this.dateTime = dateTime;
+            this.context = context ?? throw new ArgumentNullException(nameof(context));
+            this.dateTime = dateTime ?? throw new ArgumentNullException(nameof(dateTime));
         }
 
         public IQueryable<T> All
@@ -59,8 +59,17 @@ namespace ITest.Data.Repository
             entry.State = EntityState.Modified;
         }
 
+        public void RealDelete(T entity)
+        {
         
-       
+            if (context.Entry(entity).State == EntityState.Detached)
+            {
+                this.context.Attach(entity);
+            }
+            this.context.Remove(entity);
+        
+    }
+
         public void Update(T entity)
         {
             EntityEntry entry = this.context.Entry(entity);
@@ -72,7 +81,5 @@ namespace ITest.Data.Repository
 
             entry.State = EntityState.Modified;
         }
-
-       
     }
 }

@@ -5,6 +5,7 @@ using ITest.Data.UnitOfWork;
 using ITest.DTO;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace ITest.Services.Data
@@ -22,6 +23,11 @@ namespace ITest.Services.Data
 
         public void SaveQuestionAnswers(UserTestsDTO test)
         {
+            if (test == null)
+            {
+                throw new ArgumentNullException(nameof(test));
+            }
+
             foreach (var qa in test.Questions)
             {
                 var utaToAdd = new UserTestAnswers
@@ -29,12 +35,23 @@ namespace ITest.Services.Data
                     UserTestId = test.UserTestId,
                     AnswerId = qa.SelectedAnswerId
                 };
+
                 userTestAnswers.Add(utaToAdd);
             }
             saver.SaveChanges();
         }
         public decimal GetResult(string userId, string category)
         {
+            if (userId == null)
+            {
+                throw new ArgumentNullException(nameof(userId));
+            }
+
+            if (category == null)
+            {
+                throw new ArgumentNullException(nameof(category));
+            }
+
             var answers = this.userTestAnswers.All.
                 Where(uta => uta.UserTest.UserId == userId && uta.UserTest.Test.Category.Name == category).
                 Include(uta => uta.UserTest).
@@ -59,6 +76,35 @@ namespace ITest.Services.Data
             }
             decimal score = Math.Round((correctAnswers / allQuestionsCount * 100), 2);
             return score;
+        }
+        public void RecalculateAllTakenTestsWithName(string name)
+        {
+            if (name == null)
+            {
+                throw new ArgumentNullException(nameof(name));
+            }
+
+            var correctTests = this.userTestAnswers.All
+                .Where(uta => uta.UserTest.Test.Name == name)
+                .Include(uta => uta.UserTest)
+                    .ThenInclude(ut => ut.Test)
+                        .ThenInclude(t => t.Questions)
+                .Include(uta => uta.Answer)
+                .ToList();
+
+            foreach (var ut in correctTests)
+            {
+                var userTest = ut.UserTest;
+                userTest.Score = this.GetThisUserTestScore(userTest);
+            }
+
+            saver.SaveChanges();
+        }
+        private decimal GetThisUserTestScore(UserTests userTest)
+        {
+            decimal correctAnswers = userTest.Answers.Where(a => a.Answer.Correct).Count();
+            decimal numOfQuestions = userTest.Test.Questions.Count();
+            return Math.Round((correctAnswers / numOfQuestions * 100), 2);
         }
     }
 }

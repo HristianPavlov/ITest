@@ -1,0 +1,137 @@
+﻿<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote-lite.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote-lite.js"></script>
+<link rel="stylesheet" href="~/css/createTest.css" />
+@model CreateTestViewModel
+@*@{
+        ViewData["Title"] = "CreateNewTEst";
+    }*@
+<div id="createTest-content" style="font-size: 16px;">
+    <h1 class="pageTitle">Create New Test</h1>
+    <div class="row">
+        <div>
+            <form asp-area="Admin" asp-controller="CreateTests" asp-action="CreateNewTest" method="post" class="form-inline" id="question-form">
+                <div class="form-group">
+                    <div class="col-md-4">
+                        <input asp-for="Name" placeholder="Test name" id="input-test" class="form-control" style="margin-right: 3%;" />
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="TimeInMinutes">TimeInMinutes</label>
+                        <input asp-for="TimeInMinutes" id="input-test" class="form-control" style="margin-right: 3%;" />
+                    </div>
+                    @*<input asp-for="CategoryId" placeholder="Test Category" id="input-test" class="form-control" style="margin-right: 3%;" />*@
+
+                    <div class="input-group">
+                        <span class="input-group-addon">Category Name</span>
+
+                        <select asp-for="CategoryName" class="selectpicker form-control">
+
+                            <option disabled selected>Please choose ONE</option>
+                            @for (int i = 0; i < Model.CategoryNames.Count; i++)
+                            {
+                                <option>@Model.CategoryNames[i]</option>
+                            }
+                        </select>
+                    </div>
+                    <span asp-validation-for="CategoryName" class="text-danger"></span>
+
+                    @*<label class="secret">
+                                Status
+                                @Html.DropDownList("Status", new List<SelectListItem>
+
+                        {
+                            new SelectListItem{ Text="Published", Value = "1" },
+                                                new SelectListItem{ Text="Draft", Value = "2" },
+
+                                             })
+                            </label>*@
+                </div>
+                <br />
+                <div id="questions-container">
+                    <div class="panel panel-default question" name="Questions1" style="background-color:transparent;">
+                        <div style="display: inline-block; padding-left: 15px;"><h3>Question1</h3></div>
+                        <div class="form-group">
+                            <input asp-for="Questions[0].Content" placeholder="Question content" class="form-control" style="width: 70%; margin-left: 10px; display:inline-block; " />
+                            <button type="button" class="add-answer">Add Answer</button>
+                        </div>
+                        <div class="answer-container">
+
+                            <div style="height: 50px;" class="form-group col-lg-offset-1">
+                                <input style="width: 70%; margin-right: 15px;" type="text" id="Questions_0__.Answers_0__.Content" name="Questions[0].Answers[0].Content" placeholder="Answer1" class="form-control" />
+                                <input type="radio" id="Questions_0__.Answers_0__.Correct" name="radio_0" class="form-control" value="true" style="box-shadow:none; border:none; " />
+                                @*<input asp-for="Questions[0].Answers[0].Content" placeholder="Answer 1" class="form-control" />
+                                    <input asp-for="Questions[0].Answers[0].Correct" class="form-control" type="radio" value="true" />*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <button type="button" class="add-question btn btn-default">Add Question</button>
+                </div>
+                <br />
+
+                <div id="submitBtnArea" class="form-group" style="margin-top: 120px;">
+
+                    <button  name="Status" type="submit" value="2" class="btn btn-default submitttt" style="font-size: 20px; width: 160px; margin-right: 3%;">Save as draft</button>
+                    <button  name="Status" type="submit" value="1" class="btn btn-default submitttt" style="font-size: 20px; width: 160px; margin-right: 3%;">Publish</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="~/js/CreateTest.js"></script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+}
+
+
+
+
+
+
+@*<h2>CreateQuestion</h2>
+
+    <h4>CreateQuestionViewModel</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-controller="CreateQuestion"
+                  asp-action="CreateQuestion">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Content" class="control-label"></label>
+                    <input asp-for="Content" class="form-control" />
+                    <span asp-validation-for="Content" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-default" />
+                </div>
+            </form>
+        </div>
+    </div>*@
+
+
+@*<form method="post">
+        <textarea id="summernote" name="editordata"></textarea>
+
+        <br />
+        <input type="submit" name="submit" value="Submit" />
+    </form>*@
+
+
+
+@*<script>
+        $('#summernote').summernote({
+            placeholder: 'Hello bootstrap 4',
+            tabsize: 2,
+            height: 100
+        });
+    </script>
+
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>*@
+

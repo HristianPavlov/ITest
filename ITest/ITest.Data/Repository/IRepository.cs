@@ -13,6 +13,8 @@ namespace ITest.Data.Repository
 
         void Add(T entity);
         void Delete(T entity);
+        void RealDelete(T entity);
+
         void Update(T entity);
         
        

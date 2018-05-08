@@ -1,0 +1,155 @@
+﻿<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.css">
+<link href="https://fonts.googleapis.com/css?family=Fjalla+One" rel="stylesheet">
+<link rel="stylesheet" href="~/css/searchTest.css" />
+
+@using ITest.Areas.Admin.Models.TestAndResultBag
+@model TestResultBag
+
+@{
+    ViewData["Title"] = "ShowResults";
+}
+<div class="panel with-nav-tabs panel-default">
+    <div class="panel-heading">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#tab1default" data-toggle="tab">Your Test List</a></li>
+            <li><a href="#tab2default" data-toggle="tab">Test Results</a></li>
+            <a style="margin-top:1%" asp-area="Admin" asp-controller="CreateCategory" asp-action="CreateCategory" class="btn  btn-default  pull-right">New Category</a>
+            <a style="margin-top:1%" asp-area="Admin" asp-controller="CreateTests" asp-action="CreateNewTest" class="btn btn-default pull-right">New Test</a>
+        </ul>
+    </div>
+
+    <div class="panel-body" style="background-color:lightgrey">
+        <div class="tab-pane fade in active" id="tab1default">
+            @*Tests*@
+            <table id="tests" class="display table">
+                <thead>
+                    <tr>
+                        <th>Test Name</th>
+                        <th>Status</th>
+                        <th>Category</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Test.ResultBag)
+                    {
+                        if (item.Status.ToString() != "Deleted")
+                        {
+                            <tr>
+                                <td>@item.Name</td>
+                                <td class="is-published">@item.Status</td>
+                                <td>@item.CategoryName</td>
+                                <td>
+                                    @if (item.Status.ToString() == "Published")
+                                    {
+                                        <p style="opacity: 0.5;">Published</p>
+                                    }
+                                    else
+                                    {
+                                        <form asp-area="Admin" asp-controller="EditTest" asp-action="PublishTest" method="post" class="publish-test">
+                                            <input id="testName" name="testName" value="@item.Name" class="secret" />
+                                            <button type="submit" class='disable-test btn btn-warning btn-xs'>
+                                                <p> Publish</p>
+                                            </button>
+                                        </form>
+                                    }
+                                </td>
+                                <td>
+                                    @if (item.Status.ToString() == "Draft")
+                                    {
+                                        <a href="/Admin/EditTest/EditTest/@item.Name" class=" btn btn-warning btn-xs ">Edit</a>
+                                    }
+                                    else if (item.Status.ToString() == "Disabled")
+                                    {
+
+                                        <a href="/Admin/EditTest/EditPublishedTest/@item.Name" class=" btn btn-warning btn-xs ">Edit</a>
+                                    }
+                                </td>
+                                <td>
+                                    @if (item.Status.ToString() == "Published")
+                                    {
+
+                                        <form asp-area="Admin" asp-controller="EditTest" asp-action="DisableTest" method="post" class="disable-test">
+                                            <input id="testName" name="testName" value="@item.Name" class="secret" />
+
+                                            <button type="submit" class='disable-test btn btn-warning btn-xs'>
+
+                                                <p> Disable</p>
+                                            </button>
+                                        </form>
+                                        @*<a href="/EditTest/Disable/@item.Name">Disable</a>*@
+                                    }
+                                    else
+                                    {
+                                        <form asp-area="Admin" asp-controller="EditTest" asp-action="DeleteTest" method="post" class="delete-test">
+                                            <input id="testName" name="testName" value="@item.Name" class="secret" />
+
+                                            <button type="submit" class='delete-test btn btn-warning btn-xs'>
+
+                                                <p> Delete</p>
+                                            </button>
+                                        </form>
+                                        @*<a href="/EditTest/EditTest/@item.Name">Delete</a>*@
+                                    }
+                                </td>
+                            </tr>
+                        }
+
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="tab-pane fade" id="tab2default">
+            @*Results*@
+            <table id="results" class="display">
+                <thead>
+                    <tr>
+                        <th>Test Name</th>
+                        <th>User Email</th>
+                        <th>Category</th>
+                        <th>Requested Time</th>
+                        <th>Execution Time</th>
+                        <th>Result</th>
+                        <th></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var item in Model.Results.ResultBag)
+                    {
+                        <tr>
+                            <td>@item.Test.Name</td>
+                            <td>@item.UserEmail</td>
+                            <td>@item.Category</td>
+                            <td>@item.Test.TimeInMinutes mins</td>
+                            <td>@((int)item.ExecutionTime) mins @Math.Round(item.ExecutionTime % 1 * 60) sec</td>
+                            <td>@item.Score</td>
+                            <td>
+                                <a href="/Admin/Results/DetailedSolution?userEmail=@item.UserEmail&testId=@item.Test.Id">Details</a>
+                                @*binds correctly*@
+                            </td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+@section Scripts{
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script>
+    <script src="~/js/showResults.js"></script>
+    <script src="~/js/TableAjax.js"></script>
+}
+
+

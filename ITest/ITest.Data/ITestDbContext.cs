@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using ITest.Data.Models;
 using ITest.Data.Models.Abstracts;
+using Microsoft.AspNetCore.Identity;
 
 namespace ITest.Data
 {
@@ -14,6 +15,11 @@ namespace ITest.Data
         public ITestDbContext(DbContextOptions<ITestDbContext> options)
             : base(options)
         {
+         // this.Seed().Wait();
+        }
+        public ITestDbContext()
+        {
+
         }
         public DbSet<Category> Categories { get; set; }
 
@@ -25,6 +31,8 @@ namespace ITest.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+           
+
             //Trying to fix the keys
             builder.Entity<Test>()
                 .HasOne(t => t.Category)
@@ -52,40 +60,57 @@ namespace ITest.Data
                 .WithMany(ut => ut.Answers)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            //Trying to fix the keys
-
-
-            //builder.Entity<UserTests>()
-            //    .HasKey(x => new { x.UserId, x.TestId });
-
-            //builder.Entity<UserTests>()
-            //    .HasOne(userTests => userTests.User)
-            //    .WithMany(User => User.Tests)
-            //    .HasForeignKey(u => u.UserId);
-
-            //builder.Entity<UserTests>()
-            //  .HasOne(t => t.Test)
-            //  .WithMany(u => u.Users)
-            //  .HasForeignKey(t => t.TestId);
-
-
-            //builder.Entity<UserTestAnswers>()
-            //   .HasKey(x => new { x.UserTestsId, x.AnswerId });
-
-            //builder.Entity<UserTestAnswers>()
-            //    .HasOne(uta => uta.UserTest)
-            //    .WithMany(userTest => userTest.Answers)
-            //    .HasForeignKey(uta => uta.UserTestsId);
-
-            //builder.Entity<UserTestAnswers>()
-            //  .HasOne(uta => uta.Answer)
-            //  .WithMany(answer => answer.UserTests)
-            //  .HasForeignKey(uta => uta.AnswerId);
-
             base.OnModelCreating(builder);
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
+        }
+        private async Task Seed()
+        {
+            this.Database.EnsureCreated();
+
+            if (!this.Roles.Any(r => r.Name == "Admin"))
+            {
+                var adminRole = new IdentityRole("Admin");
+                this.Roles.Add(adminRole);
+            }
+            if (!this.Roles.Any(r => r.Name == "User"))
+            {
+                var userRole = new IdentityRole("User");
+                this.Roles.Add(userRole);
+            }
+
+            if (!this.Categories.Any())
+            {
+                var categoriesToAdd = new List<Category>()
+            {
+                new Category()
+                {
+                    Name = "Java"
+                },
+
+                new Category()
+                {
+                    Name = ".NET"
+                },
+
+                new Category()
+                {
+                    Name = "Javascript"
+                },
+
+                new Category()
+                {
+                    Name = "SQL"
+                }
+            };
+
+                categoriesToAdd
+                    .ForEach(c => this.Categories.Add(c));
+
+            }
+
+            await this.SaveChangesAsync();
         }
         private void ApplyAuditInfoRules()
         {

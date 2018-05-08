@@ -6,13 +6,14 @@ namespace ITest.DTO
 {
   public  class QuestionEditDTO
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         public string Content { get; set; }
 
-        public int TestId { get; set; }
+        public string TestId { get; set; }
 
-     
+        public bool IsDeleted { get; set; }
+        
         public IList<AnswerEditDTO> Answers { get; set; }
     }
 }

@@ -1,0 +1,78 @@
+﻿@using ITest.Models.TestViewModels
+@model SolveTestViewModel
+
+<link rel="stylesheet" href="~/css/showTest.css">
+<link rel="stylesheet" href="~/compiled/flipclock.css">
+
+@{
+    ViewData["Title"] = "Good luck";
+}
+
+<div style="position:fixed; right:0%; top:10%; height:100%; width:40%;">
+    <div class="clock"></div>
+</div>
+
+<div style="display:none" id="secondsYouHave">@Model.RemainingTime</div>
+<div class="container" style="font-size:large">
+    <div class="col-md-12">
+        <form asp-controller="Solve" asp-action="PublishAnswers" method="post">
+
+            <input style="display:none" asp-for="@Model.Id" value="@Model.Id" />
+            <input style="display:none" asp-for="@Model.Category" value="@Model.Category" />
+            <input style="display:none" asp-for="@Model.NumberOfQuestions" value="@Model.Questions.Count()" />
+
+            @{int questionNum = 0; int answerNum = 1; int currentQuestion = 1;}
+            @foreach (var question in Model.Questions)
+            {
+                <span style="font-size:2em; font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">Question @currentQuestion</span>
+                <br />
+                <span class ="question" style="font-size:2.5em;  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif">@question.Content</span>
+                @foreach (var answer in question.Answers)
+                {
+                    <div class="form-check">
+                        <label>
+                            <input asp-for="@Model.Questions[questionNum].SelectedAnswerId" type="radio" value="@answer.Id" class="radio" />
+                            <span class="label-text">@answer.Content</span>
+                        </label>
+                    </div>
+                    answerNum++;
+                }
+                answerNum = 1;
+                questionNum++;
+                currentQuestion++;
+            }
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+                Submit
+            </button>
+
+            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Submit?</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            Your test is about to be Submitted
+                        </div>
+                        <div class="modal-footer">
+                            @*<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>*@
+                            <button type="submit" value="submit" class="btn btn-primary" id="submitButton">Confirm</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </form>
+    </div>
+</div>
+@section Scripts {
+    <script src="~/js/clickableAnswers.js"></script>
+    <script src="~/compiled/flipclock.js"></script>
+    <script src="~/js/countDownSecond.js"></script>
+
+}

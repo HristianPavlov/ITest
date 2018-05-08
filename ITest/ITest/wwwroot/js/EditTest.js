@@ -1,10 +1,13 @@
 ﻿$(document).ready(function () {
+    //{ { qh_id } }
     var questionTemplate =
         `
 <div class="panel panel-default question" name="Questions{{q_id}}" style="margin: 7% 0% 7% 0%; border: none; shadow: none; background-color:transparent;">
     
         <div>
-            <div style="display: inline-block; padding-left: 15px;"><h3>Question{{qh_id}}</h3></div>
+            <div style="display: inline-block; padding-left: 15px;">
+
+</div>
             <button type="button" class="delete-button">Delete Question</button>
         </div>
         <div class="form-group">
@@ -15,8 +18,8 @@
         <div class="answer-container">
 
         <div style="height: 50px;" class="form-group col-lg-offset-1">
-            <input type="text"     id="Questions_{{q_id}}__.Answers_0__.Content"  name="Questions[{{q_id}}].Answers[0].Content" placeholder="Answer1" class="form-control" style="width: 70%; margin-right: 15px;" />
-            <input type="radio" id="Questions_{{q_id}}__.Answers_0__.Correct"   name="radio_{{q_id}}" class="form-control" value="true" style="box-shadow:none; border:none;"/> 
+            <input type="text"     id="Questions_{{q_id}}__Answers_0__Content"  name="Questions[{{q_id}}].Answers[0].Content" placeholder="Answer1" class="form-control" style="width: 70%; margin-right: 15px;" />
+            <input type="radio" id="Questions_{{q_id}}__Answers_0__Correct"   name="radio_A_{{q_id}}" class="form-control" value="true" style="box-shadow:none; border:none;"/> 
 
            
         </div>
@@ -26,13 +29,12 @@
  
     </div>
   `;
-
     var answerTemplate =
         `
     <div style="height: 50px;" class="answer-container">
         <div class="form-group col-lg-offset-1">
-            <input type="text"    id="Questions_{{q_id}}__.Answers_{{a_id}}__.Content" name="Questions[{{q_id}}].Answers[{{a_id}}].Content" placeholder="Answer{{ap_id}}" class="form-control" style="width: 70%; margin-right: 15px;" />
-            <input type="radio" id="Questions_{{q_id}}__.Answers_{{a_id}}__.Correct"  name="radio_{{q_id}}" class="form-control" value="true" style="box-shadow:none; border:none;"/>
+            <input type="text"    id="Questions_{{q_id}}__Answers_{{a_id}}__Content" name="Questions[{{q_id}}].Answers[{{a_id}}].Content" placeholder="Answer{{ap_id}}" class="form-control" style="width: 70%; margin-right: 15px;" />
+            <input type="radio" id="Questions_{{q_id}}__Answers_{{a_id}}__Correct"  name="radio_A_{{q_id}}" class="form-control" value="true" style="box-shadow:none; border:none;"/>
             
         </div>
 
@@ -41,21 +43,92 @@
 
     var qwerty = $('input:radio');
 
-    var total = 0;
+    var oldNumber = $(`.panel.panel-default.question`).length;
 
-    $('.add-question').click(function () {
+    var total = $(`.panel.panel-default.question`).length;/**/
+    console.log(total);
+    console.log(oldNumber);
 
-        $("#questions-container").append(questionTemplate.replace(/\{\{\q_id\}\}/g, ++total).replace(/\{\{qh_id\}\}/, total + 1));
-    });
 
     //$('.radio\_(\d+)\__').change(function () {
     //    $('.radio').not(this).prop('checked', false);
     //});
 
-    $('#questions-container').on('click', '.add-answer', function () {
+    //when the page loads
+    for (var i = 0; i < qwerty.length; i++) {
+        var theName = qwerty[i].getAttribute(`id`);
+        var parts = theName.split("__Answers_");
 
+        var NumberOfTheAnswerInThisQuestionArr = parts[1].split("__");
+        var NumberOfTheAnswerInThisQuestion = NumberOfTheAnswerInThisQuestionArr[0];
+
+        var IdOfTheQuestionArr = parts[0].split("_");
+        var IdOfTheQuestion = IdOfTheQuestionArr[1];
+        //"Questions[{{q_id}}].Answers[{{a_id}}].Correct"
+        //.replace(/{{a_id}}/, NumberOfTheAnswerInThisQuestion)
+        var newNameForTheInput = "radio_A_{{q_id}}"
+            .replace(/{{q_id}}/, IdOfTheQuestion);
+
+        qwerty[i].setAttribute("name", newNameForTheInput);
+
+        //console.log(total);
+    }
+
+
+    $('#createTest-content').on('click', '.add-question', function () {
+
+        $("#questions-container").append(questionTemplate.replace(/\{\{\q_id\}\}/g, oldNumber++));
+        console.log(oldNumber);
+
+    });
+
+    $('#createTest-content').on('click', '.hide-question', function () {
+
+        var x = $(this).closest(`.panel.panel-default.question`)/*.attr(`name`).replace(`Questions`, ``)*/;
+        var button = x.find(`.checkbox`);
+
+        var y = this.closest(`.panel.panel-default.question`);
+        var ss = x.find(`.checkbox`);
+        $(button).attr(`checked`, `checked`);
+        //console.log(button);
+        $(this).closest('.panel.panel-default.question').hide();
+
+  
+    });
+
+
+    $('#createTest-content').on('click', '.delete-button', function () {
+
+        var x = $(this).closest(`.panel.panel-default.question`).attr(`name`).replace(`Questions`, ``);
+        var number = parseInt(x);
+        //console.log(number);
+        $(this).closest('.panel.panel-default.question').remove();
+        $(document).find(`input`).each(function () {
+
+            var x = String(this.id).match(/Questions\_(\d+)\__/);
+            if (x !== null) {
+                var xNumber = parseInt(x[1]);
+                if (xNumber > number) {
+                    var ss = this.id.replace(/Questions\_(\d+)\__/g, `Questions_` + (xNumber - 1) + `__`);
+                    this.id = ss;
+                    this.closest('.panel.panel-default.question').setAttribute("name", "Questions" + (xNumber - 1));
+
+                    var heading = $(this).closest('.panel.panel-default.question');
+                    //var headd = heading.find(`div h3`);
+                    var y = heading.find(`div h3`);
+                    //find(`div h3`).text();
+                    // console.log(y[0]);
+                    y.text("Questions" + xNumber);
+                }
+            }
+        });
+        --oldNumber;
+    });
+
+    $('#createTest-content').on('click', '.add-answer', function () {
         var containerr = this.closest('.panel.panel-default.question');
         var containerrr = $(this).closest('.panel.panel-default.question');
+        console.log(containerrr);
 
         var arr = containerrr.find(`div input`);
 
@@ -82,57 +155,66 @@
         );
 
     });
+    $('#createTest-content').on('click', '.add-answer-foreach', function () {
+        var containerr = this.closest('.panel.panel-default.question');
+        var containerrr = $(this).closest('.panel.panel-default.question');
+        console.log(containerrr);
 
-    $('#questions-container').on('click', '.delete-button', function () {
-        var x = $(this).closest(`.panel.panel-default.question`).attr(`name`).replace(`Questions`, ``);
-        var number = parseInt(x);
-        //console.log(number);
-        $(this).closest('.panel.panel-default.question').remove();
-        $(document).find(`input`).each(function () {
+        
 
-            var x = String(this.id).match(/Questions\_(\d+)\__/);
-            if (x !== null) {
-                var xNumber = parseInt(x[1]);
-                if (xNumber > number) {
-                    var ss = this.id.replace(/Questions\_(\d+)\__/g, `Questions_` + (xNumber - 1) + `__`);
-                    this.id = ss;
-                    this.closest('.panel.panel-default.question').setAttribute("name", "Questions" + (xNumber - 1));
+        //var x = String(arr[0].id).match(/Questions\_(\d+)\__/);
+        //if (x !== null) {
+        //    // console.log(x[1]);
+        //} else {
+        //    x = String(arr[0].id).match(/Questions\_(\d+)\__/);
+        //    x = String(arr[1].id).match(/Questions\_(\d+)\__/);
 
-                    var heading = $(this).closest('.panel.panel-default.question');
-                    //var headd = heading.find(`div h3`);
-                    var y = heading.find(`div h3`);
-                    //find(`div h3`).text();
-                    // console.log(y[0]);
-                    y.text("Questions" + xNumber);
-                }
-            }
-        });
-        --total;
+        //    //console.log(x[1]);
+        //}
+        //var index = parseInt(x[1]);
+        //console.log(arr[0].id);
+        //var indexNumber = parseInt(index);
+
+        var arr = containerr.getAttribute(`name`);
+        console.log(arr);
+        var x = arr.match(/Questions (\d+)/);
+             
+
+        console.log(x[1]);
+          var index = parseInt(x[1]);
+
+        var listOfPageElements = containerr.querySelectorAll(".answer-container");
+        var count = listOfPageElements.length;
+        var countPlaceHolder = count;
+
+        $(this).closest('.panel.panel-default.question').append(answerTemplate
+            .replace(/\{\{\a_id\}\}/g, count++)
+            .replace(/\{\{\ap_id\}\}/g, ++countPlaceHolder)
+            .replace(/\{\{\q_id\}\}/g, index)
+        );
+
     });
 
+    //<div style="height: 50px;" class="answer-container">
+    //    <div class="form-group col-lg-offset-1">
+    //        <input type="text" id="Questions_{{q_id}}__Answers_{{a_id}}__Content" name="Questions[{{q_id}}].Answers[{{a_id}}].Content" placeholder="Answer{{ap_id}}" class="form-control" style="width: 70%; margin-right: 15px;" />
+    //        <input type="radio" id="Questions_{{q_id}}__Answers_{{a_id}}__Correct" name="radio_A_{{q_id}}" class="form-control" value="true" style="box-shadow:none; border:none;" />
 
-    //when the page loads
-    for (var i = 0; i < qwerty.length; i++) {
-        var theName = qwerty[i].getAttribute(`id`);
-        var parts = theName.split("__Answers_");
+    //    </div>
 
-        var NumberOfTheAnswerInThisQuestionArr = parts[1].split("__");
-        var NumberOfTheAnswerInThisQuestion = NumberOfTheAnswerInThisQuestionArr[0];
+    //</div>
 
-        var IdOfTheQuestionArr = parts[0].split("_");
-        var IdOfTheQuestion = IdOfTheQuestionArr[1];
-        //"Questions[{{q_id}}].Answers[{{a_id}}].Correct"
-        //.replace(/{{a_id}}/, NumberOfTheAnswerInThisQuestion)
-        var newNameForTheInput = "radio_A_{{q_id}}"
-            .replace(/{{q_id}}/, IdOfTheQuestion);
 
-        qwerty[i].setAttribute("name", newNameForTheInput);
 
-    }
-    //submit
-    $(document).on('click', '#submitBtnArea', function () {
+    $(`#createTest-content`).on('click', '#submitBtnArea', function () {
         //event.preventDefault();
         var qwerty = $('input:radio');
+        for (var j= 0; i < qwerty.length; i++) {
+            console.log(qwerty[j].name);
+            console.log(qwerty[j].id);
+
+        }
+        
         for (var i = 0; i < qwerty.length; i++) {
             var theName = qwerty[i].getAttribute(`id`);
             var parts = theName.split("__Answers_");
@@ -148,11 +230,12 @@
 
             qwerty[i].setAttribute("name", newNameForTheInput);
         }
+        console.log(qwerty.attr.name);
     });
 
-
-
-
-   
 });
+
+
+/**//**/
+
 

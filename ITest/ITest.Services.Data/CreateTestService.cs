@@ -1,10 +1,13 @@
 ﻿
 using ITest.Data.Models;
+using ITest.Data.Models.Enums;
 using ITest.Data.Repository;
 using ITest.Data.UnitOfWork;
 using ITest.DTO;
 using ITest.Infrastructure.Providers;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace ITest.Services.Data
@@ -37,18 +40,154 @@ namespace ITest.Services.Data
         }
 
         public void Update(TestEditDTO dto)
-        {            
-            var TestUpdate = this.tests.All.Include(x => x.Questions)
-                .ThenInclude(q => q.Answers)
-                .FirstOrDefault(x => x.Name == dto.Name);
+        {
+
+            var TestUpdate = this.tests.All.Where(t => t.Name == dto.Name)
+               .First();
+
+
+            //var id = TestUpdate.Id;
+            //dto.Id = id.ToString();
+            //var catId = TestUpdate.CategoryId;
+            //dto.CategoryId = catId.ToString();
+
+            //this.mapper.MapTo(dto, TestUpdate);
+
+            //TestUpdate.Id = id;
+            //TestUpdate.CategoryId = catId;
+            TestUpdate.TimeInMinutes = dto.TimeInMinutes;
+            TestUpdate.Name = dto.Name;
+            TestUpdate.Status = dto.Status;
+
+
+
+            this.tests.Update(TestUpdate);
+
+            foreach (var item in dto.Questions)
+            {
+                if (item.IsDeleted==true)
+                {
+                    var x = this.mapper.MapTo<Question>(item);
+                    this.questions.RealDelete(x);
+
+                }
+                else if (item.Id!=null)
+                {
+                    var x = this.mapper.MapTo<Question>(item);
+                    this.UpdateQuestions(x);
+                }
+                else
+                {
+                    var x = this.mapper.MapTo<Question>(item);
+                    x.TestId = TestUpdate.Id;
+                    this.questions.Add(x);
+
+                }
+               
+                
+                
+            }
+            this.saver.SaveChanges();
+
+
           
-            var id = TestUpdate.Id;
-            TestUpdate = this.mapper.MapTo(dto, TestUpdate);
-            TestUpdate.Id = id;
+        }
+
+        private void UpdateQuestions(Question item)
+        {
+            this.questions.Update(item);
+            
+        }
+        //private void UpdateAnswers(Answer item)
+        //{
+        //    this.answers.Update(item);
+
+        //}
+
+        public void PublishedUpdate(TestEditDTO dto)
+        {
+            var listOfAnswers = new List<AnswerEditDTO>();
+            foreach (var item in dto.Questions)
+            {
+                foreach (var A in item.Answers)
+                {
+
+                    var x = this.mapper.MapTo<Answer>(A);
+                    this.answers.Update(x);
+                    //listOfAnswers.Add(A);
+                }
+            }
+
+            // var Answers = this.mapper.EnumProjectTo<Answer>(listOfAnswers);
+
+
+
+            this.saver.SaveChanges();
+
+        }
+
+        public void DeleteTest(string name)
+        {
+            var TestUpdate = this.tests.All.Where(t => t.Name == name)
+                .Include(t => t.Category)
+                .Include(t => t.Questions)
+                .ThenInclude(q => q.Answers)
+                .First();
+
+
+            TestUpdate.Status = (TestStatus)Enum.Parse(typeof(TestStatus), "Deleted");
+
+
+
+            foreach (var item in TestUpdate.Questions)
+            {
+                this.DeleteQuestion(item);
+            }
+
+            this.tests.Delete(TestUpdate);
+
+            this.saver.SaveChanges();
+
+        }
+
+        public void DeleteQuestion(Question q)
+        {
+            foreach (var item in q.Answers)
+            {
+                this.answers.Delete(item);
+            }
+
+            this.questions.Delete(q);
+
+
+        }
+
+        public void Disable(string name)
+        {
+            var TestUpdate = this.tests.All.Where(t => t.Name == name)
+                             .First();
+
+
+            TestUpdate.Status = (TestStatus)Enum.Parse(typeof(TestStatus), "Disabled");
 
             this.tests.Update(TestUpdate);
             this.saver.SaveChanges();
+
         }
+
+        public void Publish(string name)
+        {
+            var TestUpdate = this.tests.All.Where(t => t.Name == name)
+                             .First();
+
+
+            TestUpdate.Status = (TestStatus)Enum.Parse(typeof(TestStatus), "Published");
+
+            this.tests.Update(TestUpdate);
+            this.saver.SaveChanges();
+
+        }
+
     }
 }
 

@@ -12,7 +12,6 @@ using ITest.Data;
 using ITest.Infrastructure;
 using ITest.Services.Data;
 using ITest.Services.Data.Contracts;
-using ITest.Infrastructure.RoleInitializer;
 using ITest.Infrastructure.Providers;
 using ITest.Data.Models;
 
@@ -96,7 +95,7 @@ namespace ITest
 
         private void RegisterData(IServiceCollection services)
         {
-          
+
             services.AddDbContext<ITestDbContext>(options =>
                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))); /*, ServiceLifetime.Transient*/
 
@@ -117,8 +116,7 @@ namespace ITest
                 app.UseExceptionHandler("/Home/Error");
             }
             app.UseAuthentication();
-            //The seeding of roles
-            //UserRoleInitializer.SeedRoles(roleManager);
+
 
             app.UseStaticFiles();
 
@@ -126,6 +124,10 @@ namespace ITest
 
             app.UseMvc(routes =>
             {
+                routes.MapRoute(
+                    name: "areaRoute",
+                    template: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
