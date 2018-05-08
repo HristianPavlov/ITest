@@ -1,6 +1,11 @@
 ﻿.secret {
     display: none; 
 }
+.Edit-test.btn.btn-warning.btn-xs{
+    font-size: 20px;
+    width: 46px;
+    height: 32px;
+}
 /*.button {
     font: bold 11px Arial;
     text-decoration: none;

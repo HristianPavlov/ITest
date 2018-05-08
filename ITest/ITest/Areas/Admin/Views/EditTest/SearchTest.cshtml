@@ -64,15 +64,33 @@
                     <td>
                         @if (item.Status.ToString() == "Draft")
                         {
+                            <form asp-area="Admin" asp-controller="EditTest" asp-action="EditTest" method="post" class="disable-test">
+                                <input id="testName" name="testName" value="@item.Name" class="secret" />
 
-                            <a href="/Admin/EditTest/EditTest/@item.Name" class=" btn btn-warning btn-xs ">Edit</a>
+                                <button type="submit" class="Edit-test btn btn-warning btn-xs">
+
+                                    <p>Edit</p>
+                                </button>
+                            </form>
+
+
+                            @*<a href="/Admin/EditTest/EditTest/@item.Name" class=" btn btn-warning btn-xs ">Edit</a>*@
 
                         }
                         else if (item.Status.ToString() == "Disabled")
                         {
+                            <form asp-area="Admin" asp-controller="EditTest" asp-action="EditPublishedTest" method="post" class="disable-test">
+                                <input id="testName" name="testName" value="@item.Name" class="secret" />
+
+                                <button type="submit" class="Edit-test btn btn-warning btn-xs">
+
+                                    <p>Edit</p>
+                                </button>
+                            </form>
 
 
-                            <a href="/Admin/EditTest/EditPublishedTest/@item.Name" class=" btn btn-warning btn-xs ">Edit</a>
+
+                            @*<a href="/Admin/EditTest/EditPublishedTest/@item.Name" class=" btn btn-warning btn-xs ">Edit</a>*@
                         }
 
 
