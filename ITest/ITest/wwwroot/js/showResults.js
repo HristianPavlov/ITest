@@ -1,3 +1,8 @@
 ﻿$(document).ready(function () {
-    $('#table_id').DataTable();
+    $('#tests').DataTable();
+   
+});
+$(document).ready(function () {
+    $('#results').DataTable();
+
 });

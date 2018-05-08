@@ -80,6 +80,7 @@ namespace ITest.Controllers
 
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult PublishAnswers(SolveTestViewModel answers)
         {
             if (ModelState.IsValid)
