@@ -22,6 +22,7 @@ namespace BusinessTests.ServicesData
         Mock<IRepository<Test>> repoTestMock;
         Mock<ISaver> saverMock;
         Mock<IRandomProvider> randomMock;
+        Mock<IGenericShuffler> shufflerMock;
         TestService fakeTestService;
         Guid correctGuid;
         Guid wrongGuid;
@@ -33,10 +34,11 @@ namespace BusinessTests.ServicesData
             repoTestMock = new Mock<IRepository<Test>>();
             saverMock = new Mock<ISaver>();
             randomMock = new Mock<IRandomProvider>();
+            shufflerMock = new Mock<IGenericShuffler>();
             correctGuid = Guid.Parse("495f7e92-d4ae-4299-9340-b300d4242f57");
             wrongGuid = Guid.Parse("2b932e9d-95e3-48db-8fbd-dee921dc6795");
 
-            fakeTestService = new TestService(mapperMock.Object, repoTestMock.Object, randomMock.Object, saverMock.Object);
+            fakeTestService = new TestService(mapperMock.Object, repoTestMock.Object, randomMock.Object, saverMock.Object, shufflerMock.Object);
         }
 
         [TestMethod]

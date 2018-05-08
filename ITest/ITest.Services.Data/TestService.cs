@@ -21,16 +21,19 @@ namespace ITest.Services.Data
         private readonly IRepository<Test> tests;
         private readonly IRandomProvider random;
         private readonly ISaver saver;
+        private readonly IGenericShuffler shuffler;
 
         public TestService(IMappingProvider mapper,
                                  IRepository<Test> tests,
                                  IRandomProvider random,
-                                 ISaver saver)
+                                 ISaver saver,
+                                 IGenericShuffler shuffler)
         {
             this.mapper = mapper;
             this.tests = tests;
             this.random = random;
             this.saver = saver;
+            this.shuffler = shuffler;
         }
 
         public IEnumerable<TestDTO> GetAllTests()
@@ -70,9 +73,9 @@ namespace ITest.Services.Data
                 throw new ArgumentNullException();
             }
             // test status should be published and test shouldnt be deleted
-             var testsFromThisCategory = tests.All.Where(test => test.CategoryId == categoryID && test.Status == TestStatus.Published && !test.IsDeleted).
-                                                        Include(t => t.Questions).
-                                                        ThenInclude(x => x.Answers)
+             var testsFromThisCategory = tests.All.Where(test => test.CategoryId == categoryID && test.Status == TestStatus.Published && !test.IsDeleted)
+                                                       .Include(t => t.Questions)
+                                                        .ThenInclude(x => x.Answers)
                                                         .ToList();
             if (testsFromThisCategory.Count() < 1)
             {
