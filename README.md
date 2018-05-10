@@ -4,10 +4,14 @@ Test Platform
 Team 10
 
 Evaluation Criteria
+
 Feature Completeness and Quality
-
+o	Have all requirements been met? Have optional requirements been implemented?
+o	Are there any issues with performance, bugs, or malfunction? 
 Code Architecture and Design Quality
-
+o	Loose coupling
+o	Modularity
+o	Extensibility
 User Experience and Creativity
 
 Description
