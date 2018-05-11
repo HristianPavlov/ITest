@@ -73,7 +73,7 @@ namespace BusinessTests.ServicesData
                     TimeInMinutes=expectedCountDown
                 }
             };
-            repoTestMock.Setup(x => x.All).Returns(all.AsQueryable());
+            repoTestMock.Setup(x => x.AllAndDeleted).Returns(all.AsQueryable());
             //act 
             var foundCountDown = fakeTestService.GetTestCountDownByTestId(testId);
             //assert
