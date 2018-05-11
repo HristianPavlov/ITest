@@ -42,16 +42,16 @@ namespace ITest.Services.Data
             //.Include(test => test.Questions)
             //        .ThenInclude(q => q.Answers)
             var allTests = tests.All.AsNoTracking()
-                .Include(test=>test.Category).AsNoTracking();
-         
+                .Include(test => test.Category).AsNoTracking();
+
             return mapper.ProjectTo<TestDTO>(allTests);
         }
         public IEnumerable<TestEditDTO> GetAllTestsWithOutStuffInIttEditDTO()
         {
             //.Include(test => test.Questions)
             //        .ThenInclude(q => q.Answers)
-            var allTests = tests.All.AsNoTracking().Include(t=>t.Category).AsNoTracking();
-                
+            var allTests = tests.All.AsNoTracking().Include(t => t.Category).AsNoTracking();
+
 
             return mapper.ProjectTo<TestEditDTO>(allTests);
         }
@@ -61,7 +61,7 @@ namespace ITest.Services.Data
             {
                 throw new ArgumentNullException();
             }
-            var testsFromThisCategory = tests.All.AsNoTracking().Where(test => test.Id == id);
+            var testsFromThisCategory = tests.AllAndDeleted.AsNoTracking().Where(test => test.Id == id);
             var currentTest = testsFromThisCategory.First();
             var countDownMins = currentTest.TimeInMinutes;
             return countDownMins;
@@ -73,10 +73,10 @@ namespace ITest.Services.Data
                 throw new ArgumentNullException();
             }
             // test status should be published and test shouldnt be deleted
-             var testsFromThisCategory = tests.All.Where(test => test.CategoryId == categoryID && test.Status == TestStatus.Published && !test.IsDeleted)
-                                                       .Include(t => t.Questions)
-                                                        .ThenInclude(x => x.Answers)
-                                                        .ToList();
+            var testsFromThisCategory = tests.All.Where(test => test.CategoryId == categoryID && test.Status == TestStatus.Published && !test.IsDeleted)
+                                                      .Include(t => t.Questions)
+                                                       .ThenInclude(x => x.Answers)
+                                                       .ToList();
             if (testsFromThisCategory.Count() < 1)
             {
                 throw new CategoryEmptyException();
@@ -106,7 +106,7 @@ namespace ITest.Services.Data
             }
 
             var testsFromThisCategory = tests.All.Where(test => test.Name == name).
-                                                        Include(t=>t.Category).
+                                                        Include(t => t.Category).
                                                         Include(t => t.Questions).
                                                         ThenInclude(x => x.Answers);
 
@@ -120,9 +120,9 @@ namespace ITest.Services.Data
                                                         .Include(t => t.Category)
                                                         .Include(t => t.Questions)
                                                         .ThenInclude(q => q.Answers);
-                                                        
-                                                        
-        
+
+
+
             var currentTest = testsFromThisCategory.First();
 
             currentTest.Questions = currentTest.Questions.Where(q => q.IsDeleted == false).ToList();
